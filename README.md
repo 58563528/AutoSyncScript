@@ -2,6 +2,15 @@
 
 [![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=sngxpro)](https://github.com/anuraghazra/github-readme-stats)
 
+## 更新日志
+
+```
+3月26日9:00，
+
+1、修复了 chavyleung 脚本库无法正确拉取的bug ，可以重新fork本项目获取更新，可以到chavyleung.yml中复制代码修改到您的仓库
+
+```
+
 ^_^
 
 #### AutoSyncScript
