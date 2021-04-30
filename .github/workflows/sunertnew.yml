@@ -4,7 +4,7 @@
 
 
 
-name: Sunert-sync
+name: Sunertnew-sync
 on:
   schedule:
     - cron: '3 */3 * * *'
@@ -24,7 +24,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: sync Sunert-Scripts
+      - name: sync Sunertnew-Scripts
         uses: repo-sync/github-sync@v2
         if: env.PAT
         with:
