@@ -30,5 +30,5 @@ jobs:
         with:
           source_repo: "https://github.com/GoodHolidays/Scripts.git"
           source_branch: "master"
-          destination_branch: "Sunert"
+          destination_branch: "Sunertnew"
           github_token: ${{ secrets.PAT }}
