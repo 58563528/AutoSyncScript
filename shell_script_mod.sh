@@ -18,11 +18,16 @@ function monkcoder(){
 
 function redrain(){
     # https://github.com/monk-coder/dust
-    rm -rf /longzhuzhu /scripts/longzhuzhu_*
+    rm -rf /longzhuzhu
+    rm jd-half-mh.json
+    rm jd-half-rain.json
+    rm jd-live-rain.json
+    rm jd_half_redrain.js
+    rm jd_super_redrain.js
     git clone https://hub.fastgit.org/nianyuguai/longzhuzhu.git /longzhuzhu
     # 拷贝脚本
-    for jsname in $(find /longzhuzhu/qx -name "*.js"); do cp ${jsname} /scripts/longzhuzhu_${jsname##*/}; done
-    for jsoname in $(find /longzhuzhu/qx -name "*.json"); do cp ${jsoname} /scripts/longzhuzhu_${jsoname##*/}; done
+    for jsname in $(find /longzhuzhu/qx -name "*.js"); do cp ${jsname} /scripts/${jsname##*/}; done
+    for jsoname in $(find /longzhuzhu/qx -name "*.json"); do cp ${jsoname} /scripts/${jsoname##*/}; done
 }
 
 function main(){
