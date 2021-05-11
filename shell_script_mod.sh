@@ -16,6 +16,15 @@ function monkcoder(){
     done
 }
 
+function redrain(){
+    # https://github.com/monk-coder/dust
+    rm -rf /longzhuzhu /scripts/longzhuzhu_*
+    git clone https://hub.fastgit.org/nianyuguai/longzhuzhu.git /longzhuzhu
+    # 拷贝脚本
+    for jsname in $(find /longzhuzhu/qx -name "*.js"); do cp ${jsname} /scripts/longzhuzhu_${jsname##*/}; done
+    for jsoname in $(find /longzhuzhu/qx -name "*.json"); do cp ${jsoname} /scripts/longzhuzhu_${jsoname##*/}; done
+}
+
 function main(){
     # 首次运行时拷贝docker目录下文件
     [[ ! -d /jd_diy ]] && mkdir /jd_diy && cp -rf /scripts/docker/* /jd_diy
@@ -23,6 +32,7 @@ function main(){
     a_jsnum=$(ls -l /scripts | grep -oE "^-.*js$" | wc -l)
     a_jsname=$(ls -l /scripts | grep -oE "^-.*js$" | grep -oE "[^ ]*js$")
     monkcoder
+    redrain
     b_jsnum=$(ls -l /scripts | grep -oE "^-.*js$" | wc -l)
     b_jsname=$(ls -l /scripts | grep -oE "^-.*js$" | grep -oE "[^ ]*js$")
     # DIY脚本更新TG通知
