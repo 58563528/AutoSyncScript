@@ -16,6 +16,23 @@ function monkcoder(){
     done
 }
 
+function jddj(){
+    # 备份cookie文件
+    [[ -f /scripts/jddj/jddj_cookie.js ]] && cp -rf /scripts/jddj/jddj_cookie.js /scripts/backup_jddj_cookie.js
+    # clone
+    rm -rf /scripts/jddj && git clone https://hub.fastgit.org/passerby-b/JDDJ.git /scripts/jddj
+    # 下载自定义cookie文件地址,如私密的gist地址,需修改
+    jddj_cookiefile="https://raw.fastgit.org/passerby-b/JDDJ/main/jddj_cookie.js"
+    curl -so /scripts/jddj/jddj_cookie.js $jddj_cookiefile
+    # 下载cookie文件失败时从备份恢复
+    test $? -eq 0 || cp -rf /scripts/jddj/backup_jddj_cookie.js /scripts/backup_jddj_cookie.js
+    # 获取js文件中cron字段设置定时任务
+    for jsname in $(ls /scripts/jddj | grep -E "js$" | tr "\n" " "); do
+        jsnamecron="$(cat /scripts/jddj/$jsname | grep -oE "/?/?cron \".*\"" | cut -d\" -f2)"
+        test -z "$jsnamecron" || echo "$jsnamecron node /scripts/jddj/$jsname >> /scripts/logs/jddj_$jsname.log 2>&1" >> /scripts/docker/merged_list_file.sh
+    done
+}
+
 function redrain(){
     # https://github.com/monk-coder/dust
     rm -rf /longzhuzhu
@@ -50,6 +67,7 @@ function main(){
     test -z "$lxktext" || curl -sX POST "https://api.telegram.org/bot$TG_BOT_TOKEN/sendMessage" -d "chat_id=$TG_USER_ID&text=LXK脚本更新完成：$(cat /jd_diy/crontab_list.sh | grep -vE "^#" | wc -l) $(cat /scripts/docker/crontab_list.sh | grep -vE "^#" | wc -l) $lxktext" >/dev/null
     # 拷贝docker目录下文件供下次更新时对比
     redrain
+    jddj
     cp -rf /scripts/docker/* /jd_diy
 }
 
