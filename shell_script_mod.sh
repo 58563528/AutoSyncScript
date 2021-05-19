@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 ## CUSTOM_SHELL_FILE for https://gitee.com/lxk0301/jd_docker/tree/master/docker
 ### 编辑docker-compose.yml文件添加: - CUSTOM_SHELL_FILE=https://raw.githubusercontent.com/monk-coder/dust/dust/shell_script_mod.sh
-#### 容器完全启动后执行 docker exec -it jd_scripts /bin/sh -c 'crontab -l' 查看目前修行的经书
+#### 容器完全启动后执行 docker exec -it jd_scripts /bin/sh -c 'crontab -l'
 
 function monkcoder(){
     # https://github.com/monk-coder/dust
@@ -22,7 +22,7 @@ function jddj(){
     # clone
     rm -rf /scripts/jddj && git clone https://hub.fastgit.org/passerby-b/JDDJ.git /scripts/jddj
     # 下载自定义cookie文件地址,如私密的gist地址,需修改
-    jddj_cookiefile="https://raw.fastgit.org/oujisome/jdshell/main/jddj_cookie.js?token=APXOSBZLU3D6LD7BGT5NNTDAUUMCM"
+    jddj_cookiefile="https://raw.fastgit.org/passerby-b/JDDJ/main/jddj_cookie.js"
     curl -so /scripts/jddj/jddj_cookie.js $jddj_cookiefile
     # 下载cookie文件失败时从备份恢复
     test $? -eq 0 || cp -rf /scripts/jddj/backup_jddj_cookie.js /scripts/backup_jddj_cookie.js
