@@ -22,7 +22,7 @@ function jddj(){
     # clone
     rm -rf /scripts/jddj && git clone https://hub.fastgit.org/passerby-b/JDDJ.git /scripts/jddj
     # 下载自定义cookie文件地址,如私密的gist地址,需修改
-    jddj_cookiefile="https://raw.fastgit.org/passerby-b/JDDJ/main/jddj_cookie.js"
+    jddj_cookiefile="https://raw.fastgit.org/oujisome/test/master/jddj_cookie.js?token=APXOSB2DT2G62R7HGOQJCYLAUUF24"
     curl -so /scripts/jddj/jddj_cookie.js $jddj_cookiefile
     # 下载cookie文件失败时从备份恢复
     test $? -eq 0 || cp -rf /scripts/jddj/backup_jddj_cookie.js /scripts/backup_jddj_cookie.js
