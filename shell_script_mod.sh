@@ -24,6 +24,8 @@ function jddj(){
     # 下载自定义cookie文件地址,如私密的gist地址,需修改
     jddj_cookiefile="https://raw.fastgit.org/passerby-b/JDDJ/main/jddj_cookie.js"
     curl -so /scripts/jddj/jddj_cookie.js $jddj_cookiefile
+    jddj_fruitfile="https://raw.fastgit.org/oujisome/jdshell/main/jddj_fruit.js"
+    curl -so /scripts/jddj/jddj_fruit.js $jddj_fruitfile
     # 下载cookie文件失败时从备份恢复
     test $? -eq 0 || cp -rf /scripts/jddj/backup_jddj_cookie.js /scripts/backup_jddj_cookie.js
     # 获取js文件中cron字段设置定时任务
