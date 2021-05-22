@@ -35,6 +35,18 @@ function jddj(){
     done
 }
 
+function didi(){
+    # clone
+    rm -rf /scripts/didi && git clone https://hub.fastgit.org/passerby-b/didi_fruit.git /scripts/didi
+    didi_fruitfile="https://raw.fastgit.org/oujisome/jdshell/main/dd_fruit.js"
+    curl -so /scripts/didi/didi_fruit.js $didi_fruitfile
+    # 获取js文件中cron字段设置定时任务
+    for jsname in $(ls /scripts/didi | grep -E "js$" | tr "\n" " "); do
+        jsnamecron="$(cat /scripts/didi/$jsname | grep -oE "/?/?cron \".*\"" | cut -d\" -f2)"
+        test -z "$jsnamecron" || echo "$jsnamecron node /scripts/didi/$jsname >> /scripts/logs/didi_$jsname.log 2>&1" >> /scripts/docker/merged_list_file.sh
+    done
+}
+
 function redrain(){
     # https://github.com/monk-coder/dust
     rm -rf /longzhuzhu
