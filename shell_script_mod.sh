@@ -70,6 +70,7 @@ function main(){
     monkcoder
     redrain
     jddj
+    didi
     # 拷贝docker目录下文件供下次更新时对比
     cp -rf /scripts/docker/* /jd_diy
 }
