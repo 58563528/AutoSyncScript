@@ -11,7 +11,16 @@ docker环境变量名:DD_TOKEN,多账号换行或英文逗号(,)隔开
 */
 
 let tokens = [];//nodejs填写此处['tk1','tk2'] 
-
+// 判断环境变量里面是否有滴滴token
+if (process.env.DD_TOKEN) {
+  if (process.env.DD_TOKEN.indexOf(',') > -1) {
+    tokens = process.env.DD_TOKEN.split(',')
+  } else if (process.env.DD_TOKEN.indexOf('\n') > -1) {
+    tokens = process.env.DD_TOKEN.split('\n')
+  } else {
+    tokens = [process.env.DD_TOKEN]
+  }
+}
 const $ = new API("dd_fruit");
 try {
     //https://cdn.jsdelivr.net/gh/passerby-b/didi_fruit@main/dd_fruit_code.js
