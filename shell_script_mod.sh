@@ -40,6 +40,7 @@ function didi(){
     rm -rf /scripts/didi && git clone https://hub.fastgit.org/passerby-b/didi_fruit.git /scripts/didi
     dd_fruitfile="https://raw.fastgit.org/oujisome/jdshell/main/dd_fruit.js"
     curl -so /scripts/didi/dd_fruit.js $dd_fruitfile
+    curl -so /scripts/didi/sendNotify.js https://raw.fastgit.org/passerby-b/JDDJ/main/sendNotify.js
     # 获取js文件中cron字段设置定时任务
     for jsname in $(ls /scripts/didi | grep -E "js$" | tr "\n" " "); do
         jsnamecron="$(cat /scripts/didi/$jsname | grep -oE "/?/?cron \".*\"" | cut -d\" -f2)"
