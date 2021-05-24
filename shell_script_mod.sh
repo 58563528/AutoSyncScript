@@ -65,7 +65,7 @@ function redrain(){
 
 function custom(){
     rm jd_zoo.js
-    curl -so https://raw.fastgit.org/yangtingxiao/QuantumultX/master/scripts/jd/jd_zoo.js
+    curl -O https://raw.fastgit.org/yangtingxiao/QuantumultX/master/scripts/jd/jd_zoo.js
     echo "5 * * * * node /scripts/jd_zoo.js >> /scripts/logs/jd_zoo.log 2>&1" >> /scripts/docker/merged_list_file.sh
 }
 
