@@ -63,6 +63,12 @@ function redrain(){
     echo "0 0-23/1 * * * node /scripts/jd_super_redrain.js >> /scripts/logs/jd_super_redrain.log 2>&1" >> /scripts/docker/merged_list_file.sh
 }
 
+function custom(){
+    rm jd_zoo.js
+    curl -so https://raw.fastgit.org/yangtingxiao/QuantumultX/master/scripts/jd/jd_zoo.js
+    echo "5 * * * * node /scripts/jd_zoo.js >> /scripts/logs/jd_zoo.log 2>&1" >> /scripts/docker/merged_list_file.sh
+}
+
 function main(){
     # 首次运行时拷贝docker目录下文件
     [[ ! -d /jd_diy ]] && mkdir /jd_diy && cp -rf /scripts/docker/* /jd_diy
