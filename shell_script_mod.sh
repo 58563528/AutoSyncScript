@@ -52,11 +52,9 @@ function redrain(){
     # https://github.com/monk-coder/dust
     rm -rf /longzhuzhu
     rm jd-half-mh.json
-    rm jd-half-rain.json
-    rm jd-live-rain.json
-    rm longzhuzhu.boxjs.json
     rm jd_half_redrain.js
     rm jd_super_redrain.js
+    rm longzhuzhu.boxjs.json
     git clone https://hub.fastgit.org/nianyuguai/longzhuzhu.git /longzhuzhu
     # 拷贝脚本
     for jsname in $(find /longzhuzhu/qx -name "*.js"); do cp ${jsname} /scripts/${jsname##*/}; done
