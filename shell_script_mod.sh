@@ -68,9 +68,10 @@ function redrain(){
 }
 
 function custom(){
-    rm jd_zoo.js
-    curl -O https://raw.fastgit.org/yangtingxiao/QuantumultX/master/scripts/jd/jd_zoo.js
-    echo "5 * * * * node /scripts/jd_zoo.js >> /scripts/logs/jd_zoo.log 2>&1" >> /scripts/docker/merged_list_file.sh
+    rm jd_try.js
+    curl -O https://raw.fastgit.org/ZCY01/daily_scripts/main/jd/jd_try.js
+    echo "5 10 * * * node /scripts/jd_unsubscribe.js >> /scripts/logs/jd_unsubscribe.log 2>&1" >> /scripts/docker/merged_list_file.sh
+    echo "30 10 * * * node /scripts/jd_try.js >> /scripts/logs/jd_try.log 2>&1" >> /scripts/docker/merged_list_file.sh
 }
 
 function main(){
