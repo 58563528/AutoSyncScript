@@ -53,7 +53,6 @@ function didi(){
 }
 
 function redrain(){
-    # https://github.com/monk-coder/dust
     rm -rf /longzhuzhu
     rm jd-half-mh.json
     rm jd_half_redrain.js
@@ -81,7 +80,7 @@ function main(){
     redrain
     jddj
     didi
-    #custom
+    custom
     # 拷贝docker目录下文件供下次更新时对比
     cp -rf /scripts/docker/* /jd_diy
 }
