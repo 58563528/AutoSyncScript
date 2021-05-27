@@ -42,14 +42,7 @@ function didi(){
     rm -rf /scripts/didi && git clone https://ghproxy.com/https://github.com/passerby-b/didi_fruit /scripts/didi
     curl -so /scripts/didi/sendNotify.js https://ghproxy.com/https://raw.githubusercontent.com/passerby-b/JDDJ/main/sendNotify.js
     # 获取js文件中cron字段设置定时任务
-    for jsname in $(ls /scripts/didi | grep -E "js$" | tr "\n" " "); do
-        jsname_cn="$(grep "cron" /scripts/didi/$jsname | grep -oE "/?/?tag\=.*" | cut -d"=" -f2)"
-        jsname_log="$(echo /scripts/didi/$jsname | sed 's;^.*/\(.*\)\.js;\1;g')"
-        jsnamecron="$(cat /scripts/didi/$jsname | grep -oE "/?/?cron \".*\"" | cut -d\" -f2)"
-        test -z "$jsname_cn" && jsname_cn=$jsname_log
-        test -z "$jsnamecron" || echo "# $jsname_cn" >> /scripts/docker/merged_list_file.sh
-        test -z "$jsnamecron" || echo "$jsnamecron node /scripts/didi/$jsname >> /scripts/logs/$jsname_log.log 2>&1" >> /scripts/docker/merged_list_file.sh
-    done
+    echo "10 0,8,12,18 * * * node /scripts/didi/dd_fruit.js >> /scripts/logs/dd_fruit.log 2>&1" >> /scripts/docker/merged_list_file.sh
 }
 
 function redrain(){
