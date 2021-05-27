@@ -1,0 +1,79 @@
+{
+	"DINGTALK_SECRET": "",
+	"DINGTALK_ACCESS_TOKEN": "",
+	"SCKEY": "",
+	"SENDKEY": "",
+	"BARK_URL": "",
+	"QMSG_KEY": "",
+	"QMSG_TYPE": "",
+	"TG_BOT_TOKEN": "",
+	"TG_USER_ID": "",
+	"TG_API_HOST": "",
+	"TG_PROXY": "",
+	"COOLPUSHSKEY": "",
+	"COOLPUSHQQ": true,
+	"COOLPUSHWX": true,
+	"COOLPUSHEMAIL": true,
+	"QYWX_KEY": "",
+	"QYWX_CORPID": "",
+	"QYWX_AGENTID": "",
+	"QYWX_CORPSECRET": "",
+	"QYWX_TOUSER": "",
+	"PUSHPLUS_TOKEN": "dd982984173d4682bfa40f4d69012d2e",
+	"PUSHPLUS_TOPIC": "10086",
+	"CITY_NAME_LIST": [
+		"上海"
+	],
+	"MOTTO": true,
+	"IQIYI_COOKIE_LIST": [{
+		"iqiyi_cookie": "QC005=fb177dd0a15b2ee034883c1388d13390; QC006=m701dzs8j61vecwaf64jqh8; __uuid=37b86245-ccbc-64aa-2860-faaf87caee1b; QC173=0; P00004=.1585462496.127ee5ceb7; T00404=12ecce54448bf4a168917aa0d06863bb; _ga=GA1.2.1027262802.1611364367; QP0030=1; QP0028=1; QC124=1|0; P00003=2480234313; P00010=2480234313; P01010=1616428800; P00PRU=2480234313; QC170=0; H5_AB=b; QP0013=0; Hm_lvt_292c77bd6e6064e926d1d58f63241745=1620390789; P000email=16621066480; P00002={\"uid\":2480234313,\"pru\":2480234313,\"user_name\":\"16621066480\",\"nickname\":\"\\u5948\\u6587mol\\u6469\\u5c14\",\"pnickname\":\"\\u5948\\u6587mol\\u6469\\u5c14\",\"type\":4,\"email\":\"\"}; QC021=[{\"key\":\"海贼王\"},{\"key\":\"暴风眼\"}]; Hm_lvt_53b7374a63c37483e5dd97d78d9bb36e=1620547734; QP0027=2; QC159={\"color\":\"FFFFFF\",\"channelConfig\":1,\"hadTip\":1,\"hideRoleTip\":1,\"isOpen\":1,\"speed\":10,\"density\":30,\"opacity\":86,\"isFilterColorFont\":1,\"proofShield\":0,\"forcedFontSize\":24,\"isFilterImage\":1}; QP008=240; T00700=EgcIz7-tIRAB; QC179={\"vipTypes\":\"\",\"userIcon\":\"//img7.iqiyipic.com/passport/20210507/90/f8/passport_2480234313_162039088496156_130_130.jpg\",\"iconPendant\":\"\",\"uid\":2480234313}; P00001=96gEO4K652j0lTfaZNdxbjopEw75OwP2HKSym1Em15qsUsXm2v4fSP5E2rglNsjsHwGK5b2; P00007=96gEO4K652j0lTfaZNdxbjopEw75OwP2HKSym1Em15qsUsXm2v4fSP5E2rglNsjsHwGK5b2; QC163=1; QY_PUSHMSG_ID=fb177dd0a15b2ee034883c1388d13390; QC008=1566695207.1620874665.1620875180.16; QC007=DIRECT; nu=0; QC175={\"upd\":true,\"ct\":1620875211294}; QC010=100470810; __dfp=a0ddf9e3c4f24b4c7980bbb231783a52525ec858905638a121a1f33046a6880b81@1621684328677@1620388329677; websocket=false"
+	}],
+	"MUSIC163_ACCOUNT_LIST": [{
+		"music163_phone": "16621066480",
+		"music163_password": "qq2451473788"
+	}],
+	"MIMOTION_ACCOUNT_LIST": [{
+			"mimotion_phone": "16621066480",
+			"mimotion_password": "qq2451473788",
+			"mimotion_min_step": "20000",
+			"mimotion_max_step": "30000"
+		},
+		{
+			"mimotion_phone": "19916939490",
+			"mimotion_password": "qq2451473788",
+			"mimotion_min_step": "20000",
+			"mimotion_max_step": "30000"
+		},
+		{
+			"mimotion_phone": "13651608569",
+			"mimotion_password": "wqw1314520",
+			"mimotion_min_step": "30000",
+			"mimotion_max_step": "50000"
+		},
+		{
+			"mimotion_phone": "19921297153",
+			"mimotion_password": "wqw1314520",
+			"mimotion_min_step": "30000",
+			"mimotion_max_step": "50000"
+		}
+	],
+	"CLOUD189_ACCOUNT_LIST": [{
+		"cloud189_phone": "19916939490",
+		"cloud189_password": "Qq2451473788"
+	}],
+	"BILIBILI_COOKIE_LIST": [{
+		"bilibili_cookie": "buvid3=65E42E03-C08F-4B94-9FB2-1D3C15D499BD190966infoc; LIVE_BUVID=AUTO2215650496781859; rpdid=|(J|J|RYkR|R0J'ulYl|Rm~|); fts=1565049854; pgv_pvi=9426996224; _ga=GA1.2.671428871.1587445872; _uuid=1B6E5B3C-CE5B-A487-A3CC-0E7A509401FF90640infoc; blackside_state=1; CURRENT_FNVAL=80; LIVE_PLAYER_TYPE=2; sid=4go0d12o; DedeUserID=94883723; DedeUserID__ckMd5=e43a4a6b04d7e061; buivd_fp=65E42E03-C08F-4B94-9FB2-1D3C15D499BD190966infoc; buvid_fp_plain=65E42E03-C08F-4B94-9FB2-1D3C15D499BD190966infoc; buvid_fp=65E42E03-C08F-4B94-9FB2-1D3C15D499BD190966infoc; balh_server_inner=__custom__; balh_is_closed=; balh_server_custom_hk=https://bili-proxy.98e.org; SESSDATA=849e68aa,1629504258,a054f*21; bili_jct=be09a297f47f11dfa0a4b7d3d224453b; Hm_lvt_8a6e55dbd2870f0f5bc9194cddf32a02=1613054279,1613137930,1613214699,1615300453; fingerprint3=e2ee2e182ac71f78c99e7b639d705fb0; fingerprint=854894254fd309e7d0a187465effed36; fingerprint_s=4fdb09f647c5b2aead7116adef914e33; CURRENT_QUALITY=116; balh_server_custom=https://service-fi0gz11m-1252917345.hk.apigw.tencentcs.com/; balh_server_custom_cn=https://service-fi0gz11m-1252917345.hk.apigw.tencentcs.com/; balh_server_custom_tw=https://app.bili.link; bp_t_offset_94883723=519116483573844239; PVID=1",
+		"coin_num": 0,
+		"coin_type": 1,
+		"silver2coin": true
+	}],
+	"FMAPP_ACCOUNT_LIST": [{
+		"fmapp_token": "eyJhbGciOiJIUzUxMiIsInppcCI6IkRFRiJ9.eNo0TTtuAjEQvcvUa2nHY3u8vgENRWo3Jp4Vi0Ba4UWKQNTcgGMgLkBuk4hjYAjRNG_e9wCraYAA0n0yGxGVkFiZ3JLqWKPqkZzPNmdNAg2U3aKaDxF2RbbztJEIIcLv-Xb_vv5cThGaP2mWXwKh65y1ntilesZ4JqqFhEYcszZCLXnbkrNImfIrn8bxHa9ILYZ9hGOdHkqp02_q-acJAjqNyOht14B8jRCMRvonhvIh_VbKEkKf1kWODwAAAP__.BKFrbXpD995FDkqKZNkRg3f54ag2tmwf9s7vmYtclt59ByBRTc-RcibSONM0HRQg1JQ6-7z1ZQsapXHvNDF7Dg",
+		"fmapp_cookie": "sensorsdata2015jssdkcross=%7B%22%24device_id%22%3A%22179755edd12432-08cc13d3a03256-136c5c26-308898-179755edd1317f%22%2C%22distinct_id%22%3A%221797566ae34461-08eab2bdbbf8f4-136c5c26-308898-1797566ae353c2%22%2C%22props%22%3A%7B%22%24latest_traffic_source_type%22%3A%22%E7%9B%B4%E6%8E%A5%E6%B5%81%E9%87%8F%22%2C%22%24latest_search_keyword%22%3A%22%E6%9C%AA%E5%8F%96%E5%88%B0%E5%80%BC_%E7%9B%B4%E6%8E%A5%E6%89%93%E5%BC%80%22%2C%22%24latest_referrer%22%3A%22%22%7D%7D",
+		"fmapp_blackbox": "eyJvcyI6ImFuZHJvaWQiLCJ2ZXJzaW9uIjoiMy42LjUiLCJwcm9maWxlX3RpbWUiOjI2OSwiaW50ZXJ2YWxfdGltZSI6MiwicGFja2FnZXMiOiJjb20ueDJlcmEueGNsb3VkLmFwcCIsImNzaWQiOiIxNjIxMTcxODMxMDA2OTI5OTc3IiwidG9rZW5faWQiOiJRWFNMRm1PQWJcL05yREdzdmRqamdVeExvd00yclwvcTlDRmtNRWFBWDhLV0JsZDViNjJja2ZHbklDMUd4SmlDUlZCbUdXSnpURUpzc0ZMRTBkNDRQSTdBPT0ifQ==",
+		"fmapp_device_id": "cee552a55a5a3e08dd5e9e8cf5c8c499"
+	}],
+	"WOMAIL_URL_LIST": [{
+		"womail_url": "https://nyan.mail.wo.cn/cn/sign/index/index?mobile=BI5wJtfnCqB2hYGYJIwmWA%3D%3D&userName=&openId=asjv5l98vvsN2BxsbFSEeqUAz75tsFkvXrbKkGdG008%3D"
+	}]
+}
