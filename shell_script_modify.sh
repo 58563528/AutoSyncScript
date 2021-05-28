@@ -26,3 +26,10 @@ function didi(){
     # 获取js文件中cron字段设置定时任务
     echo "10 0,8,12,18 * * * node /dailycheckin/didi/dd_fruit.js >> /dailycheckin/logs/dd_fruit.log 2>&1" >> /dailycheckin/docker/merged_list_file.sh
 }
+
+function main(){
+    jddj
+    didi
+}
+
+main
