@@ -69,11 +69,11 @@ function custom(){
 function main(){
     # 首次运行时拷贝docker目录下文件
     [[ ! -d /jd_diy ]] && mkdir /jd_diy && cp -rf /scripts/docker/* /jd_diy
-    monkcoder
-    redrain
+    #monkcoder
+    #redrain
     jddj
     didi
-    custom
+    #custom
     # 拷贝docker目录下文件供下次更新时对比
     cp -rf /scripts/docker/* /jd_diy
 }
