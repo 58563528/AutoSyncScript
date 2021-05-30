@@ -1,0 +1,88 @@
+jd_scripts:
+  image: lxk0301/jd_scripts
+  # 配置服务器资源约束。此例子中服务被限制为使用内存不超过200M以及cpu不超过0.2（单核的20%）
+  # 经过实际测试，建议不低于200M
+  # deploy:
+  #   resources:
+  #     limits:
+  #       cpus: '0.2'
+  #       memory: 200M
+  container_name: jd_scripts
+  restart: always
+  volumes:
+    - ./my_crontab_list.sh:/scripts/docker/my_crontab_list.sh
+    - ./logs:/scripts/logs
+  tty: true
+  # 因为更换仓库地址可能git pull的dns解析不到，可以在配置追加hosts
+  extra_hosts:
+    - "gitee.com:180.97.125.228"
+    - "github.com:13.229.188.59"
+    - "raw.githubusercontent.com:151.101.228.133"
+  environment:
+    #脚本更新仓库地址，配置了会切换到对应的地址
+    - REPO_URL=git@gitee.com:lxk0301/jd_scripts.git
+    # 注意环境变量填写值的时候一律不需要引号（""或者''）下面这些只是示例，根据自己的需求增加删除
+    #jd cookies
+    # 例: JD_COOKIE=pt_key=XXX;pt_pin=XXX;
+    # 例（多账号）: JD_COOKIE=pt_key=XXX;pt_pin=XXX;&pt_key=XXX;pt_pin=XXX;&pt_key=XXX;pt_pin=XXX;
+    - JD_COOKIE=pt_key=AAJgmVJWADBlRwnhI6eyYYIWGoK4AASaCAHVV7UVHhPPnUEnvFl34Ev_qUzE3HLPTZvwAnKSmIc;pt_pin=jd_4a95cdc8042c7;&pt_key=AAJgjqrnADCLhH0RvqRT1pU8C1L-5A2aAgbRgk5pLsPo87hyCCPLV2Is7NLGH0r2-PQ0BT-G3x0;pt_pin=jd_4d56971c9f763;&pt_key=AAJgmSWBADA1kD9i09uCsovfbIcDmc8Q9f3GVn8BHlqesDwnT19FjbVJar29Y9G6PMl9PvKpHeM;pt_pin=jd_TMMytlUGrDnA;&pt_key=AAJgs5BCADCedt3D_JpFrCQxLHwYLNDk_ux_CofNGOcxWQLVsEVI5BcUjnT3B9vHrPa2A_OT5kg;pt_pin=jd_7e893631d4b70;&pt_key=AAJgq4LyADDN_Vh1D80BfupfSnTxQPPp_CRoEYiqCKpuxmLchEpb8nErCBQxOZBMzkjEGibq4gU;pt_pin=jd_73cfd9ce868e9;&pt_key=AAJgq6SNAEDzEIeCUaaCgAWfM1S7GEPb6rX1cnNC4rAeQ1eaD91xJF6NDoJ9NRFfxoEUzzucYUZvNFV8DxnLa5bk2v_r9H74;pt_pin=%E5%BE%AE%E7%AC%91%E7%9A%84%E9%98%B3%E5%85%890703;&pt_key=AAJgq6b2ADACtzLABA1PDh8P_tbT3Dl_WcPjPqtsl5rIoyI0LQXp4ANTMATzVonHQce4QOL93eA;pt_pin=jd_76c2c80d882a3;&pt_key=AAJgs5CIADCqqX4r6DZtuLFvk11naIsgaV8UEhSvpGzKObsTBJqkILXQGGHsWOgk3mwcgK_hxxA;pt_pin=jd_BcEVTmrKhELx;&pt_key=AAJgmgY-ADCje2phz4Zv6hYhJyg2lMEUkvqbc5H0IbYX6gUSTyLREQqmUFyIm5z90X4NAO0dtkQ;pt_pin=jd_jWOPYTIygWBf;
+    - JDDJ_COOKIE=deviceid_pdj_jd=H5_DEV_3B51D297-EF02-46AA-B4EA-00E3BF1A2D5D;o2o_m_h5_sid=a13d2ae1-021d-40a8-9b59-fb3ca50ec62f;,deviceid_pdj_jd=H5_DEV_A7C03EB0-4C83-4945-A275-977EECC0A1BF;o2o_m_h5_sid=9fcd26d7-c342-4a54-b8c7-f72e2569ef5e;,deviceid_pdj_jd=H5_DEV_388AE1E7-A79B-40A0-A40A-BE83346B731C;o2o_m_h5_sid=14a88519-aa86-473e-80bc-0c3560a81e08;,deviceid_pdj_jd=H5_DEV_8C63E462-B713-4D94-BB6F-8134996885AD;o2o_m_h5_sid=f5a8b247-8c3a-4847-9961-b6329bdfa486;,deviceid_pdj_jd=H5_DEV_33A47876-B490-4DD8-9606-01E7990279AF;o2o_m_h5_sid=72483795-4db6-41aa-a52c-e297e3236de6;,deviceid_pdj_jd=H5_DEV_2AC9FBA8-84D5-4B53-BC8E-C7191901D351;o2o_m_h5_sid=e52cd1d9-dd08-4593-919d-32b494810b7d;
+    - DD_TOKEN=Oa_obF8EcCq644JJA_2kRNwlPEdr8HsYGwG4q9JJHa8kzjmOwzAMQNG7_JowSC2UxHb6ucMsztIoQIJURu4e2Ok_Hv7GVIK86KII0wgTZiJMVVWYmbBWR869drXkLsxCmKdRSjPfm0rw9Y3wQ4DwS6Qx1Hv2VFXbaMI_kYWV2Hjcnve_ldCXcDoo82YHdSYw92TqXvq-dPmQ1z1_BwAA__8=,_IN22aGTnhJUkHOie8U6_gYdC-U0dZ7tEr4QJwXGHpckzjuOwzAMRdG93JowSFGWQLbTzx7m43waBUiQysjeAzn1uzh4O0NJfNFFEYaRJoxCmqqqMJy0vkZ3b3Utrc-5ktZK1Nq9zmYl-fpG-CFB-CVLhPbi5tbc3YR_sggbufO4Pe9_G6kv4XRQ1rod1JnEIqyFR4156fIhrzN_BwAA__8=,gP018uwUAP3yEjfVMJYFmBeR6g_BSQRiTMj7Fc9saAwkzD2OwkAMgNG7fLUV2TNjJ-N2-73DLoSfZpBAVBF3R4T-6W0MJamTToowjDRhFNJUVYVRSZu9V3U1K6ohjEZalN6am7kwnOTnF-GPBOGfLL1rzN6sLE1bFY5kFVZy43F73g8rqS_htFcW0ffqTGI13EIXj45w-ZbXD38HAAD__w==,OTEd0PUY8m8ab4UmVTOA3j77_y6DbLcATK278jvEsE0kzDlqBEEMQNG7_Fg0Uqk2KXXuO3hpL0kZbBw1c_ehe9LP5x0sJfFNN0VYRpqwCmmqqsJy0kaL4T5s-oyzVdJ6iVpbHV1YjeTpGeGFBOGVLBE6ipvP6GW68E66sJMHfz__v287qTfh46Ks97ioTxKLKFZiWHOErwf5fe73AAAA__8=,DJN9JclgEfaoC_cln55Jw10GMExo5iL5dYJwEqP5n48kzD1uAjEQgNG7fPVoNeOxx_G06XOHJCw_jZFAVCvujlj6p7cxlcQXXRRhGmnCLKSpqgrTSettdPdeauvtS5iVtCij1hYxhNlIvn8QfkkQ_sgyhvbi5iO6RgiHfV7Jjfv1cftfSX0Kx72yiLFXJxJzLW7htRjC-VNe3vwVAAD__w==,FSJJ5TQhoHZpP91c4u43555Qkh7kA5o6u2RucbPBi6okzDtuxDAMRdG93JowSFEWJbbps4d8nE-jABlMZczeB7bL93BxdqaS-KKLIkwjTZiFNFVVYTppsY5wD29qcXyVtFZGrf3aK8nLK8IbCcI7WcbQKG5VWxvdhU-yCBu5c_u7_39spD6Er5OyFuWkvknMa5TeV9dA-LnI3yN_BgAA__8=
+    #微信server酱通知
+    - PUSH_KEY=
+    #Bark App通知
+    - BARK_PUSH=
+    #telegram机器人通知
+    - TG_BOT_TOKEN=
+    - TG_USER_ID=
+    #钉钉机器人通知
+    - DD_BOT_TOKEN=
+    - DD_BOT_SECRET=
+    #企业微信机器人通知
+    - QYWX_KEY=
+    #PushPlus通知
+    - PUSH_PLUS_TOKEN=dd982984173d4682bfa40f4d69012d2e
+    - PUSH_PLUS_USER=10086
+
+    #单容器多账号自动互助
+    - ENABLE_AUTO_HELP=true
+    #京东种豆得豆
+    - PLANT_BEAN_SHARECODES=
+    #京东农场
+    # 例: FRUITSHARECODES=京东农场的互助码
+    - FRUITSHARECODES=
+    #京东萌宠
+    # 例: PETSHARECODES=东东萌宠的互助码
+    - PETSHARECODES=
+    # 宠汪汪的喂食数量
+    - JOY_FEED_COUNT=20
+    #宠汪汪帮好友喂食
+    - JOY_HELP_FEED=true
+    #宠汪汪赛跑自己账号内部互助
+    - JOY_RUN_HELP_MYSELF=true
+    #宠汪汪积分兑换多少京豆
+    - JD_JOY_REWARD_NAME=500
+    #疯狂的JOY循环助力
+    - JDJOY_HELPSELF=true
+    #东东超市
+    # - SUPERMARKET_SHARECODES=
+    #兑换多少数量的京豆（20，或者1000京豆,或者其他奖品的文字）
+    # 例: MARKET_COIN_TO_BEANS=0
+    - MARKET_COIN_TO_BEANS=
+    #东东超市自动参加PK队伍
+    - JOIN_PK_TEAM=true
+    #东东超市抽奖
+    - SUPERMARKET_LOTTERY=true
+    #摇钱树<br>是否卖出金果
+    - MONEY_TREE_SELL_FRUIT=true
+    #订阅店铺
+    - PURCHASE_SHOPS=true
+    #取关店铺
+    - UN_SUBSCRIBES=300&300
+    #如果设置了 RANDOM_DELAY_MAX ，则会启用随机延迟功能，延迟随机 0 到 RANDOM_DELAY_MAX-1 秒。如果不设置此项，则不使用延迟。
+    #并不是所有的脚本都会被启用延迟，因为有一些脚本需要整点触发。延迟的目的有两个，1是降低抢占cpu资源几率，2是降低检查风险（主要是1）
+    #填写数字，单位为秒，比如写为 RANDOM_DELAY_MAX=30  就是随机产生0到29之间的一个秒数，执行延迟的意思。
+    - RANDOM_DELAY_MAX=30
+    #使用自定义定任务覆盖默认任务，上面volumes挂载之后这里配置对应的文件名，和自定义文件使用方式为overwrite
+    - CUSTOM_SHELL_FILE=https://raw.fastgit.org/oujisome/jdshell/main/shell_script_mod.sh
+    - CUSTOM_LIST_FILE=my_crontab_list.sh
