@@ -64,6 +64,8 @@ function custom(){
     curl -O https://ghproxy.com/https://raw.githubusercontent.com/ZCY01/daily_scripts/main/jd/jd_try.js
     echo "5 10 * * * node /scripts/jd_unsubscribe.js >> /scripts/logs/jd_unsubscribe.log 2>&1" >> /scripts/docker/merged_list_file.sh
     echo "30 10 * * * node /scripts/jd_try.js >> /scripts/logs/jd_try.log 2>&1" >> /scripts/docker/merged_list_file.sh
+    rm jd_zoo.js
+    curl -O https://ghproxy.com/https://raw.githubusercontent.com/yangtingxiao/QuantumultX/master/scripts/jd/jd_zoo.js
 }
 
 function main(){
