@@ -60,12 +60,18 @@ function redrain(){
 }
 
 function custom(){
+    #京东试用
     rm jd_try.js
     curl -O https://ghproxy.com/https://raw.githubusercontent.com/ZCY01/daily_scripts/main/jd/jd_try.js
     echo "5 10 * * * node /scripts/jd_unsubscribe.js >> /scripts/logs/jd_unsubscribe.log 2>&1" >> /scripts/docker/merged_list_file.sh
     echo "30 10 * * * node /scripts/jd_try.js >> /scripts/logs/jd_try.log 2>&1" >> /scripts/docker/merged_list_file.sh
+    #动物联盟
     rm jd_zoo.js
     curl -O https://ghproxy.com/https://raw.githubusercontent.com/yangtingxiao/QuantumultX/master/scripts/jd/jd_zoo.js
+    #京东泡泡大战
+    rm jd_ppdz.js
+    curl -O https://ghproxy.com/https://raw.githubusercontent.com/panghu999/panghu/master/jd_ppdz.js
+    echo "1 0 * * * node /scripts/jd_ppdz.js >> /scripts/logs/jd_ppdz.log 2>&1" >> /scripts/docker/merged_list_file.sh
 }
 
 function main(){
