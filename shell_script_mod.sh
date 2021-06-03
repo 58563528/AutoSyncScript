@@ -78,6 +78,10 @@ function custom(){
     rm zooLongzhou.js
     curl -O https://ghproxy.com/https://raw.githubusercontent.com/zooPanda/zoo/dev/zooLongzhou.js
     echo "15 13 1-18 6 * node /scripts/zooLongzhou.js >> /scripts/logs/zooLongzhou.log 2>&1" >> /scripts/docker/merged_list_file.sh
+    #红包雨
+    rm jd_dphby.js
+    curl -O https://ghproxy.com/https://raw.githubusercontent.com/panghu999/panghu/master/jd_dphby.js
+    echo "1 0 * * * node /scripts/jd_dphby.js >> /scripts/logs/jd_dphby.log 2>&1" >> /scripts/docker/merged_list_file.sh
 }
 
 function main(){
