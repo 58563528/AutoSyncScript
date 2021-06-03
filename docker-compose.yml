@@ -88,5 +88,4 @@ jd_scripts:
     - CUSTOM_LIST_FILE=my_crontab_list.sh
 
     #浓情618 与“粽”不同
-    - ZOO_OPENCAD=fasle //默认不开通会员
-    - ZOO_ADD2CART=true //默认不加购商品
+    - export ZOO_ADD2CART="true"
