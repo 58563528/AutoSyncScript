@@ -108,7 +108,7 @@ function main(){
     # 首次运行时拷贝docker目录下文件
     [[ ! -d /jd_diy ]] && mkdir /jd_diy && cp -rf /scripts/docker/* /jd_diy
     #monkcoder
-    #redrain
+    myredrain
     jddj
     didi
     custom
