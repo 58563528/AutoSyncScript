@@ -82,6 +82,10 @@ function custom(){
     rm jd_dphby.js
     curl -O https://ghproxy.com/https://raw.githubusercontent.com/panghu999/panghu/master/jd_dphby.js
     echo "1 0 * * * node /scripts/jd_dphby.js >> /scripts/logs/jd_dphby.log 2>&1" >> /scripts/docker/merged_list_file.sh
+    #宝洁消消乐
+    rm zooBaojiexiaoxiaole.js
+    curl -O https://ghproxy.com/https://raw.githubusercontent.com/zooPanda/zoo/dev/zooBaojiexiaoxiaole.js
+    echo "18 9 1-18 6 * node /scripts/zooBaojiexiaoxiaole.js >> /scripts/logs/zooBaojiexiaoxiaole.log 2>&1" >> /scripts/docker/merged_list_file.sh
 }
 
 function main(){
