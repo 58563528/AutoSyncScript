@@ -86,6 +86,10 @@ function custom(){
     rm zooBaojiexiaoxiaole.js
     curl -O https://ghproxy.com/https://raw.githubusercontent.com/zooPanda/zoo/dev/zooBaojiexiaoxiaole.js
     echo "18 9 1-18 6 * node /scripts/zooBaojiexiaoxiaole.js >> /scripts/logs/zooBaojiexiaoxiaole.log 2>&1" >> /scripts/docker/merged_list_file.sh
+    #新潮品牌狂欢
+    rm zooBrandcity.js
+    curl -O https://ghproxy.com/https://raw.githubusercontent.com/zooPanda/zoo/dev/zooBrandcity.js
+    echo "15 9 1-18 6 * node /scripts/zooBrandcity.js >> /scripts/logs/zooBrandcity.log 2>&1" >> /scripts/docker/merged_list_file.sh
 }
 
 function main(){
