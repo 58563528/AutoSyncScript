@@ -45,7 +45,7 @@ function didi(){
     echo "10 0,8,12,18 * * * node /scripts/didi/dd_fruit.js >> /scripts/logs/dd_fruit.log 2>&1" >> /scripts/docker/merged_list_file.sh
 }
 
-#function redrain(){
+function redrain(){
     rm -rf /longzhuzhu
     rm jd-half-mh.json
     rm jd_half_redrain.js
@@ -61,10 +61,13 @@ function didi(){
     echo "1 20 1-18 6 * node /scripts/long_hby_lottery.js >> /scripts/logs/long_hby_lottery.log 2>&1" >> /scripts/docker/merged_list_file.sh
 }
 
-function redrain(){
+function myredrain(){
     rm jd_half_redrain.js
     rm jd_super_redrain.js
     rm long_hby_lottery.js
+    curl -O https://ghproxy.com/https://raw.githubusercontent.com/oujisome/jdshell/main/jd_half_redrain.js
+    curl -O https://ghproxy.com/https://raw.githubusercontent.com/oujisome/jdshell/main/jd_super_redrain.js
+    curl -O https://ghproxy.com/https://raw.githubusercontent.com/oujisome/jdshell/main/long_hby_lottery.js
     echo "31 0-23/1 * * * node /scripts/jd_half_redrain.js >> /scripts/logs/jd_half_redrain.log 2>&1" >> /scripts/docker/merged_list_file.sh
     echo "1 0-23/1 * * * node /scripts/jd_super_redrain.js >> /scripts/logs/jd_super_redrain.log 2>&1" >> /scripts/docker/merged_list_file.sh
     echo "1 20 1-18 6 * node /scripts/long_hby_lottery.js >> /scripts/logs/long_hby_lottery.log 2>&1" >> /scripts/docker/merged_list_file.sh
