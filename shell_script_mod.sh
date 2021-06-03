@@ -74,6 +74,10 @@ function custom(){
     rm jd_ppdz.js
     curl -O https://ghproxy.com/https://raw.githubusercontent.com/panghu999/panghu/master/jd_ppdz.js
     echo "1 0 * * * node /scripts/jd_ppdz.js >> /scripts/logs/jd_ppdz.log 2>&1" >> /scripts/docker/merged_list_file.sh
+    #浓情618 与“粽”不同
+    rm zooLongzhou.js
+    curl -O https://ghproxy.com/https://raw.githubusercontent.com/zooPanda/zoo/dev/zooLongzhou.js
+    echo "15 13 1-18 6 * node /scripts/zooLongzhou.js >> /scripts/logs/zooLongzhou.log 2>&1" >> /scripts/docker/merged_list_file.sh
 }
 
 function main(){
