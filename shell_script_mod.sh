@@ -102,6 +102,10 @@ function custom(){
     rm zooBrandcity.js
     curl -O https://ghproxy.com/https://raw.githubusercontent.com/zooPanda/zoo/dev/zooBrandcity.js
     echo "15 9 1-18 6 * node /scripts/zooBrandcity.js >> /scripts/logs/zooBrandcity.log 2>&1" >> /scripts/docker/merged_list_file.sh
+    #翻翻乐提现
+    rm jd_618redpacket.js
+    curl -O https://ghproxy.com/https://raw.githubusercontent.com/Wenmoux/scripts/master/jd/jd_618redpacket.js
+    echo "1 0-23/1 * 6 * node /scripts/jd_618redpacket.js >> /scripts/logs/jd_618redpacket.log 2>&1" >> /scripts/docker/merged_list_file.sh
 }
 
 function main(){
