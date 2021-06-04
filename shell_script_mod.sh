@@ -79,21 +79,31 @@ function custom(){
     curl -O https://ghproxy.com/https://raw.githubusercontent.com/ZCY01/daily_scripts/main/jd/jd_try.js
     echo "5 10 * * * node /scripts/jd_unsubscribe.js >> /scripts/logs/jd_unsubscribe.log 2>&1" >> /scripts/docker/merged_list_file.sh
     echo "30 10 * * * node /scripts/jd_try.js >> /scripts/logs/jd_try.log 2>&1" >> /scripts/docker/merged_list_file.sh
+    #翻翻乐提现
+    rm jd_618redpacket.js
+    curl -O https://ghproxy.com/https://raw.githubusercontent.com/Wenmoux/scripts/master/jd/jd_618redpacket.js
+    echo "1 0-23/1 * 6 * node /scripts/jd_618redpacket.js >> /scripts/logs/jd_618redpacket.log 2>&1" >> /scripts/docker/merged_list_file.sh
     #动物联盟
     #rm jd_zoo.js
     #curl -O https://ghproxy.com/https://raw.githubusercontent.com/yangtingxiao/QuantumultX/master/scripts/jd/jd_zoo.js
+}
+
+function lemon(){
     #京东泡泡大战
     rm jd_ppdz.js
     curl -O https://ghproxy.com/https://raw.githubusercontent.com/panghu999/panghu/master/jd_ppdz.js
     echo "1 0 * * * node /scripts/jd_ppdz.js >> /scripts/logs/jd_ppdz.log 2>&1" >> /scripts/docker/merged_list_file.sh
-    #浓情618 与“粽”不同
-    rm zooLongzhou.js
-    curl -O https://ghproxy.com/https://raw.githubusercontent.com/zooPanda/zoo/dev/zooLongzhou.js
-    echo "15 13 1-18 6 * node /scripts/zooLongzhou.js >> /scripts/logs/zooLongzhou.log 2>&1" >> /scripts/docker/merged_list_file.sh
     #红包雨
     rm jd_dphby.js
     curl -O https://ghproxy.com/https://raw.githubusercontent.com/panghu999/panghu/master/jd_dphby.js
     echo "1 0 * * * node /scripts/jd_dphby.js >> /scripts/logs/jd_dphby.log 2>&1" >> /scripts/docker/merged_list_file.sh
+}
+
+function zoo(){
+    #浓情618 与“粽”不同
+    rm zooLongzhou.js
+    curl -O https://ghproxy.com/https://raw.githubusercontent.com/zooPanda/zoo/dev/zooLongzhou.js
+    echo "15 13 1-18 6 * node /scripts/zooLongzhou.js >> /scripts/logs/zooLongzhou.log 2>&1" >> /scripts/docker/merged_list_file.sh
     #宝洁消消乐
     rm zooBaojiexiaoxiaole.js
     curl -O https://ghproxy.com/https://raw.githubusercontent.com/zooPanda/zoo/dev/zooBaojiexiaoxiaole.js
@@ -102,10 +112,6 @@ function custom(){
     rm zooBrandcity.js
     curl -O https://ghproxy.com/https://raw.githubusercontent.com/zooPanda/zoo/dev/zooBrandcity.js
     echo "15 9 1-18 6 * node /scripts/zooBrandcity.js >> /scripts/logs/zooBrandcity.log 2>&1" >> /scripts/docker/merged_list_file.sh
-    #翻翻乐提现
-    rm jd_618redpacket.js
-    curl -O https://ghproxy.com/https://raw.githubusercontent.com/Wenmoux/scripts/master/jd/jd_618redpacket.js
-    echo "1 0-23/1 * 6 * node /scripts/jd_618redpacket.js >> /scripts/logs/jd_618redpacket.log 2>&1" >> /scripts/docker/merged_list_file.sh
 }
 
 function main(){
@@ -116,6 +122,8 @@ function main(){
     jddj
     didi
     custom
+    lemon
+    zoo
     # 拷贝docker目录下文件供下次更新时对比
     cp -rf /scripts/docker/* /jd_diy
 }
