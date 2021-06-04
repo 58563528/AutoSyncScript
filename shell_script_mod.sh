@@ -83,6 +83,10 @@ function custom(){
     rm jd_618redpacket.js
     curl -O https://ghproxy.com/https://raw.githubusercontent.com/Wenmoux/scripts/master/jd/jd_618redpacket.js
     echo "1 0-23/1 * 6 * node /scripts/jd_618redpacket.js >> /scripts/logs/jd_618redpacket.log 2>&1" >> /scripts/docker/merged_list_file.sh
+    #京享值PK
+    rm ddo_pk.js
+    curl -O https://ghproxy.com/https://raw.githubusercontent.com/hyzaw/scripts/main/ddo_pk.js
+    echo "15 0,6,13,19,21 * * * node /scripts/ddo_pk.js >> /scripts/logs/ddo_pk.log 2>&1" >> /scripts/docker/merged_list_file.sh
     #动物联盟
     #rm jd_zoo.js
     #curl -O https://ghproxy.com/https://raw.githubusercontent.com/yangtingxiao/QuantumultX/master/scripts/jd/jd_zoo.js
