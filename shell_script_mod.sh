@@ -70,7 +70,7 @@ function myredrain(){
     curl -O https://ghproxy.com/https://raw.githubusercontent.com/oujisome/jdshell/main/long_hby_lottery.js
     echo "30 0-23/1 * * * node /scripts/jd_half_redrain.js >> /scripts/logs/jd_half_redrain.log 2>&1" >> /scripts/docker/merged_list_file.sh
     echo "1 0-23/1 * * * node /scripts/jd_super_redrain.js >> /scripts/logs/jd_super_redrain.log 2>&1" >> /scripts/docker/merged_list_file.sh
-    echo "1 20 1-18 6 * node /scripts/long_hby_lottery.js >> /scripts/logs/long_hby_lottery.log 2>&1" >> /scripts/docker/merged_list_file.sh
+    echo "1 10-23/1 1-18 6 * node /scripts/long_hby_lottery.js >> /scripts/logs/long_hby_lottery.log 2>&1" >> /scripts/docker/merged_list_file.sh
 }
 
 function custom(){
@@ -86,7 +86,11 @@ function custom(){
     #京享值PK
     rm ddo_pk.js
     curl -O https://ghproxy.com/https://raw.githubusercontent.com/hyzaw/scripts/main/ddo_pk.js
-    echo "15 0,6,13,19,21 * * * node /scripts/ddo_pk.js >> /scripts/logs/ddo_pk.log 2>&1" >> /scripts/docker/merged_list_file.sh
+    echo "30 1,7,14,20,22 * * * node /scripts/ddo_pk.js >> /scripts/logs/ddo_pk.log 2>&1" >> /scripts/docker/merged_list_file.sh
+    #618竞猜
+    rm zy_618jc.js
+    curl -O https://ghproxy.com/https://raw.githubusercontent.com/Ariszy/Private-Script/master/Scripts/zy_618jc.js
+    echo "23 22 * * * node /scripts/zy_618jc.js >> /scripts/logs/zy_618jc.log 2>&1" >> /scripts/docker/merged_list_file.sh
     #动物联盟
     #rm jd_zoo.js
     #curl -O https://ghproxy.com/https://raw.githubusercontent.com/yangtingxiao/QuantumultX/master/scripts/jd/jd_zoo.js
