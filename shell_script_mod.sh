@@ -83,6 +83,14 @@ function custom(){
     rm jd_618redpacket.js
     curl -O https://ghproxy.com/https://raw.githubusercontent.com/Wenmoux/scripts/master/jd/jd_618redpacket.js
     echo "1 0-23/1 * 6 * node /scripts/jd_618redpacket.js >> /scripts/logs/jd_618redpacket.log 2>&1" >> /scripts/docker/merged_list_file.sh
+    #特物
+    rm jd_superBrand.js
+    curl -O https://ghproxy.com/https://raw.githubusercontent.com/Wenmoux/scripts/master/jd/jd_superBrand.js
+    echo "30 11 * * * node /scripts/jd_superBrand.js >> /scripts/logs/jd_superBrand.log 2>&1" >> /scripts/docker/merged_list_file.sh
+    #618限时盲盒
+    rm jd_limitBox.js
+    curl -O https://ghproxy.com/https://raw.githubusercontent.com/Wenmoux/scripts/master/jd/jd_limitBox.js
+    echo "30 7,19 1-18 6 * node /scripts/jd_limitBox.js >> /scripts/logs/jd_limitBox.log 2>&1" >> /scripts/docker/merged_list_file.sh
     #京享值PK
     rm ddo_pk.js
     curl -O https://ghproxy.com/https://raw.githubusercontent.com/hyzaw/scripts/main/ddo_pk.js
