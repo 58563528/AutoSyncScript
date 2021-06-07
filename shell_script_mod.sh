@@ -86,7 +86,7 @@ function custom(){
     #特物
     rm jd_superBrand.js
     curl -O https://ghproxy.com/https://raw.githubusercontent.com/Wenmoux/scripts/master/jd/jd_superBrand.js
-    echo "30 11 * * * node /scripts/jd_superBrand.js >> /scripts/logs/jd_superBrand.log 2>&1" >> /scripts/docker/merged_list_file.sh
+    echo "30,50 11 * * * node /scripts/jd_superBrand.js >> /scripts/logs/jd_superBrand.log 2>&1" >> /scripts/docker/merged_list_file.sh
     #618限时盲盒
     rm jd_limitBox.js
     curl -O https://ghproxy.com/https://raw.githubusercontent.com/Wenmoux/scripts/master/jd/jd_limitBox.js
