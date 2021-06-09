@@ -99,6 +99,10 @@ function custom(){
     rm zy_618jc.js
     curl -O https://ghproxy.com/https://raw.githubusercontent.com/Ariszy/Private-Script/master/Scripts/zy_618jc.js
     echo "0 22,23 * * * node /scripts/zy_618jc.js >> /scripts/logs/zy_618jc.log 2>&1" >> /scripts/docker/merged_list_file.sh
+    #京喜牧场金币
+    rm jx_mc_coin.js
+    curl -O https://ghproxy.com/https://raw.githubusercontent.com/moposmall/Script/main/Me/jx_mc_coin.js
+    echo "10 * * * * node /scripts/jx_mc_coin.js >> /scripts/logs/jx_mc_coin.log 2>&1" >> /scripts/docker/merged_list_file.sh
     #动物联盟
     #rm jd_zoo.js
     #curl -O https://ghproxy.com/https://raw.githubusercontent.com/yangtingxiao/QuantumultX/master/scripts/jd/jd_zoo.js
