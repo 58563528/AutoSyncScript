@@ -5,22 +5,22 @@
 明星小店(星店长)
 助力逻辑：每个ck随机获取一个明星，然后会先内部助力，然后再助力内置助力码
 抽奖：是否中奖没判断，需自行查看
-更新时间：2021-06-04
+更新时间：2021-06-06
 脚本兼容: QuantumultX, Surge,Loon, JSBox, Node.js
 =================================Quantumultx=========================
 [task_local]
 #明星小店
-0 1,21 * * * https://jdsharedresourcescdn.azureedge.net/jdresource/jd_star_shop.js, tag=明星小店, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+0 1,21 * * * jd_star_shop.js, tag=明星小店, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
 
 =================================Loon===================================
 [Script]
-cron "0 1,21 * * *" script-path=https://jdsharedresourcescdn.azureedge.net/jdresource/jd_star_shop.js,tag=明星小店
+cron "0 1,21 * * *" script-path=jd_star_shop.js,tag=明星小店
 
 ===================================Surge================================
-明星小店 = type=cron,cronexp="0 1,21 * * *",wake-system=1,timeout=3600,script-path=https://jdsharedresourcescdn.azureedge.net/jdresource/jd_star_shop.js
+明星小店 = type=cron,cronexp="0 1,21 * * *",wake-system=1,timeout=3600,script-path=jd_star_shop.js
 
 ====================================小火箭=============================
-明星小店 = type=cron,script-path=https://jdsharedresourcescdn.azureedge.net/jdresource/jd_star_shop.js, cronexpr="0 1,21 * * *", timeout=3600, enable=true
+明星小店 = type=cron,script-path=jd_star_shop.js, cronexpr="0 1,21 * * *", timeout=3600, enable=true
  */
 
 const $ = new Env('明星小店');
@@ -32,6 +32,7 @@ $.authorCodeList = [
 ];
 let cookiesArr = [];
 let uniqueIdList = [
+     {'id':'HY4HCW','name':'陈坤'},{'id':'KDDAR9','name':'徐凯'},{'id':'UN2SU2','name':'赵雷'},
      {'id':'637BQA','name':'成毅'},{'id':'XLDYRJ','name':'白宇'},{'id':'94FEDQ','name':'任嘉伦'},{'id':'GN949D','name':'刘宇宁'},{'id':'WG73ME','name':'李光洁'},{'id':'5JFCD6','name':'李纹翰'},
      {'id':'YCDXNN','name':'蔡徐坤'},{'id':'CX522V','name':'邓伦'},{'id':'877JM4','name':'张哲瀚'},{'id':'D22Q7C','name':'孟美岐'},{'id':'K6DARX','name':'龚俊'},{'id':'2SFR44','name':'白茶'},
      {'id':'S99D9G','name':'刘浩存'},{'id':'ET5F23','name':'吴尊'},{'id':'TXU6GB','name':'刘雨欣'},{'id':'FBFN48','name':'李宇春'},{'id':'UK2SUY','name':'虞书欣'},{'id':'VS4PEM','name':'热依扎'},
@@ -66,7 +67,7 @@ if ($.isNode()) {
   console.log('明星小店(星店长)\n' +
       '助力逻辑：每个ck随机获取一个明星，然后会先内部助力，然后再助力内置助力码\n' +
       '抽奖：是否中奖没判断，需自行查看\n' +
-      '更新时间：2021-06-04\n');
+      '更新时间：2021-06-06\n');
 
   // console.log(`==================开始执行星店长任务==================`);
   // for (let i = 0; i < cookiesArr.length; i++) {
@@ -132,7 +133,7 @@ if ($.isNode()) {
     }
     await main();
   }
-  $.inviteCodeList.push(...getRandomArrayElements($.authorCodeList, $.authorCodeList.length));
+  $.inviteCodeList.push(...getRandomArrayElements($.authorCodeList, 5));
   for (let i = 0; i < cookiesArr.length; i++) {
     $.cookie = cookiesArr[i];
     $.UserName = decodeURIComponent($.cookie.match(/pt_pin=([^; ]+)(?=;?)/) && $.cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]);
@@ -158,16 +159,20 @@ async function main() {
   uniqueIdList = getRandomArrayElements(uniqueIdList, uniqueIdList.length);
   console.log(`现共查询到${uniqueIdList.length}个明星小店\n`);
   for (let j = 0; j < uniqueIdList.length; j++) {
-    $.uniqueId = uniqueIdList[j].id;
-    $.helpCode = '';
-    console.log(`开始第${j + 1}个明星小店，ID：${$.uniqueId},明星：${uniqueIdList[j].name}`);
-    await starShop();
-    await $.wait(1000);
-    if (j === 0) {
-      console.log(`互助码：${$.helpCode}`);
-      $.inviteCodeList.push($.helpCode);
+    try{
+      $.uniqueId = uniqueIdList[j].id;
+      $.helpCode = '';
+      console.log(`开始第${j + 1}个明星小店，ID：${$.uniqueId},明星：${uniqueIdList[j].name}`);
+      await starShop();
+      await $.wait(1000);
+      if (j === 0) {
+        console.log(`互助码：${$.helpCode}`);
+        $.inviteCodeList.push($.helpCode);
+      }
+      console.log(`\n`);
+    }catch (e) {
+      console.log(JSON.stringify(e.message));
     }
-    console.log(`\n`);
   }
   console.log(`=============${$.UserName }：星店长奖励汇总================`);
   await $.wait(1000);
@@ -181,7 +186,7 @@ async function main() {
     } else if ($.rewards[i].prizeType === 5) {
       if(!$.rewards[i].fillReceiverFlag){
         console.log(`获得实物：${$.rewards[i].prizeDesc || ''},未填写地址`);
-        sendMessage += `${$.UserName }，获得实物：${$.rewards[i].prizeDesc || '' }\n`;
+        sendMessage += `【京东账号${$.index}】${$.UserName }，获得实物：${$.rewards[i].prizeDesc || '' }\n`;
       }else{
         console.log(`获得实物：${$.rewards[i].prizeDesc || ''},已填写地址`);
       }
