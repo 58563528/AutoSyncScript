@@ -34,7 +34,7 @@ $.cookie = '';
 $.inviteList = [];
 $.pkInviteList = [];
 $.secretpInfo = {};
-$.innerPkInviteList = [];
+$.innerPkInviteList = ["sSKNX-MpqKOJsNv4wOW-fJe6QL6cfGhXqDs78P366_UzIYRQAIrA9g1BqgA6MA","sSKNX-MpqKOJsNv4wOW-fJe6QL6cfGhXqDs78P36zvdIw3PtM_f311Aw8PnQRA","sSKNX-MpqKOJsNv4wOW-fJe6QL6cfGhXqDs78P36ztvpVfzHdLyTBL0scBSHDQ","sSKNX-MpqKOJsNv4wOW-fJe6QL6cfGhXqDs78P3618hpXpScqFp2YIKEuotTkw","sSKNX-MpqKOAvOH629LYBSrNsFzGfBadtZ4rN88FN0WqqACg"];
 if ($.isNode()) {
     Object.keys(jdCookieNode).forEach((item) => {
         cookiesArr.push(jdCookieNode[item])
@@ -81,9 +81,9 @@ if ($.isNode()) {
         }
     }
     let res = [], res2 = [], res3 = [];
-    //res3 = await getAuthorShareCode('https://raw.githubusercontent.com/gitupdate/updateTeam/master/shareCodes/jd_zoo.json');
-    //if (!res3) await getAuthorShareCode('https://cdn.jsdelivr.net/gh/gitupdate/updateTeam@master/shareCodes/jd_zoo.json')
-    res2 = await getAuthorShareCode('https://raw.githubusercontent.com/star261/jd/main/code/zoo.json');
+    //res3 = await getAuthorShareCode('https://raw.githubusercontent.com/ElsaKing/updateTeam/main/shareCodes/jd_zoo.json');
+    //if (!res3) await getAuthorShareCode('https://ghproxy.com/https://raw.githubusercontent.com/ElsaKing/updateTeam/main/shareCodes/jd_zoo.json')
+    res2 = await getAuthorShareCode('https://raw.githubusercontent.com/ElsaKing/updateTeam/main/shareCodes/jd_zoo.json');
     if (pKHelpAuthorFlag) {
         $.innerPkInviteList = getRandomArrayElements([...$.innerPkInviteList, ...res, ...res2, ...res3], [...$.innerPkInviteList, ...res, ...res2, ...res3].length);
         $.pkInviteList.push(...$.innerPkInviteList);
@@ -861,7 +861,7 @@ function getRandomArrayElements(arr, count) {
     }
     return shuffled.slice(min);
 }
-function getAuthorShareCode(url = "http://cdn.annnibb.me/eb6fdc36b281b7d5eabf33396c2683a2.json") {
+function getAuthorShareCode(url = "https://ghproxy.com/https://raw.githubusercontent.com/ElsaKing/updateTeam/main/shareCodes/jd_zoo.json") {
     return new Promise(async resolve => {
         const options = {
             "url": `${url}?${new Date()}`,
