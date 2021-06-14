@@ -34,7 +34,7 @@ $.cookie = '';
 $.inviteList = [];
 $.pkInviteList = [];
 $.secretpInfo = {};
-$.innerPkInviteList = ["sSKNX-MpqKOJsNv4wOW-fJe6QL6cfGhXqDs78P366_UzIYRQAIrA9g1BqgA6Nw","sSKNX-MpqKOJsNv4wOW-fJe6QL6cfGhXqDs78P36zvdIw3PtM_f311Aw8PnQQw","sSKNX-MpqKOJsNv4wOW-fJe6QL6cfGhXqDs78P36ztvpVfzHdLyTBL0scBSHCg","sSKNX-MpqKOJsNv4wOW-fJe6QL6cfGhXqDs78P3618hpXpScqFp2YIKEuotTlA","sSKNX-MpqKOAvOH629LYBSrNsFzGfBadtZ4rN88FN0WqqACn"];
+$.innerPkInviteList = [];
 if ($.isNode()) {
     Object.keys(jdCookieNode).forEach((item) => {
         cookiesArr.push(jdCookieNode[item])
@@ -81,11 +81,15 @@ if ($.isNode()) {
         }
     }
     let res = [], res2 = [], res3 = [];
-    //res3 = await getAuthorShareCode('https://raw.githubusercontent.com/ElsaKing/updateTeam/main/shareCodes/jd_zoo.json');
-    //if (!res3) await getAuthorShareCode('https://ghproxy.com/https://raw.githubusercontent.com/ElsaKing/updateTeam/main/shareCodes/jd_zoo.json')
-    res2 = await getAuthorShareCode('https://raw.githubusercontent.com/ElsaKing/updateTeam/main/shareCodes/jd_zoo.json');
+    //res = await getAuthorShareCode('https://raw.githubusercontent.com/ElsaKing/updateTeam/main/shareCodes/jd_zoo.json');
+    res2 = await getAuthorShareCode('https://ghproxy.com/https://raw.githubusercontent.com/ElsaKing/updateTeam/main/shareCodes/jd_zoo.json');
+    res3 = await getAuthorShareCode('https://raw.githubusercontent.com/ElsaKing/updateTeam/main/shareCodes/jd_zoo.json');
     if (pKHelpAuthorFlag) {
-        $.innerPkInviteList = getRandomArrayElements([...$.innerPkInviteList, ...res, ...res2, ...res3], [...$.innerPkInviteList, ...res, ...res2, ...res3].length);
+        if([...$.innerPkInviteList, ...res, ...res2, ...res3].length > 6){
+            $.innerPkInviteList = getRandomArrayElements([...$.innerPkInviteList, ...res, ...res2, ...res3],6);
+        }else{
+            $.innerPkInviteList = getRandomArrayElements([...$.innerPkInviteList, ...res, ...res2, ...res3], [...$.innerPkInviteList, ...res, ...res2, ...res3].length);
+        }
         $.pkInviteList.push(...$.innerPkInviteList);
     }
     for (let i = 0; i < cookiesArr.length; i++) {
