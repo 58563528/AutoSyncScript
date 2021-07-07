@@ -63,7 +63,7 @@ let inviter = {};
                         break
                     }
                 }
-                $.cookie = cookiesArr[i];
+                cookie = cookiesArr[i];
                 if (inviters[0].taskDoTimes >= inviters[0].taskLimitTimes) {
                     inviters.shift();
                     if (inviters.length == 0) {
