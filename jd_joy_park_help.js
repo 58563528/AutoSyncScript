@@ -58,7 +58,7 @@ let inviter = {};
                         taskType:  'SHARE_INVITE',
                     } :{})
                     if(bonus.success){
-                        console.log(`账号${inviters[0].index+1}领取${awardGivenNumber}工资`)
+                        console.log(`账号${inviters[0].index+1}领取${inviters[0].awardGivenNumber}工资`)
                     } else {
                         break
                     }
