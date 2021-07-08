@@ -1,12 +1,11 @@
 /*
 * 来客有礼小程序
-* 搬运不知道大佬的
+* 搬运不大佬的
 * cron 45 4 * * *
 * */
 const $ = new Env('送豆得豆');
 const notify = $.isNode() ? require('./sendNotify') : '';
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
-//IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [];
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
