@@ -78,7 +78,7 @@ let uuid = randomString(40);
             helpInfo = {}
             taskInfo = await requestApi("getTaskDetail",{appSign: "1"})
             if (!taskInfo?.data?.result?.inviteId) continue
-            helpInfo.id = taskInfo?.data?.result?.inviteId
+            helpInfo.id = taskInfo.data.result.inviteId
             taskInfo.data.result.taskVos.forEach(function (task) {
                 if(task.taskName == "邀请好友助力"){
                     if (task.times < task.maxTimes) {
