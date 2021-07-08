@@ -63,7 +63,7 @@ function exchange(cookie,amount,pt_pin) {
                  if(data.data.bizMsg==""){
                     data.data.bizMsg = `成功兑换${amount}元红包`
                  }
-                 notify.sendNotify(`账号${decodeURIComponent(pt_pin)}`, data.data.bizMsg);
+                 notify.sendNotify(`签到领现金账号 ${decodeURIComponent(pt_pin)}`, data.data.bizMsg);
             }
             if(data.errorMessage){
                console.log(data.errorMessage)
