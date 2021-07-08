@@ -8,7 +8,7 @@
 const $ = Env("全民运动会")
 const ua = `jdltapp;iPhone;3.1.0;${Math.ceil(Math.random()*4+10)}.${Math.ceil(Math.random()*4)};${randomString(40)}`
 let cookiesArr = []
-let cookie = ""
+let cookie = ''
 let inviters = []
 let uuid = randomString(40);
 
