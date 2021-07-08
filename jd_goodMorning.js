@@ -36,7 +36,7 @@ let cookie = ''
                 }
                 continue
             }
-            goodMorning()
+            await goodMorning()
         }
     }
 })()
