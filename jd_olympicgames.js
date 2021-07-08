@@ -10,7 +10,6 @@ const ua = `jdltapp;iPhone;3.1.0;${Math.ceil(Math.random()*4+10)}.${Math.ceil(Ma
 let cookiesArr = []
 let cookie = ''
 let inviters = []
-let inviter = undefined;
 let uuid = randomString(40);
 
 !(async () => {
@@ -42,7 +41,7 @@ let uuid = randomString(40);
             }
             success = 0
             inviters: for(var key in inviters){
-                if(inviters[key].index==i % len){
+                if(inviters[key].index==i % len || inviters[key].times >= inviters[key].maxTimes){
                     continue
                 }
                 assist = await requestApi("assist",{
@@ -72,7 +71,6 @@ let uuid = randomString(40);
                         console.log(`账号${i%len+1}是黑号`)
                         break inviters
                     default:
-
                         break inviters
                 }
             }
