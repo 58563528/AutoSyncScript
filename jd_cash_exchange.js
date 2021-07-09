@@ -1,15 +1,14 @@
 /*
 签到领现金兑换
-需要填写exchangeAccounts参数，兑换多少取决于账号
+需要填写exchangeAccounts参数，兑换多少取决于app内显示，默认为所有账号兑换10红包，部分账号会出现参数错误的提示。指定账号+金额应这样填写(pt_pin1@2&pt_pin2@10)
 TG学习交流群https://t.me/cdles
 0 0 * * * https://raw.githubusercontent.com/cdle/jd_study/main/jd_cash_exchange.js
 */
 const $ = Env("签到领现金兑换")
 const ua = `jdltapp;iPhone;3.1.0;${Math.ceil(Math.random()*4+10)}.${Math.ceil(Math.random()*4)};${randomString(40)}`
 let cookiesArr = []
-var exchangeAccounts = process.env.exchangeAccounts ?? "" //不指定默认为所有账号兑换10红包，部分账号会出现参数错误的提示。指定账号金额(pt_pin1@2&pt_pin2@10)
+var exchangeAccounts = process.env.exchangeAccounts ?? ""
 !(async () => {
-    console.log(exchangeAccounts)
     if(exchangeAccounts) {
         v = exchangeAccounts.split("&")
         exchangeAccounts = {}
@@ -18,7 +17,6 @@ var exchangeAccounts = process.env.exchangeAccounts ?? "" //不指定默认为�
             exchangeAccounts[j[0]]=j[1] ? +j[1] : 10
         }
     }
-    console.log(exchangeAccounts)
     await requireConfig()
     for (let i = 0; i < cookiesArr.length; i++) {
         if (cookiesArr[i]) {
