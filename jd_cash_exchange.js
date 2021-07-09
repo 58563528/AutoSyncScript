@@ -57,7 +57,7 @@ function exchange(cookie,amount,pt_pin) {
             data = JSON.parse(data)
             if(data.data){
                  console.log(data.data.bizMsg)
-                 if(data.data.bizMsg==""){
+                 if(data.data.bizMsg.indexOf("success")!=-1){
                     data.data.bizMsg = `成功兑换${amount}元红包`
                  }
                  notify.sendNotify(`签到领现金账号 ${decodeURIComponent(pt_pin)}`, data.data.bizMsg);
