@@ -7,20 +7,19 @@ TG学习交流群https://t.me/cdles
 const $ = Env("签到领现金兑换")
 const ua = `jdltapp;iPhone;3.1.0;${Math.ceil(Math.random()*4+10)}.${Math.ceil(Math.random()*4)};${randomString(40)}`
 let cookiesArr = []
-let exchangeAccounts //不指定默认为所有账号兑换10红包，部分账号会出现参数错误的提示
-// let exchangeAccounts = {
-//     "jd_账号1": 10,//十元
-//     "jd_账号2": 2,//两元
-// }
-
+var exchangeAccounts = process.env.exchangeAccounts ?? "" //不指定默认为所有账号兑换10红包，部分账号会出现参数错误的提示。指定账号金额(pt_pin1@2&pt_pin2@10)
 !(async () => {
-    await requireConfig()
-    if (!cookiesArr[0]) {
-        $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {
-            "open-url": "https://bean.m.jd.com/bean/signIndex.action"
-        });
-        return;
+    console.log(exchangeAccounts)
+    if(exchangeAccounts) {
+        v = exchangeAccounts.split("&")
+        exchangeAccounts = {}
+        for(var i of v){
+            j = i.split("@")
+            exchangeAccounts[j[0]]=j[1] ? +j[1] : 10
+        }
     }
+    console.log(exchangeAccounts)
+    await requireConfig()
     for (let i = 0; i < cookiesArr.length; i++) {
         if (cookiesArr[i]) {
             cookie = cookiesArr[i];
