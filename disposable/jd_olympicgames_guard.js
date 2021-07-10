@@ -3,7 +3,7 @@
 更新时间：2021-7-8
 活动入口：首页右侧下方
 备注：环境变量olympicgames_inviteId填写助力码
-1 10 * * * https://raw.githubusercontent.com/cdle/jd_study/main/jd_olympicgames_guard.js
+链接：https://raw.githubusercontent.com/cdle/jd_study/main/jd_olympicgames_guard.js
 */
 const $ = Env("全民运动会")
 const ua = `jdltapp;iPhone;3.1.0;${Math.ceil(Math.random()*4+10)}.${Math.ceil(Math.random()*4)};${randomString(40)}`
