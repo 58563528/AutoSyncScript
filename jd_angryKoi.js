@@ -63,7 +63,12 @@ var packets = [];
         )
         await $.wait(50)        
     }
-})()
+})()  .catch((e) => {
+    $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
+  })
+  .finally(() => {
+    $.done();
+  })
 
 function requestApi(functionId, cookie, body = {}) {
     return new Promise(resolve => {
