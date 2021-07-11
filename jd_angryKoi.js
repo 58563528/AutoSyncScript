@@ -15,6 +15,7 @@ var packets = [];
 !(async () => {
     if(!kois){
         console.log("请在环境变量中填写需要助力的账号pt_pin")
+        return
     }
     requireConfig()
     len = cookiesArr.length
