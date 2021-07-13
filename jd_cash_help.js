@@ -49,11 +49,11 @@ var inviteCodes = [];
                     case 210: //您无法为自己助力哦~
                         break;
                     case 188: //活动太火爆啦\n看看其他活动吧~'
-                        break;
+                        continue inviteCodes
                     case 206: //今日已为Ta助力过啦~
                         break;
                     case 207: //啊哦~今日助力次数用完啦
-                        break;
+                        continue inviteCodes
                     case 208: //您来晚啦，您的好友已经领到全部奖励了
                         inviteCodes[j] == ""
                         break;
