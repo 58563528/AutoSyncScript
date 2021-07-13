@@ -24,8 +24,8 @@ var inviteCodes = [];
             }
         }  
     }
-    for (let i = 0; i < len+4; i++) {
-        cookie = cookiesArr[i % len];
+    for (let i = 0; i < len; i++) {
+        cookie = cookiesArr[i];
         data = await requestApi("cash_mob_home", cookie)
         inviteCode = data ?.data ?.result ?.inviteCode
         if (inviteCode) {
@@ -44,16 +44,16 @@ var inviteCodes = [];
                 switch (data ?.data ?.bizCode) {
                     case 0: //助力成功
                         success++
-                        if (success >= 3) continue inviteCodes
+                        if (success >= 3) break inviteCodes
                         break;
                     case 210: //您无法为自己助力哦~
                         break;
                     case 188: //活动太火爆啦\n看看其他活动吧~'
-                        continue inviteCodes
+                        break inviteCodes
                     case 206: //今日已为Ta助力过啦~
                         break;
                     case 207: //啊哦~今日助力次数用完啦
-                        continue inviteCodes
+                        break inviteCodes
                     case 208: //您来晚啦，您的好友已经领到全部奖励了
                         inviteCodes[j] == ""
                         break;
