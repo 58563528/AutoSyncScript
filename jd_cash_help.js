@@ -55,7 +55,7 @@ var inviteCodes = [];
                     case 207: //啊哦~今日助力次数用完啦
                         break inviteCodes
                     case 208: //您来晚啦，您的好友已经领到全部奖励了
-                        inviteCodes[j] == ""
+                        inviteCodes[j] = ""
                         break;
                     default:
                         break;
