@@ -24,8 +24,8 @@ var inviteCodes = [];
             }
         }  
     }
-    for (let i = 0; i < len; i++) {
-        cookie = cookiesArr[i];
+    for (let i = 0; i < len+4; i++) {
+        cookie = cookiesArr[i % len];
         data = await requestApi("cash_mob_home", cookie)
         inviteCode = data ?.data ?.result ?.inviteCode
         if (inviteCode) {
