@@ -1,7 +1,7 @@
 /*
 愤怒的现金
 更新时间：2021-7-13
-备注：极速助力，打击黑产盗取现金，建议人手一个。默认向前助力9个，若要指定被助力账号，需cashHelpPins环境变量中填入需要助力的pt_pin，有多个请用@符号连接。
+备注：极速助力，打击黑产盗取现金的犯罪行为。默认向前助力9个账号，若要指定被助力账号，需cashHelpPins环境变量中填入需要助力的pt_pin，有多个请用@符号连接。
 0 0 * * * https://raw.githubusercontent.com/cdle/jd_study/main/jd_angryCash.js
 */
 const $ = new Env("愤怒的现金")
