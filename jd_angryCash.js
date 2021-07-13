@@ -1,75 +1,112 @@
 /*
-签到领现金助力
+愤怒的现金
 更新时间：2021-7-13
-备注：默认向前助力，若想要指定助力的账号在cashHelpPins环境变量中填入需要助力的pt_pin，有多个请用@符号连接。
-0 0 * * * https://raw.githubusercontent.com/cdle/jd_study/main/jd_cash_help.js
+备注：极速助力，打击黑产盗取现金，建议人手一个。默认向前助力9个，若要指定被助力账号，需cashHelpPins环境变量中填入需要助力的pt_pin，有多个请用@符号连接。
+0 0 * * * https://raw.githubusercontent.com/cdle/jd_study/main/jd_angryCash.js
 */
-const $ = new Env("签到领现金助力")
+const $ = new Env("愤怒的现金")
 const ua = `jdltapp;iPhone;3.1.0;${Math.ceil(Math.random()*4+10)}.${Math.ceil(Math.random()*4)};${randomString(40)}`
 const JD_API_HOST = 'https://api.m.jd.com/client.action';
 let cookiesArr = []
-var pins = process.env.cashPins ?? ""
-var inviteCodes = [];
+var pins = process.env.cashHelpPins ?? ""
+var helps = [];
+var tools = [];
 !(async () => {
     await requireConfig()
     len = cookiesArr.length
-    if(pins)for (let i = 0; i < len; i++) {
-        cookie = cookiesArr[i];
-        if(pins.indexOf(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])!=-1){
-            console.log(cookie)
-            data = await requestApi("cash_mob_home", cookie)
-            inviteCode = data ?.data ?.result ?.inviteCode
-            if (inviteCode) {
-                inviteCodes.push(inviteCode)
-            }
-        }  
+    if(!pins){
+        console.log("未设置环境变量cashHelpPins，默认助力前9个账号")
     }
     for (let i = 0; i < len; i++) {
         cookie = cookiesArr[i];
-        data = await requestApi("cash_mob_home", cookie)
-        inviteCode = data ?.data ?.result ?.inviteCode
-        if (inviteCode) {
-            if(!pins)inviteCodes.push(inviteCode)
-            shareDate = data ?.data ?.result ?.shareDate
-            success = 0
-            inviteCodes: for (var j = 0; j < inviteCodes.length; j++) {
-                if (inviteCodes[j] == "") continue
-                if (inviteCodes[j] == inviteCode) continue
-                data = await requestApi("cash_mob_assist", cookie, {
-                    source: 3,
-                    inviteCode: inviteCodes[j],
-                    shareDate: shareDate
-                })
-                console.log(data ?.data ?.bizMsg)
-                switch (data ?.data ?.bizCode) {
-                    case 0: //助力成功
-                        success++
-                        if (success >= 3) break inviteCodes
-                        break;
-                    case 210: //您无法为自己助力哦~
-                        break;
-                    case 188: //活动太火爆啦\n看看其他活动吧~'
-                        break inviteCodes
-                    case 206: //今日已为Ta助力过啦~
-                        break;
-                    case 207: //啊哦~今日助力次数用完啦
-                        break inviteCodes
-                    case 208: //您来晚啦，您的好友已经领到全部奖励了
-                        inviteCodes[j] = ""
-                        break;
-                    default:
-                        break;
-                }
+        pin = cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]
+        if((!pins && i<9) || (pins && pins.indexOf(pin)!=-1)){
+            data = await requestApi("cash_mob_home", cookie)
+            inviteCode = data?.data?.result?.inviteCode
+            if (inviteCode) {
+                shareDate = data?.data?.result?.shareDate
+                helps.push({inviteCode: inviteCode, key: i})
+                tools.push({success: 0, shareDate:"", cookie: cookie, key: i, shareDate: shareDate})
             }
+        } else {
+            tools.push({success: 0, shareDate:"", cookie: cookie, key: i})
         }
     }
+    while(tools.length>0 && helps.length>0) {
+        var tool = tools.pop()
+        var cookie = tool.cookie
+        if(!tool.shareDate){
+            requestApi("cash_mob_home", cookie, {}, tool).then(function(data){
+                var tool = data.tool
+                if(data.code === undefined){
+                    tools.unshift(tool)
+                    return
+                }
+                shareDate = data?.data?.result?.shareDate
+                if(!shareDate){
+                    return
+                }
+                tool.shareDate = shareDate
+                help(tool)
+            })
+        }else{
+            help(tool)
+        }
+        await $.wait(20)
+    }
+    await $.wait(10000)
+    
 })().catch((e) => {
     $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
 }).finally(() => {
     $.done();
 })
 
-function requestApi(functionId, cookie, body = {}) {
+function help(tool){
+    var cookie = tool.cookie
+    var inviteCode = helps[0].inviteCode
+    var key = helps[0].key
+    requestApi("cash_mob_assist", cookie, {
+        source: 3,
+        inviteCode: inviteCode,
+        shareDate: tool.shareDate
+    }).then(function(data){
+        console.log(`${tool.key+1}->${key+1}`,data?.data?.bizMsg)
+        switch (data?.data?.bizCode) {
+            case 0: //助力成功
+                tool.success++
+                break;
+            case 210: //您无法为自己助力哦~
+                if(tools.length==0){
+                    console.log("跳出循环")
+                    tool.success = 3
+                }
+                break;
+            case 188: //活动太火爆啦\n看看其他活动吧~'
+                tool.success = 3
+                break
+            case 206: //今日已为Ta助力过啦~
+                break;
+            case 207: //啊哦~今日助力次数用完啦
+                tool.success = 3
+                break
+            case 208: //您来晚啦，您的好友已经领到全部奖励了
+                if(helps[0]?.inviteCode==inviteCode)helps.shift()
+                break;
+            case 106: //你点击的太快啦\n请稍后尝试~
+                break;
+            default:
+                console.log("异常", data)
+                tool.success = 3
+                break;
+        }
+        if(tool.success<3){
+            tools.unshift(tool)
+        }         
+    })
+}
+
+function requestApi(functionId, cookie, body = {}, tool) {
     return new Promise(resolve => {
         $.post({
             url: `${JD_API_HOST}?functionId=${functionId}&body=${escape(JSON.stringify(body))}&appid=CashRewardMiniH5Env&appid=9.1.0`,
@@ -90,6 +127,9 @@ function requestApi(functionId, cookie, body = {}) {
             } catch (e) {
                 $.logErr('Error: ', e, resp)
             } finally {
+                if(tool){
+                    data.tool = tool
+                }
                 resolve(data)
             }
         })
@@ -462,7 +502,7 @@ function Env(t, e) {
         done(t = {}) {
             const e = (new Date).getTime(),
                 s = (e - this.startTime) / 1e3;
-            this.log("", `🔔${this.name}, 结束! 🕛 ${s} 秒`), this.log(), (this.isSurge() || this.isQuanX() || this.isLoon()) && $done(t)
+            this.log("", `🔔${this.name}, 结束! 🕛 ${s-10} 秒`), this.log(), (this.isSurge() || this.isQuanX() || this.isLoon()) && $done(t)
         }
     }(t, e)
 }
