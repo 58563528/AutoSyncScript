@@ -54,7 +54,7 @@ var tools = [];
         }
         await $.wait(20)
     }
-    await $.wait(10000)
+    await $.wait(2000)
     
 })().catch((e) => {
     $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
