@@ -86,7 +86,7 @@ function help(tool){
                 tool.success = 3
                 break
             case 206: //今日已为Ta助力过啦~
-                if(tool.length<=2){
+                if(helps.length<=3){
                     console.log("跳出循环")
                     tool.success = 3
                 }
