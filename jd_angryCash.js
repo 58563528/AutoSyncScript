@@ -86,10 +86,13 @@ function help(tool){
                 tool.success = 3
                 break
             case 206: //今日已为Ta助力过啦~
-                if(helps.length<=3){
-                    console.log("跳出循环")
-                    tool.success = 3
+                if(!tool.helps){
+                    tool.helps = []
+                }else{
+                    if(tool.helps.indexOf(key)!=-1)
+                    if(helps[0]?.inviteCode==inviteCode)helps.shift()
                 }
+                tool.helps.push(key)
                 break;
             case 207: //啊哦~今日助力次数用完啦
                 tool.success = 3
