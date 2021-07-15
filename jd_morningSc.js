@@ -2,6 +2,7 @@
 早起赢现金
 更新时间：2021-7-15
 未完待续
+TG学习交流群https://t.me/cdles
 30 7 * * * https://raw.githubusercontent.com/cdle/jd_study/main/jd_morningSc.js
 */
 const $ = new Env("早起赢现金")
