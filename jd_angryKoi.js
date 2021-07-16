@@ -63,12 +63,14 @@ var tools= []
 function open(help){
     var tool = tools.pop()
     if(!tool)return
+    if(help.success)return
     requestApi('jinli_h5assist', tool.cookie, {
         "redPacketId": help.redPacketId
     }).then(function(data){
         desc = data?.data?.result?.statusDesc
         if (desc && desc.indexOf("助力已满") != -1) {
             tools.unshift(help)
+            help.success=true
         } else if (!data) {
             tools.unshift(help)
         }
