@@ -36,7 +36,7 @@ var tools = [];
                          })
                     } else if (data.code === 1) {
                          data = await requestApi('getSplitRedPacket', cookie);
-                         if (data.code === '0' && data.SplitRedPacketInfo ) {//&& data.SplitRedPacketInfo.finishedMoney != data.SplitRedPacketInfo.totalMoney
+                         if (data && data.code === '0' && data.SplitRedPacketInfo ) {//&& data.SplitRedPacketInfo.finishedMoney != data.SplitRedPacketInfo.totalMoney
                               helps.push({
                                    redPacketId: data.SplitRedPacketInfo.redPacketId,
                                    shareCode: data.SplitRedPacketInfo.shareCode,
