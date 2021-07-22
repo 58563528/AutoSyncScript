@@ -68,6 +68,9 @@ var tools = [];
                var tool = tools.pop()
                var data = await requestApi('splitRedPacket', tool.cookie, {shareCode:help.shareCode,groupCode:help.redPacketId});
                if(data){
+                    if(tool.id == help.id){
+                         continue
+                    }
                     console.log(`${tool.id+1}->${help.id+1} ${data.text}`)
                     if(tool.helps.indexOf(help.id) != -1){
                          break
