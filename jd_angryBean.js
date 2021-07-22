@@ -13,6 +13,7 @@ var helps = [];
 var tools = [];
 var maxTimes = 3;
 var finished = [];
+var timeout = 10;
 !(async () => {
      if (!pins) {
           console.log("请在环境变量中填写需要助力的账号")
@@ -54,6 +55,7 @@ var finished = [];
                cookie: cookie,
                helps: [],
                times: 0,
+               timeout: 0,
           })
      }
      for (let help of helps)
@@ -83,6 +85,7 @@ function open(help) {
           var helpToast = data?.data?.helpToast
           if(helpToast){
                tool.helps.push(help.id)
+               tool.timeout++
                console.log(`${tool.id+1}->${help.id+1} ${helpToast}`)
                if(helpToast.indexOf("助力成功")!=-1){ //助力成功
                     tool.times++
@@ -98,7 +101,7 @@ function open(help) {
                }
           }
           if(tool.times < maxTimes){
-               if(Array.from(new Set(tool.helps)).length != helps.length){
+               if(Array.from(new Set(tool.helps)).length != helps.length && tool.timeout < timeout){
                     tools.unshift(tool)
                }
           }
