@@ -79,7 +79,7 @@ var tools = [];
                     if(data.text.indexOf("帮拆次数已达上限")!=-1){
                          continue
                     }
-                    tool.helps.push(tool.id)
+                    tool.helps.push(help.id)
                     tools.unshift(tool)
                }
           }
