@@ -79,6 +79,9 @@ var tools = [];
                          tools.unshift(tool)
                          break
                     }
+                    if(data.text.indexOf("帮拆出错")!=-1){
+                         continue
+                    }
                     if(data.text.indexOf("帮拆次数已达上限")!=-1){
                          continue
                     }
