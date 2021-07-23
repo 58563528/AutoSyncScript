@@ -19,6 +19,7 @@ var mode = process.env.angryBeanMode ? process.env.angryBeanMode : "speed";
           console.log("请在环境变量中填写需要助力的账号")
           return
      }
+     console.log(`开启${mode}模式`)
      requireConfig()
      for (let i in cookiesArr) {
           cookie = cookiesArr[i]
