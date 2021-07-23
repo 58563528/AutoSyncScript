@@ -108,7 +108,7 @@ async function open(help) {
                          tool.times = maxTimes
                     }
                }else{
-                    if(tool.helps.indexOf(help.id)){
+                    if(tool.helps.indexOf(help.id)!=-1){
                          help.success = true
                     }
                }
