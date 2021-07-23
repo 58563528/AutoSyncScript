@@ -7,15 +7,15 @@ TG学习交流群：https://t.me/cdles
 */
 const $ = new Env("真·抢京豆")
 const ua = `jdltapp;iPhone;3.1.0;${Math.ceil(Math.random()*4+10)}.${Math.ceil(Math.random()*4)};${randomString(40)}`
-var pins = process.env.angryBeanPins ? process.env.angryBeanPins : "";
+var pins = $.isNode() ? (process.env.angryBeanPins ? process.env.angryBeanPins : "") : "";
 let cookiesArr = [];
 var helps = [];
 var tools = [];
 var maxTimes = 3;
 var finished = [];
-var mode = process.env.angryBeanMode ? process.env.angryBeanMode : "speed";
+var mode = $.isNode() ? (process.env.angryBeanMode ? process.env.angryBeanMode : "speed" ) : "priority";
 !(async () => {
-     if (!pins) {
+     if ($.isNode() && !pins) {
           console.log("请在环境变量中填写需要助力的账号")
           return
      }
@@ -23,7 +23,7 @@ var mode = process.env.angryBeanMode ? process.env.angryBeanMode : "speed";
      requireConfig()
      for (let i in cookiesArr) {
           cookie = cookiesArr[i]
-          if (pins.indexOf(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]) != -1) {
+          if (!$.isNode() || pins.indexOf(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]) != -1) {
                await requestApi('signGroupHit', cookie, {
                     activeType: 2
                });
