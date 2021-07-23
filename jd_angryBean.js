@@ -56,7 +56,6 @@ var mode = process.env.angryBeanMode ? process.env.angryBeanMode : "speed";
           })
      }
      for (let help of helps) {
-          console.log(help)
           await open(help)
      }
      while (finished.length != helps.length)
