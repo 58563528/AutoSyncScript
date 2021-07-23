@@ -79,7 +79,7 @@ async function open(help) {
                finished.push(help.id)
                return
           } else {
-               open(help)
+               await open(help)
                return
           }
      }
