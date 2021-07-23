@@ -84,9 +84,9 @@ function open(help) {
           source: "guest",
      }).then(function (data) {
           var helpToast = data?.data?.helpToast
+          tool.timeout++
           if(helpToast){
                tool.helps.push(help.id)
-               tool.timeout++
                console.log(`${tool.id+1}->${help.id+1} ${helpToast}`)
                if(helpToast.indexOf("助力成功")!=-1){ //助力成功
                     tool.times++
@@ -103,10 +103,10 @@ function open(help) {
                if(tool.timeout >= helps.length*2){
                     tool.times = maxTimes
                }
-          }
-          if(tool.times < maxTimes){
-               if(Array.from(new Set(tool.helps)).length != helps.length){
-                    tools.unshift(tool)
+               if(tool.times < maxTimes){
+                    if(Array.from(new Set(tool.helps)).length != helps.length){
+                         tools.unshift(tool)
+                    }
                }
           }
           if(!help.success){
@@ -114,6 +114,7 @@ function open(help) {
           }else{
                finished.push(help.id)
           }
+          
      })
 }
 
