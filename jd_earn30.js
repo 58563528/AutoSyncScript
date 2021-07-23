@@ -83,7 +83,7 @@ var timeout = 0;
                          tools.unshift(tool)
                          break
                     }
-                    if(data.text.indexOf("帮拆出错")!=-1){
+                    if(data.text.indexOf("帮拆出错")!=-1 && tool.id != help.id){
                          continue
                     }
                     if(data.text.indexOf("帮拆次数已达上限")!=-1){
