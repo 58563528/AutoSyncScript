@@ -38,6 +38,7 @@ var mode = $.isNode() ? (process.env.angryBeanMode ? process.env.angryBeanMode :
                     monitor_source: "bean_m_bean_index"
                });
                if (data && data.data && data.data.shareCode) {
+                    console.log(`${i+1} 可以被助力`)
                     helps.push({
                          id: +i,
                          cookie: cookie,
@@ -46,6 +47,8 @@ var mode = $.isNode() ? (process.env.angryBeanMode ? process.env.angryBeanMode :
                          activityId: data.data.activityMsg.activityId,
                          success: false,
                     })
+               }else{
+                    console.log(`${i+1} 不可以被助力`)
                }
           }
           tools.push({
