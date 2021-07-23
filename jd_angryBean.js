@@ -1,5 +1,3 @@
-const { reverse } = require('dns');
-
 /*
 真·抢京豆
 更新时间：2021-7-22
@@ -15,6 +13,7 @@ var helps = [];
 var tools = [];
 var maxTimes = 3;
 var finished = [];
+var mode = process.env.angryBeanMode ?? "speed";
 !(async () => {
      if (!pins) {
           console.log("请在环境变量中填写需要助力的账号")
@@ -70,19 +69,13 @@ var finished = [];
           $.done();
      })
 
-function open(help) {
+async function open(help) {
      var tool = tools.pop()
      if (!tool) {
           finished.push(help.id)
           return
      }
-     requestApi('signGroupHelp', tool.cookie, {
-          activeType: 2,
-          groupCode: help.groupCode,
-          shareCode: help.shareCode,
-          activeId: help.activityId+"",
-          source: "guest",
-     }).then(function (data) {
+     function handle(data) {
           var helpToast = data?.data?.helpToast
           tool.timeout++
           if(helpToast){
@@ -114,8 +107,20 @@ function open(help) {
           }else{
                finished.push(help.id)
           }
-          
-     })
+     }
+     var params = {
+          activeType: 2,
+          groupCode: help.groupCode,
+          shareCode: help.shareCode,
+          activeId: help.activityId+"",
+          source: "guest",
+     }
+     if(mode == "speed"){
+          data = await requestApi('signGroupHelp', tool.cookie, params)
+          handle(data)
+     }else{
+          requestApi('signGroupHelp', tool.cookie, params).then(handle)
+     }
 }
 
 function requestApi(functionId, cookie, body = {}) {
