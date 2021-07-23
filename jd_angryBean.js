@@ -79,9 +79,17 @@ async function open(help) {
                finished.push(help.id)
                return
           } else {
-               await open(help)
+               if(mode != "speed"){
+                    await open(help)
+               }else{
+                    open(help)
+               }
                return
           }
+     }
+     if(mode != "speed" && tool.helps.indexOf(help.id)!=-1){
+          finished.push(help.id)
+          return
      }
      async function handle(data) {
           var helpToast = undefined
@@ -106,10 +114,6 @@ async function open(help) {
                if(mode=="speed"){
                     if(tool.timeout >= helps.length * 2) {
                          tool.times = maxTimes
-                    }
-               }else{
-                    if(tool.helps.indexOf(help.id)!=-1){
-                         help.success = true
                     }
                }
                if (tool.times < maxTimes) {
