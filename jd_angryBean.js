@@ -74,6 +74,15 @@ async function open(help) {
           finished.push(help.id)
           return
      }
+     if(tool.id==help.id){
+          if(tools.length==0){
+               finished.push(help.id)
+               return
+          } else {
+               open(help)
+               return
+          }
+     }
      async function handle(data) {
           var helpToast = undefined
           if (data && data.data && data.data.helpToast) {
@@ -81,7 +90,6 @@ async function open(help) {
           }
           tool.timeout++
           if (helpToast) {
-               tool.helps.push(help.id)
                console.log(`${tool.id+1}->${help.id+1} ${helpToast}`)
                if (helpToast.indexOf("助力成功") != -1) { //助力成功
                     tool.times++
@@ -95,8 +103,14 @@ async function open(help) {
                if (helpToast.indexOf("火爆") != -1) { //活动太火爆啦~请稍后再试~
                     tool.times = maxTimes
                }
-               if (tool.timeout >= helps.length * 2) {
-                    tool.times = maxTimes
+               if(mode=="speed"){
+                    if(tool.timeout >= helps.length * 2) {
+                         tool.times = maxTimes
+                    }
+               }else{
+                    if(tool.helps.indexOf(help.id)){
+                         help.success = true
+                    }
                }
                if (tool.times < maxTimes) {
                     if (Array.from(new Set(tool.helps)).length != helps.length) {
@@ -104,8 +118,8 @@ async function open(help) {
                     }
                }
           }
+          tool.helps.push(help.id)
           if (!help.success) {
-
                await open(help)
           } else {
                finished.push(help.id)
