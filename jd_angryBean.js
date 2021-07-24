@@ -16,8 +16,6 @@ var maxTimes = 3;
 var finished = new Set();
 var init = [];
 var mode = $.isNode() ? (process.env.angryBeanMode ? process.env.angryBeanMode : "speed") : "priority";
-var notify = undefined;
-
 
 !(async () => {
      if ($.isNode() && !pins) {
@@ -221,7 +219,6 @@ let toChinesNum = (num) => {
 
 function requireConfig() {
      return new Promise(resolve => {
-          notify = $.isNode() ? require('./sendNotify') : '';
           const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
           if ($.isNode()) {
                Object.keys(jdCookieNode).forEach((item) => {
