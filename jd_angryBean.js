@@ -157,7 +157,6 @@ async function open(help) {
                }
           }
           tool.helps.add(help.id)
-
           if (!help.success) {
                await open(help)
           } else {
@@ -195,7 +194,7 @@ function requestApi(functionId, cookie, body = {}, time = 0) {
                     "User-Agent": ua,
                     "Host": "api.m.jd.com",
                },
-               timeout: 5000,
+               timeout: 2500,
           }, (_, resp, data) => {
                if (data) {
                     resolve(JSON.parse(data))
