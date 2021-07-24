@@ -38,7 +38,7 @@ var mode = $.isNode() ? (process.env.angryBeanMode ? process.env.angryBeanMode :
                     monitor_source: "bean_m_bean_index"
                });
                if (data && data.data && data.data.shareCode) {
-                    console.log(`${i+1} 可以被助力`)
+                    console.log(`${(+i)+1} 可以被助力`)
                     helps.push({
                          id: +i,
                          cookie: cookie,
