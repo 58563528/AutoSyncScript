@@ -48,7 +48,7 @@ var mode = $.isNode() ? (process.env.angryBeanMode ? process.env.angryBeanMode :
                          success: false,
                     })
                }else{
-                    console.log(`${i+1} 不可以被助力`)
+                    console.log(`${Number(i)+1} 不可以被助力`)
                }
           }
           tools.push({
