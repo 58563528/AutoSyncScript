@@ -36,26 +36,35 @@ var mode = $.isNode() ? (process.env.angryBeanMode ? process.env.angryBeanMode :
           }
           var address = pins.indexOf(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
           if (!$.isNode() || address != -1) {
-               await requestApi('signGroupHit', cookie, {
+               var data = await requestApi('signGroupHit', cookie, {
                     activeType: 2
                });
-               var data = await getTuanInfo(cookie)
-               if (data && data.data && data.data.shareCode) {
-                    console.log(`${i+1} 可以被助力`)
-                    helps.push({
-                         id: i,
-                         cookie: cookie,
-                         groupCode: data.data.groupCode,
-                         shareCode: data.data.shareCode,
-                         activityId: data.data.activityMsg.activityId,
-                         success: false,
-                         address: address,
-                    })
-                    tool.helps.add(i)
-                    init.push(i)
+               if (data && data.data && data.data.respCode) {
+                    if (data.data.respCode != "SG100") {
+                         data = await getTuanInfo(cookie)
+                         if (data && data.data && data.data.shareCode) {
+                              console.log(`账号${toChinesNum(i+1)}，准备抢京豆`)
+                              helps.push({
+                                   id: i,
+                                   cookie: cookie,
+                                   groupCode: data.data.groupCode,
+                                   shareCode: data.data.shareCode,
+                                   activityId: data.data.activityMsg.activityId,
+                                   success: false,
+                                   address: address,
+                              })
+                              tool.helps.add(i)
+                              init.push(i)
+                         } else {
+                              console.log(`账号${toChinesNum(i+1)}，异常`)
+                         }
+                    } else {
+                         console.log(`账号${toChinesNum(i+1)}是黑号，快去怼客服吧`)
+                    }
                } else {
-                    console.log(`${i+1} 不可以被助力`)
+                    console.log(`账号${toChinesNum(i+1)}，登录信息过期了`)
                }
+
           }
           tools.push(tool)
      }
