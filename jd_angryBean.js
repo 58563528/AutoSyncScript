@@ -34,13 +34,14 @@ var mode = $.isNode() ? (process.env.angryBeanMode ? process.env.angryBeanMode :
                times: 0,
                timeout: 0,
           }
-          if (!$.isNode() || pins.indexOf(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]) != -1) {
+          var address = pins.indexOf(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
+          if (!$.isNode() || address != -1) {
                await requestApi('signGroupHit', cookie, {
                     activeType: 2
                });
                var data = await getTuanInfo(cookie)
                if (data && data.data && data.data.shareCode) {
-                    console.log(`${Number(i)+1} 可以被助力`)
+                    console.log(`${i+1} 可以被助力`)
                     helps.push({
                          id: i,
                          cookie: cookie,
@@ -48,15 +49,19 @@ var mode = $.isNode() ? (process.env.angryBeanMode ? process.env.angryBeanMode :
                          shareCode: data.data.shareCode,
                          activityId: data.data.activityMsg.activityId,
                          success: false,
+                         address: address,
                     })
                     tool.helps.add(i)
                     init.push(i)
                } else {
-                    console.log(`${Number(i)+1} 不可以被助力`)
+                    console.log(`${i+1} 不可以被助力`)
                }
           }
           tools.push(tool)
      }
+     helps.sort((i, j) => {
+          return i.address > j.address ? 1 : -1
+     })
      for (let help of helps)
           await open(help)
      while (finished.size != init.length)
