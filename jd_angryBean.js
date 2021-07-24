@@ -77,7 +77,7 @@ var mode = $.isNode() ? (process.env.angryBeanMode ? process.env.angryBeanMode :
      console.log(out)
      msg += out + "\n"
      if (($.isNode() ? (process.env.enableAngryBeanNotify == "false" ? "false" : "true") : "false") == "true") {
-          notify.sendNotify(`真·抢京豆`, msg);
+          require('./sendNotify').sendNotify(`真·抢京豆`, msg);
      }
 })().catch((e) => {
           $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
