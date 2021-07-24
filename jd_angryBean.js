@@ -101,6 +101,7 @@ async function getTuanInfo(cookie) {
 
 async function open(help) {
      var tool = tools.pop()
+     tool.timeout++
      if (!tool) {
           finished.add(help.id)
           return
@@ -108,7 +109,7 @@ async function open(help) {
      ecpt = new Set(tool.helps, finished)
      diff = new Set(init.filter(hid => !ecpt.has(hid)))
      if (diff.size == 0 || tool.helps.has(help.id)) {
-          if (diff.size != 0) {
+          if (diff.size != 0 && tool.timeout < 10) {
                tools.unshift(tool)
           }
           if (mode != speed) {
@@ -123,7 +124,6 @@ async function open(help) {
           if (data && data.data && data.data.helpToast) {
                helpToast = data.data.helpToast
           }
-          tool.timeout++
           if (helpToast) {
                console.log(`${tool.id+1}->${help.id+1} ${helpToast}`)
                if (helpToast.indexOf("助力成功") != -1) { //助力成功
@@ -137,11 +137,6 @@ async function open(help) {
                }
                if (helpToast.indexOf("火爆") != -1) { //活动太火爆啦~请稍后再试~
                     tool.times = maxTimes
-               }
-               if (mode == "speed") {
-                    if (tool.timeout >= helps.length * 2) {
-                         tool.times = maxTimes
-                    }
                }
                if (tool.times < maxTimes) {
                     tools.unshift(tool)
