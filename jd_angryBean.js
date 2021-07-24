@@ -129,16 +129,20 @@ async function open(help) {
                if (diff.size != 0 && tool.timeout < 10) {
                     tools.unshift(tool)
                }
-               if (mode != speed) {
-                    await open(help)
-               } else {
-                    open(help)
-               }
+               open(help)
                return
           }
      } else {
           if (tool.helps.has(help.id)) {
+               tool.helps.add(help.id)
+               tools.unshift(tool)
                finished.add(help.id)
+               return
+          }
+          if (tool.id == help.id) {
+               tool.helps.add(help.id)
+               tools.unshift(tool)
+               await open(help)
                return
           }
      }
