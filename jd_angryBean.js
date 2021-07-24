@@ -86,9 +86,6 @@ async function open(help) {
      ecpt = new Set(tool.helps, finished)
      diff = new Set(init.filter(hid => !ecpt.has(hid)))
      if (diff.size == 0 || tool.helps.has(help.id)) {
-          if (diff.size != 0) {
-               tools.unshift(tool)
-          }
           if (mode != speed) {
                await open(help)
           } else {
