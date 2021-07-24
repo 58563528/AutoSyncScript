@@ -101,11 +101,11 @@ async function getTuanInfo(cookie) {
 
 async function open(help) {
      var tool = tools.pop()
-     tool.timeout++
      if (!tool) {
           finished.add(help.id)
           return
      }
+     tool.timeout++
      ecpt = new Set(tool.helps, finished)
      diff = new Set(init.filter(hid => !ecpt.has(hid)))
      if (diff.size == 0 || tool.helps.has(help.id)) {
