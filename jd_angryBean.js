@@ -90,9 +90,22 @@ async function open(help) {
                return
           }
      }
-     if(mode != "speed" && tool.helps.indexOf(help.id)!=-1){
-          finished.push(help.id)
-          return
+     var helpNum = 0
+     for (let helpId of tool.helps) {
+          if (helpId==help.id) {
+               helpNum++
+          }
+     }
+     if(mode != "speed"){
+          if(helpNum>0){
+               finished.push(help.id)
+               return
+          }
+     } else {
+          if(helpNum>2){
+               finished.push(help.id)
+               return
+          }
      }
      async function handle(data) {
           var helpToast = undefined
