@@ -196,7 +196,7 @@ async function open(help) {
                     tools.unshift(tool)
                }
           } else {
-               if (data.errorMessage == "用户未登录") {
+               if (data && data.errorMessage == "用户未登录") {
                     helpToast = "用户未登录"
                } else {
                     tools.unshift(tool)
