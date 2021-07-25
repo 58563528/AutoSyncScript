@@ -231,9 +231,10 @@ function requestApi(functionId, cookie, body = {}, time = 0) {
                timeout: 2500,
           }, (_, resp, data) => {
                if (data) {
-                    resolve(JSON.parse(data))
+                    data = JSON.parse(data)
+                    resolve(data)
                } else {
-                    if (time == 5) {
+                    if (time == 20) {
                          resolve(0)
                     } else {
                          requestApi(functionId, cookie, body, time + 1).then(function (data) {
