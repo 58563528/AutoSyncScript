@@ -170,6 +170,8 @@ async function open(help) {
           var helpToast = undefined
           if (data && data.data && data.data.helpToast) {
                helpToast = data.data.helpToast
+          } else {
+               tools.unshift(tool)
           }
           if (helpToast) {
                console.log(`${tool.id+1}->${help.id+1} ${helpToast}`)
@@ -234,7 +236,7 @@ function requestApi(functionId, cookie, body = {}, time = 0) {
                     data = JSON.parse(data)
                     resolve(data)
                } else {
-                    if (time == 20) {
+                    if (time == 5) {
                          resolve(0)
                     } else {
                          requestApi(functionId, cookie, body, time + 1).then(function (data) {
