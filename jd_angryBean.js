@@ -179,11 +179,6 @@ async function open(help) {
           if (data && data.data && data.data.helpToast) {
                tool.helps.add(help.id)
                helpToast = data.data.helpToast
-          } else {
-               tools.unshift(tool)
-          }
-          if (helpToast) {
-               console.log(`${tool.id+1}->${help.id+1} ${helpToast}`)
                if (helpToast.indexOf("助力成功") != -1) { //助力成功
                     tool.times++
                     help.notYet--
@@ -200,7 +195,15 @@ async function open(help) {
                if (tool.times < maxTimes) {
                     tools.unshift(tool)
                }
+          } else {
+               if (data.errorMessage == "用户未登录") {
+                    helpToast = "用户未登录"
+               } else {
+                    tools.unshift(tool)
+                    helpToast = "异常"
+               }
           }
+          console.log(`${tool.id+1}->${help.id+1} ${helpToast}`)
           if (!help.success) {
                await open(help)
           } else {
