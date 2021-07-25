@@ -94,7 +94,6 @@ var mode = $.isNode() ? (process.env.angryBeanMode ? process.env.angryBeanMode :
           while (finished.size != init.length)
                await $.wait(100)
      }
-
      var beanCount = 0
      var msg = ""
      for (let help of helps) {
