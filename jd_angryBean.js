@@ -169,6 +169,7 @@ async function open(help) {
      async function handle(data) {
           var helpToast = undefined
           if (data && data.data && data.data.helpToast) {
+               tool.helps.add(help.id)
                helpToast = data.data.helpToast
           } else {
                tools.unshift(tool)
@@ -192,7 +193,6 @@ async function open(help) {
                     tools.unshift(tool)
                }
           }
-          tool.helps.add(help.id)
           if (!help.success) {
                await open(help)
           } else {
