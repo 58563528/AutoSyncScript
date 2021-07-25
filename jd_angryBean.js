@@ -145,12 +145,20 @@ async function open(help) {
           tool.timeout++
           ecpt = new Set(tool.helps, finished)
           diff = new Set(init.filter(hid => !ecpt.has(hid)))
-          if (diff.size == 0 || tool.helps.has(help.id)) {
-               if (diff.size != 0 && tool.timeout < 10) {
-                    tools.unshift(tool)
-               }
+          if (tool.timeout > maxTimes * 2) { //超时处理
                open(help)
                return
+          }
+          if (diff.size == 0) { //助力完成
+               open(help)
+               return
+          } else {
+               if (tool.helps.has(help.id)) { //阻止自己给自己助力
+                    tools.unshift(tool)
+                    open(help)
+                    return
+               }
+               //ok
           }
      } else {
           if (tool.helps.has(help.id)) {
