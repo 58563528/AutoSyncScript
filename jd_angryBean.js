@@ -207,7 +207,7 @@ function requestApi(functionId, cookie, body = {}, time = 0) {
                     "User-Agent": ua,
                     "Host": "api.m.jd.com",
                },
-               timeout: 2500,
+               timeout: 10000,
           }, (_, resp, data) => {
                if (data) {
                     resolve(JSON.parse(data))
