@@ -1,7 +1,9 @@
 package models
 
 import (
+	"bufio"
 	"fmt"
+	"io"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -22,7 +24,12 @@ func init() {
 	go func() {
 		for {
 			ss := <-Save
-			Handle(ss)
+			if V4Config != "" {
+				V4Handle(ss)
+			} else {
+				QLHandle(ss)
+			}
+
 		}
 	}()
 }
@@ -47,13 +54,7 @@ var Token = ""
 var QlAddress = ""
 var QlUserName = ""
 var QlPassword = ""
-
-func init() {
-	// go func() {
-	// 	time.Sleep(time.Second)
-	// 	Handle(&JdCookie{})
-	// }()
-}
+var V4Config = ""
 
 func GetToken() error {
 	req := httplib.Post(QlAddress + "/api/login")
@@ -75,7 +76,49 @@ const (
 	PUT  = "PUT"
 )
 
-func Handle(ck *JdCookie) error {
+func V4Handle(ck *JdCookie) error {
+	config := ""
+	f, err := os.Open(V4Config)
+	if err != nil {
+		return err
+	}
+	rd := bufio.NewReader(f)
+	max := 1
+	new := true
+	for {
+		line, err := rd.ReadString('\n') //以'\n'为结束符读入一行
+		if err != nil || io.EOF == err {
+			break
+		}
+		if pt := regexp.MustCompile(`^#?\s?Cookie(\d+)=\S+pt_key=(.*);pt_pin=([^'";\s]+);?`).FindStringSubmatch(line); len(pt) != 0 {
+			if pt[3] == ck.PtPin {
+				pt[2] = ck.PtKey
+				new = false
+				ck := fmt.Sprintf("Cookie%d=\"pt_key=%s;pt_pin=%s;\"\n", 3, ck.PtKey, pt[3])
+				logs.Info("更新账号，%s", ck)
+				line = ck
+			} else {
+				line = fmt.Sprintf("Cookie%d=\"pt_key=%s;pt_pin=%s;\"\n", max, pt[2], pt[3])
+			}
+			max++
+		}
+		config += line
+	}
+	if new {
+		ck := fmt.Sprintf("Cookie%d=\"pt_key=%s;pt_pin=%s;\"\n", max, ck.PtKey, ck.PtPin)
+		logs.Info("更新账号，%s", ck)
+		config += ck
+	}
+	f.Close()
+	f, _ = os.OpenFile(V4Config, os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0777) //打开文件 |os.O_RDWR
+	defer f.Close()
+	if _, err := io.WriteString(f, config); err != nil {
+		return err
+	}
+	return nil
+}
+
+func QLHandle(ck *JdCookie) error {
 	if Token == "" {
 		GetToken()
 	}

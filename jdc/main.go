@@ -14,7 +14,7 @@ import (
 	"github.com/cdle/jd_study/jdc/models"
 )
 
-var help = "-p 运行端口\n-qla 青龙登录地址\n-qlu 青龙登录用户名\n-qlp 青龙登录密码"
+var help = "-p 运行端口\n-qla 青龙登录地址\n-qlu 青龙登录用户名\n-qlp 青龙登录密码\n-v4 配置文件路径"
 
 func main() {
 	l := len(os.Args)
@@ -41,27 +41,39 @@ func main() {
 				models.QlUserName = v
 			case "-qlp":
 				models.QlPassword = v
+			case "-v4":
+				models.V4Config = v
 			}
 		}
 	}
-	if models.QlAddress == "" {
-		logs.Warn("未指定青龙登录地址")
-		return
-	}
-	if models.QlUserName == "" {
-		logs.Warn("未指定青龙登录用户名")
-		return
-	}
-	if models.QlPassword == "" {
-		logs.Warn("未指定青龙登录密码")
-		return
-	}
-	if models.GetToken(); models.Token == "" {
-		logs.Warn("JDC无法与青龙面板取得联系，请检查账号")
-		return
+	if models.V4Config != "" {
+		f, err := os.Open(models.V4Config)
+		if err != nil {
+			logs.Warn("无法打开V4配置文件，请检查路径是否正确")
+			return
+		}
+		f.Close()
 	} else {
-		logs.Info("JDC成功接入青龙")
+		if models.QlAddress == "" {
+			logs.Warn("未指定青龙登录地址")
+			return
+		}
+		if models.QlUserName == "" {
+			logs.Warn("未指定青龙登录用户名")
+			return
+		}
+		if models.QlPassword == "" {
+			logs.Warn("未指定青龙登录密码")
+			return
+		}
+		if models.GetToken(); models.Token == "" {
+			logs.Warn("JDC无法与青龙面板取得联系，请检查账号")
+			return
+		} else {
+			logs.Info("JDC成功接入青龙")
+		}
 	}
+
 	web.Get("/", func(ctx *context.Context) {
 		ctx.WriteString(models.Qrocde)
 	})
