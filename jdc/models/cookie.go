@@ -8,12 +8,11 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
-	"time"
 
 	"io/ioutil"
 
 	"github.com/astaxie/beego/httplib"
-	"github.com/astaxie/beego/logs"
+	"github.com/beego/beego/v2/core/logs"
 	"github.com/buger/jsonparser"
 )
 
@@ -35,16 +34,18 @@ func init() {
 }
 
 type JdCookie struct {
-	ID        int
-	CreatedAt time.Time `json:"-"`
+	Priority  int
+	ScanedAt  int
 	PtKey     string
-	PtPin     string `gorm:"unique"`
+	PtPin     string
 	Note      string
-	Available string    `gorm:"default:true" validate:"oneof=true false"`
-	ScanedAt  time.Time `gorm:"column:ScanedAt" json:"-"`
+	Available string
 	Nickname  string
 	BeanNum   string
 }
+
+var True = "true"
+var False = "false"
 
 var Save chan *JdCookie
 
@@ -84,32 +85,34 @@ func V4Handle(ck *JdCookie) error {
 	}
 	defer f.Close()
 	rd := bufio.NewReader(f)
-	max := 1
-	new := true
 	for {
 		line, err := rd.ReadString('\n') //以'\n'为结束符读入一行
 		if err != nil || io.EOF == err {
 			break
 		}
 		if pt := regexp.MustCompile(`^#?\s?Cookie(\d+)=\S+pt_key=(.*);pt_pin=([^'";\s]+);?`).FindStringSubmatch(line); len(pt) != 0 {
-			if pt[3] == ck.PtPin {
-				pt[2] = ck.PtKey
-				new = false
-				ck := fmt.Sprintf("Cookie%d=\"pt_key=%s;pt_pin=%s;\"\n", max, ck.PtKey, pt[3])
-				logs.Info("更新账号，%s", ck)
-				line = ck
-			} else {
-				line = fmt.Sprintf("Cookie%d=\"pt_key=%s;pt_pin=%s;\"\n", max, pt[2], pt[3])
+			if nck := GetJdCookie(pt[3]); nck == nil {
+				SaveJdCookie(JdCookie{
+					PtKey:     pt[2],
+					PtPin:     pt[3],
+					Available: True,
+				})
 			}
-			max++
+			continue
+		}
+		if strings.Contains(line, "TempBlockCookie") {
+			continue
 		}
 		config += line
 	}
-	if new {
-		ck := fmt.Sprintf("Cookie%d=\"pt_key=%s;pt_pin=%s;\"\n", max, ck.PtKey, ck.PtPin)
-		logs.Info("更新账号，%s", ck)
-		config += ck
+	TempBlockCookie := ""
+	for i, ck := range GetJdCookies() {
+		if ck.Available == False {
+			TempBlockCookie += fmt.Sprintf("%d ", i+1)
+		}
+		config = fmt.Sprintf("Cookie%d=\"pt_key=%s;pt_pin=%s;\"\n", i+1, ck.PtKey, ck.PtPin) + config
 	}
+	config = fmt.Sprintf(`TempBlockCookie="%s"`, TempBlockCookie) + "\n" + config
 	f.Truncate(0)
 	f.Seek(0, 0)
 	if _, err := io.WriteString(f, config); err != nil {
@@ -127,25 +130,23 @@ func QLHandle(ck *JdCookie) error {
 	_id, _ := jsonparser.GetString(data, "data", "[0]", "_id")
 	if _id == "" {
 		request("/api/envs", POST, `{"name":"JD_COOKIE","value":"pt_key=`+ck.PtKey+`;pt_pin=`+ck.PtPin+`;"}`)
-		return nil
 	}
-	new := true
 	newValue := ""
 	for _, pt := range regexp.MustCompile(`pt_key=(\S+);pt_pin=([^;\s]+);?`).FindAllStringSubmatch(value, -1) {
 		if len(pt) == 3 {
-			if pt[2] == ck.PtPin {
-				pt[1] = ck.PtKey
-				new = false
+			if nck := GetJdCookie(pt[2]); nck == nil {
+				SaveJdCookie(JdCookie{
+					PtKey:     pt[1],
+					PtPin:     pt[2],
+					Available: True,
+				})
 			}
-			ck := fmt.Sprintf("pt_key=%s;pt_pin=%s;\\n", pt[1], pt[2])
-			logs.Info("更新账号，%s", ck)
-			newValue += ck
 		}
 	}
-	if new {
-		ck := fmt.Sprintf("pt_key=%s;pt_pin=%s;\\n", ck.PtKey, ck.PtPin)
-		logs.Info("添加账号，%s", ck)
-		newValue += ck
+	for _, ck := range GetJdCookies() {
+		if ck.Available == True {
+			newValue += fmt.Sprintf("pt_key=%s;pt_pin=%s;\\n", ck.PtKey, ck.PtPin)
+		}
 	}
 	request("/api/envs", PUT, `{"name":"JD_COOKIE","value":"`+newValue+`","_id":"`+_id+`"}`)
 	return nil
@@ -182,6 +183,7 @@ func request(ss ...string) []byte {
 			if code == 200 {
 				return data
 			} else {
+				logs.Warn(string(data))
 				GetToken()
 			}
 		}

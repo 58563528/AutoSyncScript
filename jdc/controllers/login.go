@@ -13,6 +13,7 @@ import (
 	"github.com/cdle/jd_study/jdc/models"
 
 	"github.com/astaxie/beego/httplib"
+	"github.com/astaxie/beego/logs"
 	qrcode "github.com/skip2/go-qrcode"
 )
 
@@ -214,10 +215,24 @@ func CheckLogin(token, cookie, okl_token string) string {
 		pt_key := FetchJdCookieValue("pt_key", cookies)
 		pt_pin := FetchJdCookieValue("pt_pin", cookies)
 		go func() {
-			models.Save <- &models.JdCookie{
+			ScanedAt := int(time.Now().Unix())
+			ck := models.JdCookie{
 				PtKey: pt_key,
 				PtPin: pt_pin,
 			}
+			if nck := models.GetJdCookie(ck.PtPin); nck != nil {
+				ck.Updates(map[string]interface{}{
+					"PtKey":     ck.PtKey,
+					"ScanedAt":  ScanedAt,
+					"Available": models.True,
+				})
+				logs.Info("更新账号，%s", ck.PtPin)
+			} else {
+				ck.ScanedAt = ScanedAt
+				models.SaveJdCookie(ck)
+				logs.Info("添加账号，%s", ck.PtPin)
+			}
+			models.Save <- &ck
 		}()
 		JdCookieRunners.Store(token, []string{})
 		return "成功"
