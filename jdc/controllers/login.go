@@ -217,7 +217,7 @@ func CheckLogin(token, cookie, okl_token string) string {
 		pt_key := FetchJdCookieValue("pt_key", cookies)
 		pt_pin := FetchJdCookieValue("pt_pin", cookies)
 		go func() {
-			ScanedAt := int(time.Now().Unix())
+			ScanedAt := time.Now().Local().Format("2006-01-02")
 			ck := models.JdCookie{
 				PtKey: pt_key,
 				PtPin: pt_pin,

@@ -41,7 +41,7 @@ func GetJdCookies() []JdCookie {
 	cks := []JdCookie{}
 	db.View(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte(JD_COOKIE))
-		b.ForEach(func(_, v []byte) error {
+		b.ForEach(func(k, v []byte) error {
 			ck := JdCookie{}
 			var _v = reflect.ValueOf(&ck).Elem()
 			for _, vv := range strings.Split(string(v), ";") {

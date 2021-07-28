@@ -41,7 +41,7 @@ func init() {
 
 type JdCookie struct {
 	Priority  int
-	ScanedAt  int
+	ScanedAt  string
 	PtKey     string
 	PtPin     string
 	Note      string
@@ -109,6 +109,9 @@ func V4Handle(ck *JdCookie) error {
 			continue
 		}
 		if pt := regexp.MustCompile(`^TempBlockCookie=`).FindString(line); pt != "" {
+			continue
+		}
+		if pt := regexp.MustCompile(`^Cookie\d+=`).FindString(line); pt != "" {
 			continue
 		}
 		config += line
@@ -223,20 +226,18 @@ func QL2d2Handle(ck *JdCookie) error {
 	json.Unmarshal(data, &a)
 	for _, vv := range a.Data {
 		ids = append(ids, fmt.Sprintf("\"%s\"", vv.ID))
+		res := regexp.MustCompile(`pt_key=(\S+);pt_pin=([^\s;]+);?`).FindStringSubmatch(vv.Value)
+		if len(res) == 3 {
+			SaveJdCookie(JdCookie{
+				PtKey:     res[1],
+				PtPin:     res[2],
+				Available: True,
+			})
+		}
+
 	}
 	if len(ids) > 0 {
 		data = request("/api/cookies", DELETE, fmt.Sprintf(`[%s]`, strings.Join(ids, ",")))
-	}
-	for _, pt := range regexp.MustCompile(`pt_key=(\S+);pt_pin=([^;\s]+);?`).FindAllStringSubmatch(string(data), -1) {
-		if len(pt) == 3 {
-			if nck := GetJdCookie(pt[2]); nck == nil {
-				SaveJdCookie(JdCookie{
-					PtKey:     pt[1],
-					PtPin:     pt[2],
-					Available: True,
-				})
-			}
-		}
 	}
 	newValue := []string{}
 	for _, ck := range GetJdCookies() {

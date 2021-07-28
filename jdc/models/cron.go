@@ -8,5 +8,4 @@ func initCron() {
 	c = cron.New()
 	c.Start()
 	c.AddFunc("55 */2 * * *", initCookie)
-	initCookie()
 }
