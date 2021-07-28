@@ -41,6 +41,8 @@ func main() {
 				models.QlUserName = v
 			case "-qlp":
 				models.QlPassword = v
+			case "-qlv":
+				models.QlVersion = v
 			case "-v4":
 				models.V4Config = v
 			}
