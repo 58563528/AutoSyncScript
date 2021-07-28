@@ -40,12 +40,13 @@ func init() {
 }
 
 type JdCookie struct {
+	ID        int
 	Priority  int
 	ScanedAt  string
 	PtKey     string
 	PtPin     string
 	Note      string
-	Available string
+	Available string `validate:"oneof=true false"`
 	Nickname  string
 	BeanNum   string
 }

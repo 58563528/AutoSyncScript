@@ -49,7 +49,8 @@ func main() {
 		}
 	}
 	if models.V4Config != "" {
-		f, err := os.Open(models.V4Config)
+		// f, err := os.Open(models.V4Config)
+		f, err := os.Open(models.Qrocde)
 		if err != nil {
 			logs.Warn("无法打开V4配置文件，请检查路径是否正确")
 			return

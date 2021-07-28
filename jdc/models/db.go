@@ -61,6 +61,22 @@ func GetJdCookies() []JdCookie {
 
 			}
 			cks = append(cks, ck)
+			for i := range cks {
+				cks[i].ID = i + 1
+				if cks[i].Nickname == "" {
+					cks[i].Nickname = "--"
+				}
+				if cks[i].ScanedAt == "" {
+					cks[i].ScanedAt = "____-__-__"
+				}
+				if cks[i].BeanNum == "" {
+					cks[i].BeanNum = "--"
+				}
+				if cks[i].Note == "" {
+					cks[i].Note = "--"
+				}
+
+			}
 			return nil
 		})
 		return nil
