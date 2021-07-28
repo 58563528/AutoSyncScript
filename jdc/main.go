@@ -78,7 +78,7 @@ func main() {
 	}
 
 	web.Get("/", func(ctx *context.Context) {
-		ctx.WriteString(models.Qrocde)
+		ctx.WriteString(models.Admin)
 	})
 	web.Router("/api/login/qrcode", &controllers.LoginController{}, "get:GetQrcode")
 	web.Router("/api/login/query", &controllers.LoginController{}, "get:Query")

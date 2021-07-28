@@ -1,6 +1,6 @@
 package models
 
-var admin = `<html lang="zh-cn">
+var Admin = `<html lang="zh-cn">
 
     <head>
         <meta charset="UTF-8">
@@ -90,7 +90,7 @@ var admin = `<html lang="zh-cn">
                     }, {
                         field: 'PtKey',
                         title: 'PtKey',
-                        width: 300,
+                        width: 500,
                         align: 'center',
                     }
                 ]

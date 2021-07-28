@@ -145,6 +145,7 @@ func QLHandle(ck *JdCookie) error {
 	newValue := ""
 	for _, pt := range regexp.MustCompile(`pt_key=(\S+);pt_pin=([^;\s]+);?`).FindAllStringSubmatch(value, -1) {
 		if len(pt) == 3 {
+
 			if nck := GetJdCookie(pt[2]); nck == nil {
 				SaveJdCookie(JdCookie{
 					PtKey:     pt[1],
@@ -228,11 +229,13 @@ func QL2d2Handle(ck *JdCookie) error {
 		ids = append(ids, fmt.Sprintf("\"%s\"", vv.ID))
 		res := regexp.MustCompile(`pt_key=(\S+);pt_pin=([^\s;]+);?`).FindStringSubmatch(vv.Value)
 		if len(res) == 3 {
-			SaveJdCookie(JdCookie{
-				PtKey:     res[1],
-				PtPin:     res[2],
-				Available: True,
-			})
+			if nck := GetJdCookie(res[2]); nck == nil {
+				SaveJdCookie(JdCookie{
+					PtKey:     res[1],
+					PtPin:     res[2],
+					Available: True,
+				})
+			}
 		}
 
 	}
