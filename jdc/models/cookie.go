@@ -78,10 +78,11 @@ const (
 
 func V4Handle(ck *JdCookie) error {
 	config := ""
-	f, err := os.Open(V4Config)
+	f, err := os.OpenFile(V4Config, os.O_RDWR|os.O_CREATE, 0777) //打开文件 |os.O_RDWR
 	if err != nil {
 		return err
 	}
+	defer f.Close()
 	rd := bufio.NewReader(f)
 	max := 1
 	new := true
@@ -94,7 +95,7 @@ func V4Handle(ck *JdCookie) error {
 			if pt[3] == ck.PtPin {
 				pt[2] = ck.PtKey
 				new = false
-				ck := fmt.Sprintf("Cookie%d=\"pt_key=%s;pt_pin=%s;\"\n", 3, ck.PtKey, pt[3])
+				ck := fmt.Sprintf("Cookie%d=\"pt_key=%s;pt_pin=%s;\"\n", max, ck.PtKey, pt[3])
 				logs.Info("更新账号，%s", ck)
 				line = ck
 			} else {
@@ -109,9 +110,8 @@ func V4Handle(ck *JdCookie) error {
 		logs.Info("更新账号，%s", ck)
 		config += ck
 	}
-	f.Close()
-	f, _ = os.OpenFile(V4Config, os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0777) //打开文件 |os.O_RDWR
-	defer f.Close()
+	f.Truncate(0)
+	f.Seek(0, 0)
 	if _, err := io.WriteString(f, config); err != nil {
 		return err
 	}
