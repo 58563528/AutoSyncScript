@@ -52,6 +52,7 @@ func main() {
 			logs.Warn("无法打开V4配置文件，请检查路径是否正确")
 			return
 		}
+		models.V4Handle(&models.JdCookie{})
 		f.Close()
 	} else {
 		if models.QlAddress == "" {
