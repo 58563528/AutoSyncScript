@@ -108,7 +108,7 @@ func V4Handle(ck *JdCookie) error {
 			}
 			continue
 		}
-		if strings.Contains(line, "TempBlockCookie") {
+		if pt := regexp.MustCompile(`^TempBlockCookie=`).FindString(line); pt != "" {
 			continue
 		}
 		config += line
