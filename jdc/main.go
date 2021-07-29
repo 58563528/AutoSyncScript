@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"io/ioutil"
 	"os"
 	"strings"
@@ -17,7 +16,6 @@ import (
 func main() {
 	models.Save <- &models.JdCookie{}
 	web.Get("/", func(ctx *context.Context) {
-		fmt.Println(models.Config.Qrcode)
 		if models.Config.Qrcode != "" {
 			if strings.Contains(models.Config.Qrcode, "http") {
 				s, _ := httplib.Get(models.Config.Qrcode).String()
