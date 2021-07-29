@@ -75,7 +75,19 @@ func GetJdCookies() []JdCookie {
 				if cks[i].Note == "" {
 					cks[i].Note = "--"
 				}
-
+				if cks[i].Priority == 0 {
+					cks[i].Priority = 1
+				}
+			}
+			length := len(cks)
+			for i := 0; i < length; i++ {
+				max := i
+				for j := i + 1; j < length; j++ {
+					if cks[j].Priority > cks[max].Priority {
+						max = j
+					}
+				}
+				cks[i], cks[max] = cks[max], cks[i]
 			}
 			return nil
 		})

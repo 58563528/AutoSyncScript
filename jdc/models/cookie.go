@@ -64,6 +64,7 @@ var QlUserName = ""
 var QlPassword = ""
 var QlVersion = "2.8"
 var V4Config = ""
+var Master = "xxxx"
 
 func GetToken() error {
 	req := httplib.Post(QlAddress + "/api/login")
@@ -156,7 +157,8 @@ func QLHandle(ck *JdCookie) error {
 			}
 		}
 	}
-	for _, ck := range GetJdCookies() {
+	cks := GetJdCookies()
+	for _, ck := range cks {
 		if ck.Available == True {
 			newValue += fmt.Sprintf("pt_key=%s;pt_pin=%s;\\n", ck.PtKey, ck.PtPin)
 		}
@@ -244,10 +246,14 @@ func QL2d2Handle(ck *JdCookie) error {
 		data = request("/api/cookies", DELETE, fmt.Sprintf(`[%s]`, strings.Join(ids, ",")))
 	}
 	newValue := []string{}
-	for _, ck := range GetJdCookies() {
+	cks := GetJdCookies()
+	for _, ck := range cks {
 		if ck.Available == True {
 			newValue = append(newValue, fmt.Sprintf("\"pt_key=%s;pt_pin=%s;\"", ck.PtKey, ck.PtPin))
 		}
+	}
+	if len(newValue) == 0 {
+		return nil
 	}
 	request("/api/cookies", POST, fmt.Sprintf(`[%s]`, strings.Join(newValue, ",")))
 	return nil

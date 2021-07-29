@@ -70,6 +70,9 @@ var Qrocde = `<!DOCTYPE html>
                     switch (results) {
                         case "授权登录未确认":
                             break;
+                        case "登录":
+                            window.location.href = "/admin"
+                            break;
                         case "成功":
                             button.innerText = "成功"
                             button.style.opacity = 1

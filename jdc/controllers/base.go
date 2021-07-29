@@ -4,8 +4,10 @@ import (
 	"encoding/json"
 	"net/http"
 	"strconv"
+	"strings"
 
 	beego "github.com/beego/beego/v2/server/web"
+	"github.com/cdle/jd_study/jdc/models"
 	"github.com/go-playground/locales/zh"
 	ut "github.com/go-playground/universal-translator"
 	"gopkg.in/go-playground/validator.v9"
@@ -106,11 +108,9 @@ func (c *BaseController) ResponseError(ps ...interface{}) *BaseController {
 
 //Logined 登录
 func (c *BaseController) Logined() *BaseController {
-	if v := c.GetSession("uid"); v == nil || v.(int) == 0 {
-		c.ResponseError("未登录", http.StatusUnauthorized)
-	} else {
-		c.UID = v.(int)
-		c.AppName = c.GetSession("app_name").(string)
+	if v := c.GetSession("pin"); v == nil || !strings.Contains(models.Master, v.(string)) {
+		c.Ctx.WriteString(models.Qrocde)
+		c.StopRun()
 	}
 	return c
 }

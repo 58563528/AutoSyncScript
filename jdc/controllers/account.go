@@ -8,6 +8,10 @@ type AccountController struct {
 	BaseController
 }
 
+func (c *AccountController) NextPrepare() {
+	c.Logined()
+}
+
 func (c *AccountController) List() {
 	var page = c.GetQueryInt("page")
 	var limit = c.GetQueryInt("limit")
@@ -43,5 +47,10 @@ func (c *AccountController) CreateOrUpdate() {
 	if ps.PtPin != "" {
 		ps.Updates(*ps)
 	}
+	models.Save <- &models.JdCookie{}
 	c.Response(nil, "操作成功")
+}
+
+func (c *AccountController) Admin() {
+	c.Ctx.WriteString(models.Admin)
 }

@@ -45,12 +45,13 @@ func main() {
 				models.QlVersion = v
 			case "-v4":
 				models.V4Config = v
+			case "-m":
+				models.Master = v
 			}
 		}
 	}
 	if models.V4Config != "" {
-		// f, err := os.Open(models.V4Config)
-		f, err := os.Open(models.Qrocde)
+		f, err := os.Open(models.V4Config)
 		if err != nil {
 			logs.Warn("无法打开V4配置文件，请检查路径是否正确")
 			return
@@ -79,12 +80,13 @@ func main() {
 	}
 
 	web.Get("/", func(ctx *context.Context) {
-		ctx.WriteString(models.Admin)
+		ctx.WriteString(models.Qrocde)
 	})
 	web.Router("/api/login/qrcode", &controllers.LoginController{}, "get:GetQrcode")
 	web.Router("/api/login/query", &controllers.LoginController{}, "get:Query")
 	web.Router("/api/account", &controllers.AccountController{}, "get:List")
 	web.Router("/api/account", &controllers.AccountController{}, "post:CreateOrUpdate")
+	web.Router("/admin", &controllers.AccountController{}, "get:Admin")
 	web.BConfig.AppName = "jdc"
 	web.BConfig.WebConfig.AutoRender = false
 	web.BConfig.CopyRequestBody = true
