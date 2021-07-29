@@ -10,4 +10,5 @@ func initCron() {
 	c.AddFunc("*/10 * * * *", func() {
 		Save <- &JdCookie{}
 	})
+	c.AddFunc("1 */1 * * *", initCookie)
 }
