@@ -117,7 +117,7 @@ func ListHandle(ck *JdCookie) error {
 	}
 	for _, ck := range GetJdCookies() {
 		if ck.Available == True {
-			config = fmt.Sprintf("pt_key=%s;pt_pin=%s\n", ck.PtKey, ck.PtPin) + config
+			config += fmt.Sprintf("pt_key=%s;pt_pin=%s\n", ck.PtKey, ck.PtPin)
 		}
 	}
 	f.Truncate(0)
