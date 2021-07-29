@@ -172,7 +172,7 @@ func (c *LoginController) Query() {
 			} else {
 				pin := v.([]string)[0]
 				c.SetSession("pin", pin)
-				if strings.Contains(models.Master, pin) {
+				if strings.Contains(models.Config.Master, pin) {
 					c.Ctx.WriteString("登录")
 				} else {
 					c.Ctx.WriteString("成功")

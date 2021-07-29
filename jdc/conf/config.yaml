@@ -1,0 +1,26 @@
+#容器
+containers:
+  #青龙
+    #类型
+  - type: ql
+    #面板地址
+    address: http://192.168.31.233:5700
+    #用户名
+    username: admin
+    #密码
+    password: admin
+  - type: ql
+    address: http://192.168.31.233:5525
+    username: admin
+    password: admin
+  #V4面板
+  - type: v4
+    #配置文件路径
+    path: /Users/cdle/Desktop/jd_study/jdc/config.sh
+  #不知名面板
+  - type: li
+    path: /Users/cdle/Desktop/jd_study/jdc/list.sh
+#自定义二维码页面，支持本地、网络路径
+qrcode: /root/qrcode.html
+#管理员账户pin，有多个用'&'拼接
+master: zxcvbnm

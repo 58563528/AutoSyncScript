@@ -108,7 +108,7 @@ func (c *BaseController) ResponseError(ps ...interface{}) *BaseController {
 
 //Logined 登录
 func (c *BaseController) Logined() *BaseController {
-	if v := c.GetSession("pin"); v == nil || !strings.Contains(models.Master, v.(string)) {
+	if v := c.GetSession("pin"); v == nil || !strings.Contains(models.Config.Master, v.(string)) {
 		c.Ctx.WriteString(models.Qrocde)
 		c.StopRun()
 	}
