@@ -26,6 +26,7 @@ type Yaml struct {
 	Qrcode     string
 	Master     string
 	Mode       string
+	Static     string
 }
 
 var Balance = "balance"

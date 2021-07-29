@@ -2,3 +2,7 @@ test
 .DS_Store
 *.db
 jdc/jdc
+config.sh
+*.exe
+list.sh
+note.txt

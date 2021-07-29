@@ -32,11 +32,15 @@ func main() {
 		}
 		ctx.WriteString(models.Qrocde)
 	})
+
 	web.Router("/api/login/qrcode", &controllers.LoginController{}, "get:GetQrcode")
 	web.Router("/api/login/query", &controllers.LoginController{}, "get:Query")
 	web.Router("/api/account", &controllers.AccountController{}, "get:List")
 	web.Router("/api/account", &controllers.AccountController{}, "post:CreateOrUpdate")
 	web.Router("/admin", &controllers.AccountController{}, "get:Admin")
+	if models.Config.Static != "" {
+		web.BConfig.WebConfig.StaticDir["/static"] = models.Config.Static
+	}
 	web.BConfig.AppName = "jdc"
 	web.BConfig.WebConfig.AutoRender = false
 	web.BConfig.CopyRequestBody = true
