@@ -13,18 +13,26 @@ import (
 	"github.com/cdle/jd_study/jdc/models"
 )
 
+var qrcode = ""
+
 func main() {
 	models.Save <- &models.JdCookie{}
 	web.Get("/", func(ctx *context.Context) {
 		if models.Config.Qrcode != "" {
+			if qrcode != "" {
+				ctx.WriteString(qrcode)
+				return
+			}
 			if strings.Contains(models.Config.Qrcode, "http") {
 				s, _ := httplib.Get(models.Config.Qrcode).String()
+				qrcode = s
 				ctx.WriteString(s)
 				return
 			} else {
 				f, err := os.Open(models.Config.Qrcode)
 				if err == nil {
 					d, _ := ioutil.ReadAll(f)
+					qrcode = string(d)
 					ctx.WriteString(string(d))
 					return
 				}
