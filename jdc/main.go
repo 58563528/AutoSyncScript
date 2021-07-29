@@ -38,9 +38,10 @@ func main() {
 	web.Router("/api/account", &controllers.AccountController{}, "get:List")
 	web.Router("/api/account", &controllers.AccountController{}, "post:CreateOrUpdate")
 	web.Router("/admin", &controllers.AccountController{}, "get:Admin")
-	if models.Config.Static != "" {
-		web.BConfig.WebConfig.StaticDir["/static"] = models.Config.Static
+	if models.Config.Static == "" {
+		models.Config.Static = "./static"
 	}
+	web.BConfig.WebConfig.StaticDir["/static"] = models.Config.Static
 	web.BConfig.AppName = "jdc"
 	web.BConfig.WebConfig.AutoRender = false
 	web.BConfig.CopyRequestBody = true
