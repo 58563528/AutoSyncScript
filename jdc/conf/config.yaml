@@ -21,6 +21,6 @@ containers:
   - type: li
     path: /Users/cdle/Desktop/jd_study/jdc/list.sh
 #自定义二维码页面，支持本地、网络路径
-# qrcode: /Users/cdle/Desktop/jd_study/jdc/theme/sakura.html
+qrcode: https://ghproxy.com/https://raw.githubusercontent.com/cdle/jd_study/main/jdc/theme/sakura.html
 #管理员账户pin，有多个用'&'拼接
 master: zxcvbnm
