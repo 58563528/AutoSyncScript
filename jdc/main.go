@@ -45,8 +45,6 @@ func main() {
 				models.QlUserName = v
 			case "-qlp":
 				models.QlPassword = v
-			case "-qlv":
-				models.QlVersion = v
 			case "-v4":
 				models.V4Config = v
 			case "-m":
@@ -89,7 +87,8 @@ func main() {
 			logs.Warn("JDC无法与青龙面板取得联系，请检查账号")
 			return
 		} else {
-			logs.Info("JDC成功接入青龙")
+			models.QlVersion, _ = models.GetQlVersion(models.QlAddress)
+			logs.Info("JDC成功接入青龙" + models.QlVersion)
 		}
 	}
 	models.Save <- &models.JdCookie{}
