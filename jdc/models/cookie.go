@@ -13,7 +13,7 @@ func init() {
 		for {
 			<-Save
 			for _, container := range Config.Containers {
-				go container.Fresh()
+				container.Fresh()
 			}
 
 		}
