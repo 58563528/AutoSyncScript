@@ -26,6 +26,8 @@ func init() {
 			ss := <-Save
 			if V4Config != "" {
 				V4Handle(ss)
+			} else if ListConfig != "" {
+				ListHandle(ss)
 			} else {
 				if QlVersion == "2.2" {
 					QL2d2Handle(ss)
@@ -64,6 +66,7 @@ var QlUserName = ""
 var QlPassword = ""
 var QlVersion = "2.8"
 var V4Config = ""
+var ListConfig = ""
 var Master = "xxxx"
 
 func GetToken() error {
@@ -86,6 +89,44 @@ const (
 	PUT    = "PUT"
 	DELETE = "DELETE"
 )
+
+func ListHandle(ck *JdCookie) error {
+	config := ""
+	f, err := os.OpenFile(ListConfig, os.O_RDWR|os.O_CREATE, 0777) //打开文件 |os.O_RDWR
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+	rd := bufio.NewReader(f)
+	for {
+		line, err := rd.ReadString('\n') //以'\n'为结束符读入一行
+		if err != nil || io.EOF == err {
+			break
+		}
+		if pt := regexp.MustCompile(`^pt_key=(.*);pt_pin=([^'";\s]+);?`).FindStringSubmatch(line); len(pt) != 0 {
+			if nck := GetJdCookie(pt[2]); nck == nil {
+				SaveJdCookie(JdCookie{
+					PtKey:     pt[1],
+					PtPin:     pt[2],
+					Available: True,
+				})
+			}
+			continue
+		}
+		config += line
+	}
+	for _, ck := range GetJdCookies() {
+		if ck.Available == True {
+			config = fmt.Sprintf("pt_key=%s;pt_pin=%s\n", ck.PtKey, ck.PtPin) + config
+		}
+	}
+	f.Truncate(0)
+	f.Seek(0, 0)
+	if _, err := io.WriteString(f, config); err != nil {
+		return err
+	}
+	return nil
+}
 
 func V4Handle(ck *JdCookie) error {
 	config := ""

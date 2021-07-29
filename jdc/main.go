@@ -22,6 +22,7 @@ func main() {
 		fmt.Println(help)
 		return
 	}
+
 	for i, arg := range os.Args {
 		if i+1 <= l-1 {
 			v := os.Args[i+1]
@@ -47,6 +48,8 @@ func main() {
 				models.V4Config = v
 			case "-m":
 				models.Master = v
+			case "-l":
+				models.ListConfig = v
 			}
 		}
 	}
@@ -56,7 +59,13 @@ func main() {
 			logs.Warn("无法打开V4配置文件，请检查路径是否正确")
 			return
 		}
-		models.V4Handle(&models.JdCookie{})
+		f.Close()
+	} else if models.ListConfig != "" {
+		f, err := os.Open(models.ListConfig)
+		if err != nil {
+			logs.Warn("无法打开指定配置文件，请检查路径是否正确")
+			return
+		}
 		f.Close()
 	} else {
 		if models.QlAddress == "" {
@@ -78,7 +87,7 @@ func main() {
 			logs.Info("JDC成功接入青龙")
 		}
 	}
-
+	models.Save <- &models.JdCookie{}
 	web.Get("/", func(ctx *context.Context) {
 		ctx.WriteString(models.Qrocde)
 	})
