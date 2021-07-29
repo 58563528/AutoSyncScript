@@ -249,6 +249,8 @@ func (c *Container) getToken() error {
 			return err
 		}
 		c.Token, _ = jsonparser.GetString(data, "token")
+	} else {
+		return err
 	}
 	return nil
 }
@@ -307,9 +309,11 @@ func GetQlVersion(address string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	v := "2.2"
+	v := ""
 	if strings.Contains(data, "v2.8") {
 		v = "2.8"
+	} else if strings.Contains(data, "v2.2") {
+		v = "2.2"
 	}
 	return v, nil
 }
