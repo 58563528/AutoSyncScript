@@ -33,7 +33,7 @@ func init() {
 				if QlVersion == "2.2" {
 					QL2d2Handle(ss)
 				} else {
-					QLHandle(ss)
+					QL2D8Handle(ss)
 				}
 
 			}
@@ -177,7 +177,7 @@ func V4Handle(ck *JdCookie) error {
 	return nil
 }
 
-func QLHandle(ck *JdCookie) error {
+func QL2D8Handle(ck *JdCookie) error {
 	if Token == "" {
 		GetToken()
 	}
@@ -203,16 +203,17 @@ func QLHandle(ck *JdCookie) error {
 	ids := []string{}
 	for _, env := range a.Data {
 		ids = append(ids, fmt.Sprintf("\"%s\"", env.ID))
-		res := regexp.MustCompile(`pt_key=(\S+);pt_pin=([^\s;]+);?`).FindStringSubmatch(env.Value)
-		if len(res) == 3 {
-			if nck := GetJdCookie(res[2]); nck == nil {
+		res := regexp.MustCompile(`pt_key=(\S+);pt_pin=([^\s;]+);?`).FindAllStringSubmatch(env.Value, -1)
+		for _, v := range res {
+			if nck := GetJdCookie(v[2]); nck == nil {
 				SaveJdCookie(JdCookie{
-					PtKey:     res[1],
-					PtPin:     res[2],
+					PtKey:     v[1],
+					PtPin:     v[2],
 					Available: True,
 				})
 			}
 		}
+
 	}
 	if len(ids) > 0 {
 		data = request("/api/envs", DELETE, fmt.Sprintf(`[%s]`, strings.Join(ids, ",")))
