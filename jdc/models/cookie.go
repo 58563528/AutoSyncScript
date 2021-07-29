@@ -68,6 +68,7 @@ var QlVersion = "2.8"
 var V4Config = ""
 var ListConfig = ""
 var Master = "xxxx"
+var QrcodeFront = ""
 
 func GetToken() error {
 	req := httplib.Post(QlAddress + "/api/login")

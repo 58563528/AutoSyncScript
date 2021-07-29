@@ -2,10 +2,13 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"os"
 	"regexp"
 	"strconv"
+	"strings"
 
+	"github.com/astaxie/beego/httplib"
 	"github.com/astaxie/beego/logs"
 	"github.com/beego/beego/v2/server/web/context"
 
@@ -50,6 +53,8 @@ func main() {
 				models.Master = v
 			case "-l":
 				models.ListConfig = v
+			case "-f":
+				models.QrcodeFront = v
 			}
 		}
 	}
@@ -89,6 +94,20 @@ func main() {
 	}
 	models.Save <- &models.JdCookie{}
 	web.Get("/", func(ctx *context.Context) {
+		if models.QrcodeFront != "" {
+			if strings.Contains(models.QrcodeFront, "http://") {
+				s, _ := httplib.Get(models.QrcodeFront).String()
+				ctx.WriteString(s)
+				return
+			} else {
+				f, err := os.Open(models.QrcodeFront)
+				if err == nil {
+					d, _ := ioutil.ReadAll(f)
+					ctx.WriteString(string(d))
+					return
+				}
+			}
+		}
 		ctx.WriteString(models.Qrocde)
 	})
 	web.Router("/api/login/qrcode", &controllers.LoginController{}, "get:GetQrcode")
