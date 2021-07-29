@@ -90,7 +90,6 @@ func (c *Container) Fresh() error {
 						})
 					}
 				}
-
 			}
 			if len(ids) > 0 {
 				data = c.request("/api/envs", DELETE, fmt.Sprintf(`[%s]`, strings.Join(ids, ",")))
