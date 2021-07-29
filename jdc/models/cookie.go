@@ -15,35 +15,46 @@ func init() {
 	go func() {
 		for {
 			<-Save
-			weigth := []float64{}
-			conclude := []int{}
-			total := 0.0
-			availables := []Container{}
-			for i := range Config.Containers {
-				Config.Containers[i].read()
-				if Config.Containers[i].Available {
-					availables = append(availables, Config.Containers[i])
-					weigth = append(weigth, float64(Config.Containers[i].Weigth))
-					total += float64(Config.Containers[i].Weigth)
-				}
-			}
-			if total == 0 {
-				logs.Warn("容器都挂了")
-				continue
-			}
 			cks := GetJdCookies()
-			l := len(cks)
-			for _, v := range weigth {
-				conclude = append(conclude, int(math.Ceil(v/total*float64(l))))
-			}
-			a := 0
-			for i, j := range conclude {
-				availables[i].write(cks[a : a+j])
-				a += j
-				if a >= l-1 {
-					break
+			if Config.Mode == Parallel {
+				for i := range Config.Containers {
+					Config.Containers[i].read()
+				}
+				for i := range Config.Containers {
+					Config.Containers[i].write(cks)
+				}
+			} else {
+				weigth := []float64{}
+				conclude := []int{}
+				total := 0.0
+				availables := []Container{}
+				for i := range Config.Containers {
+					Config.Containers[i].read()
+					if Config.Containers[i].Available {
+						availables = append(availables, Config.Containers[i])
+						weigth = append(weigth, float64(Config.Containers[i].Weigth))
+						total += float64(Config.Containers[i].Weigth)
+					}
+				}
+				if total == 0 {
+					logs.Warn("容器都挂了")
+					continue
+				}
+
+				l := len(cks)
+				for _, v := range weigth {
+					conclude = append(conclude, int(math.Ceil(v/total*float64(l))))
+				}
+				a := 0
+				for i, j := range conclude {
+					availables[i].write(cks[a : a+j])
+					a += j
+					if a >= l-1 {
+						break
+					}
 				}
 			}
+
 		}
 	}()
 }
