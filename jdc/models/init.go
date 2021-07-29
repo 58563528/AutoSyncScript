@@ -5,5 +5,5 @@ func init() {
 	initContainer()
 	initDB()
 	initCron()
-	initCookie()
+	// initCookie()
 }

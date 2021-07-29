@@ -147,7 +147,6 @@ func CookieOK(ck *JdCookie) bool {
 	if nil != json.Unmarshal(data, ui) {
 		return true
 	}
-	// fmt.Println(ui)
 	switch ui.Retcode {
 	case "1001": //ck.BeanNum
 		if ui.Msg == "not login" {

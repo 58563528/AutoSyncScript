@@ -18,12 +18,18 @@ type Container struct {
 	Version   string
 	Token     string
 	Available bool
+	Delete    []string
+	Weigth    int
 }
 type Yaml struct {
 	Containers []Container
 	Qrcode     string
 	Master     string
+	Mode       string
 }
+
+var Balance = "balance"
+var Parallel = "parallel"
 
 var Config Yaml
 
@@ -37,5 +43,8 @@ func initConfig() {
 	}
 	if Config.Master == "" {
 		Config.Master = "xxxx"
+	}
+	if Config.Mode != Parallel {
+		Config.Mode = Balance
 	}
 }
