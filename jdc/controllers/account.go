@@ -48,7 +48,9 @@ func (c *AccountController) CreateOrUpdate() {
 		ps.Pool = ""
 		ps.Updates(*ps)
 	}
-	models.Save <- &models.JdCookie{}
+	go func() {
+		models.Save <- &models.JdCookie{}
+	}()
 	c.Response(nil, "操作成功")
 }
 

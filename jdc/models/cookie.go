@@ -5,6 +5,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/beego/beego/v2/core/logs"
 )
@@ -14,8 +15,12 @@ func init() {
 	ExecPath, _ = filepath.Abs(filepath.Dir(os.Args[0]))
 	Save = make(chan *JdCookie)
 	go func() {
+		init := true
 		for {
-			<-Save
+			get := <-Save
+			if get.Pool == "s" {
+				initCookie()
+			}
 			cks := GetJdCookies()
 			if Config.Mode == Parallel {
 				for i := range Config.Containers {
@@ -55,6 +60,17 @@ func init() {
 					}
 				}
 			}
+			if init {
+				go func() {
+					for {
+						Save <- &JdCookie{
+							Pool: "s",
+						}
+						time.Sleep(time.Minute * 30)
+					}
+				}()
+				init = false
+			}
 		}
 	}()
 }
@@ -72,14 +88,25 @@ type JdCookie struct {
 	Pool      string
 }
 
+var ScanedAt = "ScanedAt"
+var Note = "Note"
+var Available = "Available"
+var PtKey = "PtKey"
+var PtPin = "PtPin"
+var Priority = "Priority"
+var Nickname = "Nickname"
+var BeanNum = "BeanNum"
+var Pool = "Pool"
 var True = "true"
 var False = "false"
-
 var Save chan *JdCookie
-
 var ExecPath string
 
 func (ck *JdCookie) toPool(key string) {
+	ck = GetJdCookie(ck.PtPin)
+	if key == ck.PtKey {
+		return
+	}
 	if strings.Contains(ck.Pool, key) {
 		return
 	}
@@ -88,5 +115,30 @@ func (ck *JdCookie) toPool(key string) {
 	} else {
 		ck.Pool += "," + key
 	}
-	ck.Updates("Pool", ck.Pool)
+	ck.Updates(Pool, ck.Pool)
+}
+
+func (ck *JdCookie) shiftPool() string {
+	ck = GetJdCookie(ck.PtPin)
+	if ck.Pool == "" {
+		return ""
+	}
+	pool := strings.Split(ck.Pool, ",")
+	shift := ""
+	if len(pool) != 0 {
+		shift = pool[0]
+		pool = pool[1:]
+	}
+	us := map[string]interface{}{}
+	if shift == "" {
+		us[Pool] = ""
+		us[Available] = False
+		us[PtKey] = ""
+	} else {
+		us[Pool] = strings.Join(pool, ",")
+		us[Available] = True
+		us[PtKey] = shift
+	}
+	ck.Updates(us)
+	return shift
 }

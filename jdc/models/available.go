@@ -117,17 +117,17 @@ type UserInfoResult struct {
 }
 
 func initCookie() {
-	go func() {
-		available := True
-		for _, ck := range GetJdCookies() {
-			if ck.Available == True && !CookieOK(&ck) {
-				available = False
+	cks := GetJdCookies()
+	l := len(cks)
+	for i := 0; i < l-1; i++ {
+		if cks[i].Available == False || !CookieOK(GetJdCookie(cks[i].PtPin)) {
+			if cks[i].shiftPool() != "" {
+				i--
 			}
 		}
-		if available == False {
-			Save <- &JdCookie{}
-		}
-	}()
+	}
+	Save <- &JdCookie{}
+
 }
 
 func CookieOK(ck *JdCookie) bool {
@@ -158,10 +158,13 @@ func CookieOK(ck *JdCookie) bool {
 	case "0":
 		if ui.Data.UserInfo.BaseInfo.Nickname != ck.Nickname || ui.Data.AssetInfo.BeanNum != ck.BeanNum {
 			ck.Updates(JdCookie{
-				Nickname: ui.Data.UserInfo.BaseInfo.Nickname,
-				BeanNum:  ui.Data.AssetInfo.BeanNum,
+				Nickname:  ui.Data.UserInfo.BaseInfo.Nickname,
+				BeanNum:   ui.Data.AssetInfo.BeanNum,
+				Available: True,
 			})
 		}
+	default:
+
 	}
 	return true
 }
