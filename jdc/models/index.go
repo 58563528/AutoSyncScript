@@ -78,7 +78,6 @@ var Qrocde = `<!DOCTYPE html>
                             button.style.opacity = 1
                             button.style.backgroundColor = "#1E9FFF"
                             qrcode.style.opacity = 0.4
-                            // qrcode.src = "https://cdn.jsdelivr.net/gh/cdle/static/reward.jpg"
                             clearInterval(timer)
                             break;
                         default:

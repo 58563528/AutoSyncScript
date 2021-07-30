@@ -9,7 +9,7 @@ type AccountController struct {
 }
 
 func (c *AccountController) NextPrepare() {
-	c.Logined()
+	// c.Logined()
 }
 
 func (c *AccountController) List() {
