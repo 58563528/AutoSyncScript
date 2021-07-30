@@ -18,10 +18,10 @@ func init() {
 			cks := GetJdCookies()
 			if Config.Mode == Parallel {
 				for i := range Config.Containers {
-					Config.Containers[i].read()
+					(&Config.Containers[i]).read()
 				}
 				for i := range Config.Containers {
-					Config.Containers[i].write(cks)
+					(&Config.Containers[i]).write(cks)
 				}
 			} else {
 				weigth := []float64{}
@@ -29,7 +29,7 @@ func init() {
 				total := 0.0
 				availables := []Container{}
 				for i := range Config.Containers {
-					Config.Containers[i].read()
+					(&Config.Containers[i]).read()
 					if Config.Containers[i].Available {
 						availables = append(availables, Config.Containers[i])
 						weigth = append(weigth, float64(Config.Containers[i].Weigth))
