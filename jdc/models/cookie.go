@@ -34,12 +34,18 @@ func init() {
 				conclude := []int{}
 				total := 0.0
 				availables := []Container{}
+				parallels := []Container{}
 				for i := range Config.Containers {
 					(&Config.Containers[i]).read()
+
 					if Config.Containers[i].Available {
-						availables = append(availables, Config.Containers[i])
-						weigth = append(weigth, float64(Config.Containers[i].Weigth))
-						total += float64(Config.Containers[i].Weigth)
+						if Config.Containers[i].Mode == Parallel {
+							parallels = append(parallels, Config.Containers[i])
+						} else {
+							availables = append(availables, Config.Containers[i])
+							weigth = append(weigth, float64(Config.Containers[i].Weigth))
+							total += float64(Config.Containers[i].Weigth)
+						}
 					}
 				}
 				if total == 0 {
@@ -58,6 +64,9 @@ func init() {
 					if a >= l-1 {
 						break
 					}
+				}
+				for i := range parallels {
+					parallels[i].write(cks)
 				}
 			}
 			if init {

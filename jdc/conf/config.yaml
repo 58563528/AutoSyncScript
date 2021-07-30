@@ -13,6 +13,8 @@ containers:
     password: admin
     #权重 balance模式下权重越高分得的ck越多
     weigth: 3
+    #单独对容器进行模式设置
+    mode: parallel
   - type: ql
     address: http://192.168.31.233:5525
     username: admin

@@ -20,6 +20,7 @@ type Container struct {
 	Available bool
 	Delete    []string
 	Weigth    int
+	Mode      string
 }
 type Yaml struct {
 	Containers []Container
