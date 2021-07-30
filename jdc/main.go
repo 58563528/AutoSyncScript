@@ -16,7 +16,9 @@ import (
 var qrcode = ""
 
 func main() {
-	models.Save <- &models.JdCookie{}
+	go func() {
+		models.Save <- &models.JdCookie{}
+	}()
 	web.Get("/", func(ctx *context.Context) {
 		if models.Config.Qrcode != "" {
 			if qrcode != "" {

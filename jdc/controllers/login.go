@@ -236,7 +236,9 @@ func CheckLogin(token, cookie, okl_token string) string {
 				models.SaveJdCookie(ck)
 				logs.Info("添加账号，%s", ck.PtPin)
 			}
-			models.Save <- &ck
+			go func() {
+				models.Save <- &ck
+			}()
 		}()
 		JdCookieRunners.Store(token, []string{pt_pin})
 		return "成功"
