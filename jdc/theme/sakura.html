@@ -10,7 +10,7 @@
             margin: 0;
             padding: 0;
         }
-        
+
         .middle {
             position: fixed;
             top: 0;
@@ -19,11 +19,11 @@
             left: 0;
             margin: auto;
         }
-        
+
         #bgimg {
             z-index: -1;
         }
-        
+
         #button {
             text-align: center;
             height: 2rem;
@@ -37,9 +37,9 @@
 </head>
 
 <body>
-    <img id="bgimg" class="middle" src="https://pica.zhimg.com/v2-abf98e28abe31fda2f0548435a6e3183_1440w.jpg?source=172ae18b" />
-    <img id="qrcode" height="170em" class="middle" src=""
-    />
+    <img id="bgimg" class="middle"
+        src="https://pica.zhimg.com/v2-abf98e28abe31fda2f0548435a6e3183_1440w.jpg?source=172ae18b" />
+    <img id="qrcode" height="170em" class="middle" src="" />
     <div id="button" class="middle" onclick="refresh()">刷新</div>
 
     <script>
@@ -54,7 +54,7 @@
             } else {
                 xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
             }
-            xmlhttp.onreadystatechange = function() {
+            xmlhttp.onreadystatechange = function () {
                 if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                     qrcode.src = xmlhttp.responseText
                 }
@@ -71,12 +71,15 @@
             } else {
                 xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
             }
-            xmlhttp.onreadystatechange = function() {
+            xmlhttp.onreadystatechange = function () {
                 if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                     var results = xmlhttp.responseText
                     console.log(results)
                     switch (results) {
                         case "授权登录未确认":
+                            break;
+                        case "登录":
+                            window.location.href = "/admin"
                             break;
                         case "成功":
                             button.innerText = "成功"
@@ -114,7 +117,7 @@
             }
         }
 
-        document.addEventListener("visibilitychange", function() {
+        document.addEventListener("visibilitychange", function () {
             if (button.style.opacity != 1) {
                 if (document.visibilityState == "visible") {
                     clearInterval(timer)
@@ -123,7 +126,7 @@
             }
         });
         var bgimg = document.getElementById("bgimg")
-        var size = function() {
+        var size = function () {
             if (document.documentElement.clientWidth > document.documentElement.clientHeight) {
                 bgimg.style.Height = "auto"
                 bgimg.width = document.documentElement.clientWidth
@@ -133,7 +136,7 @@
             }
         }
         size()
-        window.onresize = function() {
+        window.onresize = function () {
             size()
         }
     </script>
