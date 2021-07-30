@@ -90,6 +90,7 @@ var Admin = `<html lang="zh-cn">
                     }, {
                         field: 'PtKey',
                         title: 'PtKey',
+                        edit: 'text',
                         width: 500,
                         align: 'center',
                     }
