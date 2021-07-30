@@ -61,6 +61,16 @@ func GetJdCookies() []JdCookie {
 
 			}
 			cks = append(cks, ck)
+			length := len(cks)
+			for i := 0; i < length; i++ {
+				max := i
+				for j := i + 1; j < length; j++ {
+					if cks[j].Priority > cks[max].Priority {
+						max = j
+					}
+				}
+				cks[i], cks[max] = cks[max], cks[i]
+			}
 			for i := range cks {
 				cks[i].ID = i + 1
 				if cks[i].Nickname == "" {
@@ -78,16 +88,6 @@ func GetJdCookies() []JdCookie {
 				if cks[i].Priority == 0 {
 					cks[i].Priority = 1
 				}
-			}
-			length := len(cks)
-			for i := 0; i < length; i++ {
-				max := i
-				for j := i + 1; j < length; j++ {
-					if cks[j].Priority > cks[max].Priority {
-						max = j
-					}
-				}
-				cks[i], cks[max] = cks[max], cks[i]
 			}
 			return nil
 		})
