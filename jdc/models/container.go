@@ -196,10 +196,12 @@ func (c *Container) read() error {
 							Available: True,
 						})
 					} else if c.First == false {
-						nck.Updates(map[string]interface{}{
-							"PtKey":     v[1],
-							"Available": True,
-						})
+						if nck.PtKey != v[1] {
+							nck.Updates(map[string]interface{}{
+								"PtKey":     v[1],
+								"Available": True,
+							})
+						}
 					}
 				}
 			}
@@ -237,10 +239,12 @@ func (c *Container) read() error {
 							Available: True,
 						})
 					} else if c.First == false {
-						nck.Updates(map[string]interface{}{
-							"PtKey":     res[1],
-							"Available": True,
-						})
+						if res[1] != nck.PtKey {
+							nck.Updates(map[string]interface{}{
+								"PtKey":     res[1],
+								"Available": True,
+							})
+						}
 					}
 				}
 			}
@@ -266,10 +270,12 @@ func (c *Container) read() error {
 						Available: True,
 					})
 				} else if c.First == false {
-					nck.Updates(map[string]interface{}{
-						"PtKey":     pt[2],
-						"Available": True,
-					})
+					if nck.PtKey != pt[2] {
+						nck.Updates(map[string]interface{}{
+							"PtKey":     pt[2],
+							"Available": True,
+						})
+					}
 				}
 				continue
 			}
@@ -295,10 +301,12 @@ func (c *Container) read() error {
 						Available: True,
 					})
 				} else if c.First == false {
-					nck.Updates(map[string]interface{}{
-						"PtKey":     pt[1],
-						"Available": True,
-					})
+					if nck.PtKey != pt[1] {
+						nck.Updates(map[string]interface{}{
+							"PtKey":     pt[1],
+							"Available": True,
+						})
+					}
 				}
 				continue
 			}
@@ -329,7 +337,7 @@ func (c *Container) request(ss ...string) ([]byte, error) {
 	for _, s := range ss {
 		if s == GET || s == POST || s == PUT || s == DELETE {
 			method = s
-		} else if strings.Contains(s, "api") {
+		} else if strings.Contains(s, "/api/") {
 			api = s
 		} else {
 			body = s
