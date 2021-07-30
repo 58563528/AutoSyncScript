@@ -20,7 +20,6 @@ type Container struct {
 	Available bool
 	Delete    []string
 	Weigth    int
-	First     bool
 }
 type Yaml struct {
 	Containers []Container
