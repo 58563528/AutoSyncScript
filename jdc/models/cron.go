@@ -7,5 +7,4 @@ var c *cron.Cron
 func initCron() {
 	c = cron.New()
 	c.Start()
-	c.AddFunc("1 * * * *", initCookie)
 }
