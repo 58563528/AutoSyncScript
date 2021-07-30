@@ -6,8 +6,6 @@ import (
 	"path/filepath"
 	"strings"
 	"time"
-
-	"github.com/beego/beego/v2/core/logs"
 )
 
 func init() {
@@ -48,10 +46,10 @@ func init() {
 						}
 					}
 				}
-				if total == 0 {
-					logs.Warn("容器都挂了")
-					continue
-				}
+				// if total == 0 {
+				// 	logs.Warn("容器都挂了")
+				// 	continue
+				// }
 
 				l := len(cks)
 				for _, v := range weigth {
