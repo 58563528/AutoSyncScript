@@ -196,10 +196,7 @@ func (c *Container) read() error {
 						})
 					} else {
 						if nck.PtKey != v[1] {
-							nck.Updates(map[string]interface{}{
-								"PtKey":     v[1],
-								"Available": True,
-							})
+							nck.toPool(v[1])
 						}
 					}
 				}
@@ -239,10 +236,7 @@ func (c *Container) read() error {
 						})
 					} else {
 						if res[1] != nck.PtKey {
-							nck.Updates(map[string]interface{}{
-								"PtKey":     res[1],
-								"Available": True,
-							})
+							nck.toPool(res[1])
 						}
 					}
 				}
@@ -270,10 +264,7 @@ func (c *Container) read() error {
 					})
 				} else {
 					if nck.PtKey != pt[2] {
-						nck.Updates(map[string]interface{}{
-							"PtKey":     pt[2],
-							"Available": True,
-						})
+						nck.toPool(pt[2])
 					}
 				}
 				continue
@@ -301,10 +292,7 @@ func (c *Container) read() error {
 					})
 				} else {
 					if nck.PtKey != pt[1] {
-						nck.Updates(map[string]interface{}{
-							"PtKey":     pt[1],
-							"Available": True,
-						})
+						nck.toPool(pt[1])
 					}
 				}
 				continue

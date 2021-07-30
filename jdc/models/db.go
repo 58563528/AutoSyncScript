@@ -188,7 +188,6 @@ func (ck *JdCookie) Updates(us ...interface{}) {
 					switch t.Kind() {
 					case reflect.Int:
 						if v, ok := v.(int); ok {
-
 							t.SetInt(int64(v))
 						}
 					case reflect.String:

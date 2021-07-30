@@ -45,6 +45,7 @@ func (c *AccountController) CreateOrUpdate() {
 	ps := &models.JdCookie{}
 	c.Validate(ps)
 	if ps.PtPin != "" {
+		ps.Pool = ""
 		ps.Updates(*ps)
 	}
 	models.Save <- &models.JdCookie{}

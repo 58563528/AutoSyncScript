@@ -4,6 +4,7 @@ import (
 	"math"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/beego/beego/v2/core/logs"
 )
@@ -68,6 +69,7 @@ type JdCookie struct {
 	Available string `validate:"oneof=true false"`
 	Nickname  string
 	BeanNum   string
+	Pool      string
 }
 
 var True = "true"
@@ -76,3 +78,15 @@ var False = "false"
 var Save chan *JdCookie
 
 var ExecPath string
+
+func (ck *JdCookie) toPool(key string) {
+	if strings.Contains(ck.Pool, key) {
+		return
+	}
+	if ck.Pool == "" {
+		ck.Pool = key
+	} else {
+		ck.Pool += "," + key
+	}
+	ck.Updates("Pool", ck.Pool)
+}
