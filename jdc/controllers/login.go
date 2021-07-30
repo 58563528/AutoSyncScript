@@ -229,11 +229,7 @@ func CheckLogin(token, cookie, okl_token string) string {
 				PtPin: pt_pin,
 			}
 			if nck := models.GetJdCookie(ck.PtPin); nck != nil {
-				ck.Updates(map[string]interface{}{
-					"PtKey":     ck.PtKey,
-					"ScanedAt":  ScanedAt,
-					"Available": models.True,
-				})
+				ck.ToPool(ck.PtKey)
 				logs.Info("更新账号，%s", ck.PtPin)
 			} else {
 				ck.ScanedAt = ScanedAt

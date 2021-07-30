@@ -109,7 +109,7 @@ var False = "false"
 var Save chan *JdCookie
 var ExecPath string
 
-func (ck *JdCookie) toPool(key string) {
+func (ck *JdCookie) ToPool(key string) {
 	ck = GetJdCookie(ck.PtPin)
 	if key == ck.PtKey {
 		return
@@ -122,7 +122,10 @@ func (ck *JdCookie) toPool(key string) {
 	} else {
 		ck.Pool += "," + key
 	}
-	ck.Updates(Pool, ck.Pool)
+	ck.Updates(map[string]interface{}{
+		Pool:     ck.Pool,
+		ScanedAt: time.Now().Unix(),
+	})
 }
 
 func (ck *JdCookie) shiftPool() string {
