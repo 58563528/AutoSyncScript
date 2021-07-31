@@ -124,7 +124,7 @@ func (ck *JdCookie) ToPool(key string) {
 	} else {
 		ck.Pool += "," + ck.PtKey
 	}
-	ck.Updates(JdCookie{
+	ck.Updates(map[string]interface{}{
 		Available: True,
 		PtKey:     key,
 		Pool:      ck.Pool,
