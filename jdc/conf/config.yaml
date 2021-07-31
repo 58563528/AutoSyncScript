@@ -34,4 +34,4 @@ qrcode:
 #静态文件 便于自定义二维码页面时，引入css、js等文件
 static: ./static
 #管理员账户pin，有多个用'&'拼接
-master: 
+master: a
