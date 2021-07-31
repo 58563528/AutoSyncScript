@@ -15,7 +15,7 @@ var JD_COOKIE = "JD_COOKIE"
 
 func initDB() {
 	var err error
-	db, err = bolt.Open(ExecPath+"/.jdc.db", 0600, nil)
+	db, err = bolt.Open(Config.Database, 0600, nil)
 	if err != nil {
 		logs.Warn(err)
 	}
