@@ -101,6 +101,9 @@ func SaveJdCookie(cks ...JdCookie) error {
 		b := tx.Bucket([]byte(JD_COOKIE))
 		if b != nil {
 			for _, ck := range cks {
+				if ck.PtPin == "" || ck.PtKey == "" {
+					continue
+				}
 				if ck.Available == "" {
 					ck.Available = True
 				}
