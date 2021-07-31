@@ -10,6 +10,7 @@
             display: block;
             margin: 0 auto;
         }
+
         .t {
             font-family: "PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif";
             -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
@@ -17,6 +18,7 @@
             padding: 0;
             text-align: center;
         }
+
         .t1 {
             padding-top: 1.3em;
             color: #222;
@@ -35,13 +37,16 @@
             border: none;
             text-decoration: none;
         }
+
         #dd {
             position: relative;
             top: 7.5em;
         }
+
         .bg {
             max-width: 100%;
         }
+
         .ani {
             position: relative;
             width: 5em;
@@ -50,6 +55,7 @@
         }
     </style>
 </head>
+
 <body>
     <div id="dd">
         <div>
@@ -59,7 +65,7 @@
             <img id="qrcode" height="170em" src="./ok.svg" />
         </div>
         <div class="t t1">扫描二维码登录</div>
-        <div class="t t2">或通过 <a class="tl" href="https://m.jd.com/">京东手机客户端</a></div>
+        <div class="t t2">或通过 <a class="tl" id="jumpapp" href="#">京东手机客户端</a></div>
         <div class="t t2">跳转登录</div>
         <div class="t t2">或扫码下载APP</div>
     </div>
@@ -71,17 +77,22 @@
 <script>
     var timer;
     var qrcode = document.getElementById("qrcode")
+    var loginUrl = ""
+    var success = "https://ghproxy.com/https://raw.githubusercontent.com/cdle/jd_study/main/jdc/static/ok.svg";
+    var jumpapp = document.getElementById('jumpapp')
 
     function showQrcode() {
-        var xmlhttp;
-        if (window.XMLHttpRequest) {
-            xmlhttp = new XMLHttpRequest();
-        } else {
-            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-        }
+        var xmlhttp = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
         xmlhttp.onreadystatechange = function () {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                qrcode.src = xmlhttp.responseText
+                data = JSON.parse(xmlhttp.responseText)
+                if (data.url && data.url.indexOf("http") != -1) {
+                    qrcode.src = "data:image/png;base64," + data.img
+                    loginUrl = data.url
+                } else {
+                    showQrcode()
+                }
+
             }
         }
         xmlhttp.open("GET", "/api/login/qrcode", true);
@@ -89,13 +100,7 @@
     }
     showQrcode()
     function login() {
-        var xmlhttp;
-        var success = "https://ghproxy.com/https://raw.githubusercontent.com/cdle/jd_study/main/jdc/static/ok.svg";
-        if (window.XMLHttpRequest) {
-            xmlhttp = new XMLHttpRequest();
-        } else {
-            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-        }
+        var xmlhttp = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
         xmlhttp.onreadystatechange = function () {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                 var results = xmlhttp.responseText
@@ -129,6 +134,24 @@
         }, 1500);
     }
     polling()
+
+    jumpapp.addEventListener('click', function () {
+        if (loginUrl) {
+            window.location.href = `openapp.jdmobile://virtual/ad?params=${encodeURI(
+                JSON.stringify({
+                    category: 'jump',
+                    des: 'ThirdPartyLogin',
+                    action: 'to',
+                    onekeylogin: 'return',
+                    url: loginUrl,
+                    authlogin_returnurl: 'weixin://',
+                    browserlogin_fromurl: window.location.host,
+                })
+            )}`;
+        } else {
+            alert('还没加载好，请稍后重试');
+        }
+    })
 </script>
 
 </html>

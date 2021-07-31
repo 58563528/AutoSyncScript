@@ -48,7 +48,7 @@ func (c *LoginController) GetQrcode() {
 			if len(v.([]string)) == 2 {
 				var url = `https://plogin.m.jd.com/cgi-bin/m/tmauth?appid=300&client_type=m&token=` + token
 				data, _ := qrcode.Encode(url, qrcode.Medium, 256)
-				c.Ctx.WriteString("data:image/png;base64," + base64.StdEncoding.EncodeToString(data))
+				c.Ctx.WriteString(`{"url":"` + url + `","img":"` + base64.StdEncoding.EncodeToString(data) + `"}`)
 				return
 			}
 		}
@@ -125,7 +125,7 @@ func (c *LoginController) GetQrcode() {
 	data, _ = qrcode.Encode(url, qrcode.Medium, 256)
 	// fmt.Println(st.Token, cookie, okl_token)
 	JdCookieRunners.Store(st.Token, []string{cookie, okl_token})
-	c.Ctx.WriteString("data:image/png;base64," + base64.StdEncoding.EncodeToString(data))
+	c.Ctx.WriteString(`{"url":"` + url + `","img":"` + base64.StdEncoding.EncodeToString(data) + `"}`) //"data:image/png;base64," +
 }
 
 func init() {

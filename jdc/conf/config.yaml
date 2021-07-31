@@ -1,5 +1,5 @@
 #模式 balance(均衡模式)、parallel(平行模式)
-mode: balance
+mode: parallel
 #容器
 containers:
   #青龙
@@ -15,22 +15,22 @@ containers:
     weigth: 3
     #单独对容器进行模式设置
     mode: parallel
-  # - type: ql
-  #   address: http://192.168.31.233:5525
-  #   username: admin
-  #   password: admin
-  #   weigth: 2
-  # #V4面板
+  - type: ql
+    address: http://192.168.31.233:5525
+    username: admin
+    password: admin
+    weigth: 2
+  #V4面板
   - type: v4
     #配置文件路径
     path: /Users/cdle/Desktop/jd_study/jdc/config.sh
     weigth: 1
-  # #不知名面板
-  # - type: li
-  #   path: /Users/cdle/Desktop/jd_study/jdc/list.sh
-  #   weigth: 5
+  #不知名面板
+  - type: li
+    path: /Users/cdle/Desktop/jd_study/jdc/list.sh
+    weigth: 5
 #自定义二维码页面，支持本地、网络路径
-qrcode: https://ghproxy.com/https://raw.githubusercontent.com/cdle/jd_study/main/jdc/theme/bidong.html
+qrcode: ./theme/bidong.html
 #静态文件 便于自定义二维码页面时，引入css、js等文件
 static: ./static
 #管理员账户pin，有多个用'&'拼接

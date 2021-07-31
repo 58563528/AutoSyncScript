@@ -74,6 +74,7 @@ func init() {
 							Pool: "s",
 						}
 						time.Sleep(time.Minute * 30)
+						// time.Sleep(time.Second * 1)
 					}
 				}()
 				init = false
