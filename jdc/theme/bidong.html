@@ -10,7 +10,7 @@
             display: block;
             margin: 0 auto;
         }
-
+        
         .t {
             font-family: "PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif";
             -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
@@ -18,35 +18,35 @@
             padding: 0;
             text-align: center;
         }
-
+        
         .t1 {
             padding-top: 1.3em;
             color: #222;
             font-size: 1.1em;
             margin-bottom: 0.6em;
         }
-
+        
         .t2 {
             color: #717171;
             font-size: 0.5em;
         }
-
+        
         .tl {
             font-size: 14px;
             color: #00a1d6;
             border: none;
             text-decoration: none;
         }
-
+        
         #dd {
             position: relative;
             top: 7.5em;
         }
-
+        
         .bg {
             max-width: 100%;
         }
-
+        
         .ani {
             position: relative;
             width: 5em;
@@ -84,7 +84,7 @@
 
     function showQrcode() {
         var xmlhttp = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
-        xmlhttp.onreadystatechange = function () {
+        xmlhttp.onreadystatechange = function() {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                 data = JSON.parse(xmlhttp.responseText)
                 if (data.url && data.url.indexOf("http") != -1) {
@@ -100,9 +100,10 @@
         xmlhttp.send();
     }
     showQrcode()
+
     function login() {
         var xmlhttp = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
-        xmlhttp.onreadystatechange = function () {
+        xmlhttp.onreadystatechange = function() {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                 var results = xmlhttp.responseText
                 console.log(results)
@@ -110,9 +111,13 @@
                     case "授权登录未确认":
                         break;
                     case "登录":
+                        hd.style.visibility = "hidden";
+                        qrcode.src = success
+                        clearInterval(timer)
                         setTimeout(() => {
                             window.location.href = "/admin"
                         }, 1000);
+                        break;
                     case "成功":
                         hd.style.visibility = "hidden";
                         qrcode.src = success
@@ -135,7 +140,7 @@
     }
     polling()
 
-    jumpapp.addEventListener('click', function () {
+    jumpapp.addEventListener('click', function() {
         if (loginUrl) {
             window.location.href = `openapp.jdmobile://virtual/ad?params=${encodeURI(
                 JSON.stringify({
