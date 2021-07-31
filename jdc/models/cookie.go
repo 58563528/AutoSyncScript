@@ -94,7 +94,7 @@ type JdCookie struct {
 	Nickname  string
 	BeanNum   string
 	Pool      string
-	Delete    string `validate:"oneof=true false"`
+	// Delete    string `validate:"oneof=true false"`
 }
 
 var ScanedAt = "ScanedAt"
