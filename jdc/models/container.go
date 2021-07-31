@@ -113,6 +113,9 @@ func (c *Container) write(cks []JdCookie) error {
 		}
 		TempBlockCookie := ""
 		for i, ck := range cks {
+			if ck.PtPin == "" || ck.PtKey == "" {
+				continue
+			}
 			if ck.Available == False {
 				TempBlockCookie += fmt.Sprintf("%d ", i+1)
 			}
@@ -144,6 +147,9 @@ func (c *Container) write(cks []JdCookie) error {
 			config += line
 		}
 		for _, ck := range cks {
+			if ck.PtPin == "" || ck.PtKey == "" {
+				continue
+			}
 			if ck.Available == True {
 				config += fmt.Sprintf("pt_key=%s;pt_pin=%s\n", ck.PtKey, ck.PtPin)
 			}
