@@ -59,7 +59,7 @@
 <body>
     <div id="dd">
         <div>
-            <img class="ani" src="https://s1.hdslb.com/bfs/static/passport/static/img/loadTV.99606e2.gif" />
+            <img id="hd" class="ani" src="https://s1.hdslb.com/bfs/static/passport/static/img/loadTV.99606e2.gif" />
         </div>
         <div>
             <img id="qrcode" height="170em" src="./ok.svg" />
@@ -80,6 +80,7 @@
     var loginUrl = ""
     var success = "https://ghproxy.com/https://raw.githubusercontent.com/cdle/jd_study/main/jdc/static/ok.svg";
     var jumpapp = document.getElementById('jumpapp')
+    var hd = document.getElementById("hd")
 
     function showQrcode() {
         var xmlhttp = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
@@ -109,12 +110,11 @@
                     case "授权登录未确认":
                         break;
                     case "登录":
-                        qrcode.src = success
                         setTimeout(() => {
                             window.location.href = "/admin"
                         }, 1000);
-                        break;
                     case "成功":
+                        hd.style.visibility = "hidden";
                         qrcode.src = success
                         clearInterval(timer)
                         break;
