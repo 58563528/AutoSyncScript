@@ -223,7 +223,6 @@ func CheckLogin(token, cookie, okl_token string) string {
 		pt_key := FetchJdCookieValue("pt_key", cookies)
 		pt_pin := FetchJdCookieValue("pt_pin", cookies)
 		go func() {
-			ScanedAt := time.Now().Local().Format("2006-01-02")
 			ck := models.JdCookie{
 				PtKey: pt_key,
 				PtPin: pt_pin,
@@ -232,7 +231,7 @@ func CheckLogin(token, cookie, okl_token string) string {
 				ck.ToPool(ck.PtKey)
 				logs.Info("更新账号，%s", ck.PtPin)
 			} else {
-				ck.ScanedAt = ScanedAt
+				ck.ScanedAt = time.Now().Local().Format("2006-01-02")
 				models.SaveJdCookie(ck)
 				logs.Info("添加账号，%s", ck.PtPin)
 			}

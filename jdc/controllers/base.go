@@ -112,7 +112,7 @@ func (c *BaseController) Logined() *BaseController {
 		return c
 	}
 	if v := c.GetSession("pin"); v == nil || !strings.Contains(models.Config.Master, v.(string)) {
-		c.Ctx.WriteString(models.Qrocde)
+		c.Ctx.Redirect(302, "/")
 		c.StopRun()
 	}
 	return c

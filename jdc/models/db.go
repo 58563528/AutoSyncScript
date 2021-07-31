@@ -190,6 +190,10 @@ func (ck *JdCookie) Updates(us ...interface{}) {
 						if v, ok := v.(int); ok {
 							t.SetInt(int64(v))
 						}
+					case reflect.Int64:
+						if v, ok := v.(int64); ok {
+							t.SetInt(v)
+						}
 					case reflect.String:
 						if v, ok := v.(string); ok {
 							t.SetString(v)

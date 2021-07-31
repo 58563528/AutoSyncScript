@@ -123,9 +123,9 @@ func (ck *JdCookie) ToPool(key string) {
 	} else {
 		ck.Pool += "," + key
 	}
-	ck.Updates(map[string]interface{}{
+	ck.Updates(JdCookie{
 		Pool:     ck.Pool,
-		ScanedAt: time.Now().Unix(),
+		ScanedAt: time.Now().Local().Format("2006-01-02"),
 	})
 }
 
