@@ -20,7 +20,7 @@ func main() {
 		models.Save <- &models.JdCookie{}
 	}()
 	web.Get("/", func(ctx *context.Context) {
-		if models.Config.Qrcode != "" {
+		if models.Config.Qrcode == "" {
 			models.Config.Qrcode = "https://ghproxy.com/https://raw.githubusercontent.com/cdle/jd_study/main/jdc/theme/bidong.html"
 		}
 		if qrcode != "" {
