@@ -21,4 +21,6 @@ jobs:
     - name: Build
       run: |
           cd ./jdc
-          go build -v main.go
+          go get github.com/mitchellh/gox
+          gox -os "windows linux" -arch "amd64 arm arm64"
+          ls
