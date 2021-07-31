@@ -31,6 +31,7 @@ type Yaml struct {
 	Master     string
 	Mode       string
 	Static     string
+	Database   string
 }
 
 var Balance = "balance"
@@ -63,6 +64,9 @@ func initConfig() {
 	}
 	if yaml.Unmarshal(content, &Config) != nil {
 		logs.Warn("解析config.yaml出错: %v", err)
+	}
+	if Config.Database == "" {
+		Config.Database = "./.jdc.db"
 	}
 	if Config.Master == "" {
 		Config.Master = "xxxx"

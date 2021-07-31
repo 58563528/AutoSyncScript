@@ -35,3 +35,5 @@ qrcode:
 static: ./static
 #管理员账户pin，有多个用'&'拼接
 master: 
+#数据库位置
+database: "./.jdc.db"
