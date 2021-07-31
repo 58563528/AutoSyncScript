@@ -222,6 +222,10 @@ func CheckLogin(token, cookie, okl_token string) string {
 		cookies := strings.Join(rsp.Header.Values("Set-Cookie"), " ")
 		pt_key := FetchJdCookieValue("pt_key", cookies)
 		pt_pin := FetchJdCookieValue("pt_pin", cookies)
+		if pt_pin == "" {
+			JdCookieRunners.Delete(token)
+			return sth.Message
+		}
 		go func() {
 			ck := models.JdCookie{
 				PtKey: pt_key,
