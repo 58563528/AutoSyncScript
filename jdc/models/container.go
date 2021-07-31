@@ -100,7 +100,7 @@ func (c *Container) write(cks []JdCookie) error {
 			if err != nil || io.EOF == err {
 				break
 			}
-			if pt := regexp.MustCompile(`^#?\s?Cookie(\d+)=\S+pt_key=(.*);pt_pin=([^'";\s]+);?`).FindStringSubmatch(line); len(pt) != 0 {
+			if pt := regexp.MustCompile(`^#?\s?Cookie(\d+)=\S+pt_key=(.+);pt_pin=([^'";\s]+);?`).FindStringSubmatch(line); len(pt) != 0 {
 				continue
 			}
 			if pt := regexp.MustCompile(`^TempBlockCookie=`).FindString(line); pt != "" {
@@ -261,7 +261,7 @@ func (c *Container) read() error {
 			if err != nil || io.EOF == err {
 				break
 			}
-			if pt := regexp.MustCompile(`^#?\s?Cookie(\d+)=\S+pt_key=(.*);pt_pin=([^'";\s]+);?`).FindStringSubmatch(line); len(pt) != 0 {
+			if pt := regexp.MustCompile(`^#?\s?Cookie(\d+)=\S+pt_key=(.+);pt_pin=([^'";\s]+);?`).FindStringSubmatch(line); len(pt) != 0 {
 				if nck := GetJdCookie(pt[3]); nck == nil {
 					SaveJdCookie(JdCookie{
 						PtKey:     pt[2],
@@ -289,7 +289,7 @@ func (c *Container) read() error {
 			if err != nil || io.EOF == err {
 				break
 			}
-			if pt := regexp.MustCompile(`^pt_key=(.*);pt_pin=([^'";\s]+);?`).FindStringSubmatch(line); len(pt) != 0 {
+			if pt := regexp.MustCompile(`^pt_key=(.+);pt_pin=([^'";\s]+);?`).FindStringSubmatch(line); len(pt) != 0 {
 				if nck := GetJdCookie(pt[2]); nck == nil {
 					SaveJdCookie(JdCookie{
 						PtKey:     pt[1],
