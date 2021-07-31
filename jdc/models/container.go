@@ -144,6 +144,9 @@ func (c *Container) write(cks []JdCookie) error {
 			if pt := regexp.MustCompile(`^pt_key=(.*);pt_pin=([^'";\s]+);?`).FindStringSubmatch(line); len(pt) != 0 {
 				continue
 			}
+			if pt := regexp.MustCompile(`^pt_key=(.*)`).FindStringSubmatch(line); len(pt) != 0 {
+				continue
+			}
 			config += line
 		}
 		for _, ck := range cks {
