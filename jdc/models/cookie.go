@@ -125,9 +125,10 @@ func (ck *JdCookie) ToPool(key string) {
 		ck.Pool += "," + ck.PtKey
 	}
 	ck.Updates(JdCookie{
-		PtKey:    key,
-		Pool:     ck.Pool,
-		ScanedAt: time.Now().Local().Format("2006-01-02"),
+		Available: True,
+		PtKey:     key,
+		Pool:      ck.Pool,
+		ScanedAt:  time.Now().Local().Format("2006-01-02"),
 	})
 }
 
