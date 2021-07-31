@@ -118,6 +118,20 @@ var Admin = `<html lang="zh-cn">
                 },
             });
         });
+        table.on('toolbar(accounts)', function(obj){
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch(obj.event){
+              case 'add':
+                layer.msg('添加');
+              break;
+              case 'delete':
+                layer.msg('删除');
+              break;
+              case 'update':
+                layer.msg('编辑');
+              break;
+            };
+          });
     </script>
     
     
