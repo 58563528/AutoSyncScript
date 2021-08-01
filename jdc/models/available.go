@@ -129,6 +129,7 @@ func initCookie() {
 	go func() {
 		Save <- &JdCookie{}
 	}()
+
 }
 
 func CookieOK(ck *JdCookie) bool {
