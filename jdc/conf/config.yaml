@@ -2,37 +2,21 @@
 mode: parallel
 #容器
 containers:
-  #青龙
-    #类型
-  - type: ql
-    #面板地址
-    address: http://192.168.31.233:5700
+  - address: http://192.168.31.233:5700
     #用户名
     username: admin
     #密码
     password: admin
-    #权重 balance模式下权重越高分得的ck越多
+    #权重 balance模式下权重越高分得的ck越多，默认1
     weigth: 3
     #单独对容器进行模式设置
     mode: parallel
-  - type: ql
-    address: http://192.168.31.233:5525
+  - address: http://192.168.31.233:5525
     username: admin
     password: admin
-    weigth: 2
-  #V4面板
-  - type: v4
     #本地配置文件路径
-    path: /Users/cdle/Desktop/jd_study/jdc/config.sh
-    #支持远程配置
-    address: 
-    password: admin
-    username: admin
-    weigth: 1
-  #不知名面板
-  - type: li
-    path: /Users/cdle/Desktop/jd_study/jdc/list.sh
-    weigth: 5
+  - path: /Users/cdle/Desktop/jd_study/jdc/config.sh
+  - path: /Users/cdle/Desktop/jd_study/jdc/list.sh
 #自定义二维码页面，支持本地、网络路径
 qrcode: 
 #静态文件 便于自定义二维码页面时，引入css、js等文件

@@ -75,6 +75,10 @@ func initContainer() {
 						Config.Containers[i].Type = "v4"
 						break
 					}
+					if strings.Contains(line, "QYWX_KEY") {
+						Config.Containers[i].Type = "v4"
+						break
+					}
 				}
 				if Config.Containers[i].Type == "" {
 					Config.Containers[i].Type = "li"
