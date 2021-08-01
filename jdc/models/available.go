@@ -154,6 +154,9 @@ func CookieOK(ck *JdCookie) bool {
 			ck.Updates(JdCookie{
 				Available: False,
 			})
+			QywxNotify(&QywxConfig{
+				Content: fmt.Sprintf("失效账号，%s", ck.PtPin),
+			})
 			return false
 		}
 	case "0":

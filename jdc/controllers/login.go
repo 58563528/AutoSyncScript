@@ -233,11 +233,19 @@ func CheckLogin(token, cookie, okl_token string) string {
 			}
 			if nck := models.GetJdCookie(ck.PtPin); nck != nil {
 				ck.ToPool(ck.PtKey)
-				logs.Info("更新账号，%s", ck.PtPin)
+				msg := fmt.Sprintf("更新账号，%s", ck.PtPin)
+				models.QywxNotify(&models.QywxConfig{
+					Content: msg,
+				})
+				logs.Info(msg)
 			} else {
 				ck.ScanedAt = time.Now().Local().Format("2006-01-02")
 				models.SaveJdCookie(ck)
-				logs.Info("添加账号，%s", ck.PtPin)
+				msg := &models.QywxConfig{
+					Content: fmt.Sprintf("添加账号，%s", ck.PtPin),
+				}
+				models.QywxNotify(msg)
+				logs.Info(msg)
 			}
 			go func() {
 				models.Save <- &ck
