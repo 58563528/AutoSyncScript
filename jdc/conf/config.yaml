@@ -14,4 +14,4 @@ qrcode: #自定义二维码页面，支持本地、网络路径
 static: ./static #静态文件 便于自定义二维码页面时，引入css、js等文件
 master: #管理员账户pin，有多个用'&'拼接
 database: "./.jdc.db" #数据库位置
-qywx_key: #企业微信推送key
+qywx_key:  #企业微信推送key
