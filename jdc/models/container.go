@@ -101,6 +101,7 @@ func (c *Container) write(cks []JdCookie) error {
 	case "v4":
 		return c.postConfig(func(config string) string {
 			TempBlockCookie := ""
+			cookies := ""
 			for i, ck := range cks {
 				if ck.PtPin == "" || ck.PtKey == "" {
 					continue
@@ -108,9 +109,9 @@ func (c *Container) write(cks []JdCookie) error {
 				if ck.Available == False {
 					TempBlockCookie += fmt.Sprintf("%d ", i+1)
 				}
-				config = fmt.Sprintf("Cookie%d=\"pt_key=%s;pt_pin=%s;\"\n", i+1, ck.PtKey, ck.PtPin) + config
+				cookies += fmt.Sprintf("Cookie%d=\"pt_key=%s;pt_pin=%s;\"\n", i+1, ck.PtKey, ck.PtPin)
 			}
-			config = fmt.Sprintf(`TempBlockCookie="%s"`, TempBlockCookie) + "\n" + config
+			config = fmt.Sprintf(`TempBlockCookie="%s"`, TempBlockCookie) + "\n" + cookies + config
 			return config
 		})
 	case "li":
