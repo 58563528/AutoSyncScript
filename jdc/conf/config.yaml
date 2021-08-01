@@ -22,7 +22,7 @@ containers:
   #   weigth: 2
   # #V4面板
   # - type: v4
-  #   #配置文件路径
+  #   #本地配置文件路径
   #   path: /Users/cdle/Desktop/jd_study/jdc/config.sh
   #   #支持远程配置
   #   address: 

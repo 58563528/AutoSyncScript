@@ -195,7 +195,6 @@ func (c *Container) read() error {
 					}
 				}
 			}
-
 			return nil
 		} else {
 			var data, err = c.request("/api/cookies")
@@ -246,7 +245,6 @@ func (c *Container) read() error {
 					config += line
 					break
 				}
-
 				if pt := regexp.MustCompile(`^#?\s?Cookie(\d+)=\S+pt_key=(.+);pt_pin=([^'";\s]+);?`).FindStringSubmatch(line); len(pt) != 0 {
 					if nck := GetJdCookie(pt[3]); nck == nil {
 						SaveJdCookie(JdCookie{
