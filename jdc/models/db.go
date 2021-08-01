@@ -72,6 +72,9 @@ func GetJdCookies() []JdCookie {
 				cks[i], cks[max] = cks[max], cks[i]
 			}
 			for i := range cks {
+				if cks[i].PtPin == "" {
+					continue
+				}
 				cks[i].ID = i + 1
 				if cks[i].Nickname == "" {
 					cks[i].Nickname = "--"

@@ -27,16 +27,18 @@ func initContainer() {
 		if Config.Containers[i].Weigth == 0 {
 			Config.Containers[i].Weigth = 1
 		}
-		switch Config.Containers[i].Type {
-		case "ql":
+		if Config.Containers[i].Address != "" {
 			vv := regexp.MustCompile(`^(https?://[\.\w]+:?\d*)`).FindStringSubmatch(Config.Containers[i].Address)
 			if len(vv) == 2 {
 				Config.Containers[i].Address = vv[1]
 			} else {
-				logs.Warn("ql地址：%s错误", Config.Containers[i].Address)
+				logs.Warn("%s地址错误", Config.Containers[i].Type)
 			}
+		}
+		switch Config.Containers[i].Type {
+		case "ql":
 			version, err := GetQlVersion(Config.Containers[i].Address)
-			if Config.Containers[i].getToken() == nil {
+			if Config.Containers[i].getSession() == nil {
 				logs.Info("ql" + version + "登录成功")
 			} else {
 				logs.Warn("ql" + version + "登录失败")
@@ -46,12 +48,21 @@ func initContainer() {
 			}
 			Config.Containers[i].Version = version
 		case "v4", "li":
-			f, err := os.Open(Config.Containers[i].Path)
-			if err != nil {
-				logs.Warn("无法打开" + Config.Containers[i].Type + "配置文件，请检查路径是否正确")
+			if Config.Containers[i].Address != "" {
+				if err := Config.Containers[i].getSession(); err == nil {
+					logs.Info(Config.Containers[i].Type + "登录成功")
+
+				} else {
+					logs.Info(Config.Containers[i].Type+"登录失败", err)
+				}
 			} else {
-				f.Close()
-				logs.Info(Config.Containers[i].Type + "配置文件正确")
+				f, err := os.Open(Config.Containers[i].Path)
+				if err != nil {
+					logs.Warn("无法打开" + Config.Containers[i].Type + "配置文件，请检查路径是否正确")
+				} else {
+					f.Close()
+					logs.Info(Config.Containers[i].Type + "配置文件正确")
+				}
 			}
 		}
 	}
@@ -88,46 +99,20 @@ func (c *Container) write(cks []JdCookie) error {
 			}
 		}
 	case "v4":
-		config := ""
-		f, err := os.OpenFile(c.Path, os.O_RDWR|os.O_CREATE, 0777) //打开文件 |os.O_RDWR
-		if err != nil {
-			return err
-		}
-		defer f.Close()
-		rd := bufio.NewReader(f)
-		for {
-			line, err := rd.ReadString('\n') //以'\n'为结束符读入一行
-			if err != nil || io.EOF == err {
-				break
+		return c.postConfig(func(config string) string {
+			TempBlockCookie := ""
+			for i, ck := range cks {
+				if ck.PtPin == "" || ck.PtKey == "" {
+					continue
+				}
+				if ck.Available == False {
+					TempBlockCookie += fmt.Sprintf("%d ", i+1)
+				}
+				config = fmt.Sprintf("Cookie%d=\"pt_key=%s;pt_pin=%s;\"\n", i+1, ck.PtKey, ck.PtPin) + config
 			}
-			if pt := regexp.MustCompile(`^#?\s?Cookie(\d+)=\S+pt_key=(.+);pt_pin=([^'";\s]+);?`).FindStringSubmatch(line); len(pt) != 0 {
-				continue
-			}
-			if pt := regexp.MustCompile(`^TempBlockCookie=`).FindString(line); pt != "" {
-				continue
-			}
-			if pt := regexp.MustCompile(`^Cookie\d+=`).FindString(line); pt != "" {
-				continue
-			}
-			config += line
-		}
-		TempBlockCookie := ""
-		for i, ck := range cks {
-			if ck.PtPin == "" || ck.PtKey == "" {
-				continue
-			}
-			if ck.Available == False {
-				TempBlockCookie += fmt.Sprintf("%d ", i+1)
-			}
-			config = fmt.Sprintf("Cookie%d=\"pt_key=%s;pt_pin=%s;\"\n", i+1, ck.PtKey, ck.PtPin) + config
-		}
-		config = fmt.Sprintf(`TempBlockCookie="%s"`, TempBlockCookie) + "\n" + config
-		f.Truncate(0)
-		f.Seek(0, 0)
-		if _, err := io.WriteString(f, config); err != nil {
-			return err
-		}
-		return nil
+			config = fmt.Sprintf(`TempBlockCookie="%s"`, TempBlockCookie) + "\n" + config
+			return config
+		})
 	case "li":
 		config := ""
 		f, err := os.OpenFile(c.Path, os.O_RDWR|os.O_CREATE, 0777) //打开文件 |os.O_RDWR
@@ -252,33 +237,40 @@ func (c *Container) read() error {
 			}
 		}
 	case "v4":
-		f, err := os.OpenFile(c.Path, os.O_RDWR|os.O_CREATE, 0777) //打开文件 |os.O_RDWR
-		if err != nil {
-			c.Available = false
-			return err
-		}
-		defer f.Close()
-		rd := bufio.NewReader(f)
-		for {
-			line, err := rd.ReadString('\n') //以'\n'为结束符读入一行
-			if err != nil || io.EOF == err {
-				break
-			}
-			if pt := regexp.MustCompile(`^#?\s?Cookie(\d+)=\S+pt_key=(.+);pt_pin=([^'";\s]+);?`).FindStringSubmatch(line); len(pt) != 0 {
-				if nck := GetJdCookie(pt[3]); nck == nil {
-					SaveJdCookie(JdCookie{
-						PtKey:     pt[2],
-						PtPin:     pt[3],
-						Available: True,
-					})
-				} else {
-					if nck.PtKey != pt[2] {
-						nck.ToPool(pt[2])
-					}
+		return c.getConfig(func(rd *bufio.Reader) string {
+			config := ""
+			for {
+				line, err := rd.ReadString('\n') //以'\n'为结束符读入一行
+
+				if err != nil || io.EOF == err {
+					config += line
+					break
 				}
-				continue
+
+				if pt := regexp.MustCompile(`^#?\s?Cookie(\d+)=\S+pt_key=(.+);pt_pin=([^'";\s]+);?`).FindStringSubmatch(line); len(pt) != 0 {
+					if nck := GetJdCookie(pt[3]); nck == nil {
+						SaveJdCookie(JdCookie{
+							PtKey:     pt[2],
+							PtPin:     pt[3],
+							Available: True,
+						})
+					} else {
+						if nck.PtKey != pt[2] {
+							nck.ToPool(pt[2])
+						}
+					}
+					continue
+				}
+				if pt := regexp.MustCompile(`^Cookie\d+`).FindString(line); pt != "" {
+					continue
+				}
+				if pt := regexp.MustCompile(`^TempBlockCookie`).FindString(line); pt != "" {
+					continue
+				}
+				config += line
 			}
-		}
+			return config
+		})
 	case "li":
 		f, err := os.OpenFile(c.Path, os.O_RDWR|os.O_CREATE, 0777) //打开文件 |os.O_RDWR
 		if err != nil {
@@ -401,3 +393,68 @@ const (
 	PUT    = "PUT"
 	DELETE = "DELETE"
 )
+
+func (c *Container) getConfig(handle func(*bufio.Reader) string) error {
+	if c.Address == "" {
+		f, err := os.OpenFile(c.Path, os.O_RDWR|os.O_CREATE, 0777) //打开文件 |os.O_RDWR
+		if err != nil {
+			return err
+		}
+		defer f.Close()
+		c.Config = handle(bufio.NewReader(f))
+	} else {
+		err := c.getSession()
+		if err != nil {
+			return err
+		}
+		req := httplib.Get(c.Address + "/api/config/config")
+		req.Header("Cookie", c.Token)
+		rsp, err := req.Response()
+		if err != nil {
+			return err
+		}
+		c.Config = handle(bufio.NewReader(rsp.Body))
+	}
+	return nil
+}
+
+func (c *Container) postConfig(handle func(config string) string) error {
+	if c.Address == "" {
+		f, err := os.OpenFile(c.Path, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0777)
+		if err != nil {
+			return err
+		}
+		defer f.Close()
+		f.WriteString(handle(c.Config))
+	} else {
+		req := httplib.Post(c.Address + "/api/save")
+		req.Header("Cookie", c.Token)
+		req.Param("content", handle(c.Config))
+		req.Param("name", "config.sh")
+		_, err := req.Bytes()
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (c *Container) getSession() error {
+	req := httplib.Post(c.Address + "/auth")
+	req.Param("username", c.Username)
+	req.Param("password", c.Password)
+	rsp, err := req.Response()
+	if err != nil {
+		return err
+	}
+	c.Token = rsp.Header.Get("Set-Cookie")
+	if data, err := ioutil.ReadAll(rsp.Body); err != nil {
+		return err
+	} else {
+		err, _ := jsonparser.GetInt(data, "err")
+		if err != 0 {
+			return errors.New(string(data))
+		}
+	}
+	return nil
+}

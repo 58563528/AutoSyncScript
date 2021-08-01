@@ -1,6 +1,7 @@
 package models
 
 import (
+	"bufio"
 	"io"
 	"io/ioutil"
 	"os"
@@ -24,6 +25,8 @@ type Container struct {
 	Delete    []string
 	Weigth    int
 	Mode      string
+	Reader    *bufio.Reader
+	Config    string
 }
 type Yaml struct {
 	Containers []Container

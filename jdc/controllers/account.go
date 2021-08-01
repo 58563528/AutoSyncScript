@@ -32,6 +32,9 @@ func (c *AccountController) List() {
 	if to >= len {
 		to = len
 	}
+	if from < 0 {
+		from = 0
+	}
 	var data = cks[from:to]
 	c.Data["json"] = map[string]interface{}{
 		"code":    200,

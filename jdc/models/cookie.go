@@ -18,6 +18,7 @@ func init() {
 			get := <-Save
 			if get.Pool == "s" {
 				initCookie()
+				continue
 			}
 			cks := GetJdCookies()
 			if Config.Mode == Parallel {
@@ -46,11 +47,6 @@ func init() {
 						}
 					}
 				}
-				// if total == 0 {
-				// 	logs.Warn("容器都挂了")
-				// 	continue
-				// }
-
 				l := len(cks)
 				for _, v := range weigth {
 					conclude = append(conclude, int(math.Ceil(v/total*float64(l))))
