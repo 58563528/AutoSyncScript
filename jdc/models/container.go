@@ -27,6 +27,7 @@ func initContainer() {
 		if Config.Containers[i].Weigth == 0 {
 			Config.Containers[i].Weigth = 1
 		}
+		Config.Containers[i].Type = ""
 		if Config.Containers[i].Address != "" {
 			vv := regexp.MustCompile(`^(https?://[\.\w]+:?\d*)`).FindStringSubmatch(Config.Containers[i].Address)
 			if len(vv) == 2 {
@@ -34,35 +35,52 @@ func initContainer() {
 			} else {
 				logs.Warn("%s地址错误", Config.Containers[i].Type)
 			}
-		}
-		switch Config.Containers[i].Type {
-		case "ql":
 			version, err := GetQlVersion(Config.Containers[i].Address)
-			if Config.Containers[i].getSession() == nil {
-				logs.Info("ql" + version + "登录成功")
+			if err == nil {
+				if Config.Containers[i].getToken() == nil {
+					logs.Info("青龙" + version + "登录成功")
+				} else {
+					logs.Warn("青龙" + version + "登录失败")
+				}
+				Config.Containers[i].Type = "ql"
+				Config.Containers[i].Version = version
 			} else {
-				logs.Warn("ql" + version + "登录失败")
-			}
-			if err != nil {
-				logs.Warn("ql版本识别失败")
-			}
-			Config.Containers[i].Version = version
-		case "v4", "li":
-			if Config.Containers[i].Address != "" {
 				if err := Config.Containers[i].getSession(); err == nil {
-					logs.Info(Config.Containers[i].Type + "登录成功")
-
+					logs.Info("v系登录成功")
 				} else {
-					logs.Info(Config.Containers[i].Type+"登录失败", err)
+					logs.Info("v系登录失败")
 				}
+				Config.Containers[i].Type = "v4"
+			}
+		} else {
+			f, err := os.Open(Config.Containers[i].Path)
+			if err != nil {
+				logs.Warn("无法打开" + Config.Containers[i].Type + "配置文件，请检查路径是否正确")
 			} else {
-				f, err := os.Open(Config.Containers[i].Path)
-				if err != nil {
-					logs.Warn("无法打开" + Config.Containers[i].Type + "配置文件，请检查路径是否正确")
-				} else {
-					f.Close()
-					logs.Info(Config.Containers[i].Type + "配置文件正确")
+				rd := bufio.NewReader(f)
+				for {
+					line, err := rd.ReadString('\n') //以'\n'为结束符读入一行
+					if err != nil || io.EOF == err {
+						break
+					}
+					if pt := regexp.MustCompile(`^pt_key=`).FindString(line); pt != "" {
+						Config.Containers[i].Type = "li"
+						break
+					}
+					if pt := regexp.MustCompile(`^Cookie\d+`).FindString(line); pt != "" {
+						Config.Containers[i].Type = "v4"
+						break
+					}
+					if strings.Contains(line, "TempBlockCookie") {
+						Config.Containers[i].Type = "v4"
+						break
+					}
 				}
+				if Config.Containers[i].Type == "" {
+					Config.Containers[i].Type = "li"
+				}
+				f.Close()
+				logs.Info(Config.Containers[i].Type + "配置文件正确")
 			}
 		}
 	}
