@@ -36,6 +36,7 @@ type Yaml struct {
 	Static     string
 	Database   string
 	QywxKey    string `yaml:"qywx_key"`
+	Resident   string
 }
 
 var Balance = "balance"

@@ -32,6 +32,18 @@ func initHandle() {
 					(&Config.Containers[i]).write(cks)
 				}
 			} else {
+				resident := []JdCookie{}
+				if Config.Resident != "" {
+					tmp := cks
+					cks := []JdCookie{}
+					for _, ck := range tmp {
+						if strings.Contains(Config.Resident, ck.PtPin) {
+							resident = append(cks, ck)
+						} else {
+							cks = append(cks, ck)
+						}
+					}
+				}
 				weigth := []float64{}
 				conclude := []int{}
 				total := 0.0
@@ -39,7 +51,6 @@ func initHandle() {
 				parallels := []Container{}
 				for i := range Config.Containers {
 					(&Config.Containers[i]).read()
-
 					if Config.Containers[i].Available {
 						if Config.Containers[i].Mode == Parallel {
 							parallels = append(parallels, Config.Containers[i])
@@ -56,7 +67,7 @@ func initHandle() {
 				}
 				a := 0
 				for i, j := range conclude {
-					availables[i].write(cks[a : a+j])
+					availables[i].write(append(resident, cks[a:a+j]...))
 					a += j
 					if a >= l-1 {
 						break
