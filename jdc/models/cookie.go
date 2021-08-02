@@ -35,7 +35,7 @@ func initHandle() {
 				resident := []JdCookie{}
 				if Config.Resident != "" {
 					tmp := cks
-					cks := []JdCookie{}
+					cks = []JdCookie{}
 					for _, ck := range tmp {
 						if strings.Contains(Config.Resident, ck.PtPin) {
 							resident = append(cks, ck)

@@ -3,6 +3,8 @@ module github.com/cdle/jd_study/jdc
 go 1.16
 
 require (
+	github.com/EDDYCJY/fake-useragent v0.2.0
+	github.com/PuerkitoBio/goquery v1.7.1 // indirect
 	github.com/beego/beego/v2 v2.0.1
 	github.com/boltdb/bolt v1.3.1
 	github.com/buger/jsonparser v1.1.1
