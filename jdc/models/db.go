@@ -13,7 +13,7 @@ var TASK = "TASK"
 func initDB() {
 	var err error
 	if Config.Database == "" {
-		Config.Database = "./.jdc.db"
+		Config.Database = ExecPath + "/.jdc.db"
 	}
 	db, err = bolt.Open(Config.Database, 0600, nil)
 
