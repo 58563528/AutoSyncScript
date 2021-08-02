@@ -53,10 +53,10 @@ func initContainer() {
 				}
 				Config.Containers[i].Type = "v4"
 			}
-		} else {
+		} else if Config.Containers[i].Path != "" {
 			f, err := os.Open(Config.Containers[i].Path)
 			if err != nil {
-				logs.Warn("无法打开" + Config.Containers[i].Type + "配置文件，请检查路径是否正确")
+				logs.Warn("无法打开%s，请检查路径是否正确", Config.Containers[i].Path)
 			} else {
 				rd := bufio.NewReader(f)
 				for {
