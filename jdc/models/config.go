@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"os"
 
-	"github.com/astaxie/beego/httplib"
+	"github.com/beego/beego/v2/client/httplib"
 	"github.com/beego/beego/v2/core/logs"
 	"gopkg.in/yaml.v2"
 )
@@ -55,6 +55,7 @@ func initConfig() {
 		}
 		s, _ := ioutil.ReadAll(f)
 		if len(s) == 0 {
+			logs.Info("下载配置%s", name)
 			r, err := httplib.Get("https://ghproxy.com/https://raw.githubusercontent.com/cdle/jd_study/main/jdc/conf/" + name).Response()
 			if err == nil {
 				io.Copy(f, r.Body)
@@ -68,9 +69,6 @@ func initConfig() {
 	}
 	if yaml.Unmarshal(content, &Config) != nil {
 		logs.Warn("解析config.yaml出错: %v", err)
-	}
-	if Config.Database == "" {
-		Config.Database = "./.jdc.db"
 	}
 	if Config.Master == "" {
 		Config.Master = "xxxx"

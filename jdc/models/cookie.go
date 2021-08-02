@@ -2,15 +2,12 @@ package models
 
 import (
 	"math"
-	"os"
-	"path/filepath"
 	"strings"
 	"time"
 )
 
-func init() {
+func initHandle() {
 	//获取路径
-	ExecPath, _ = filepath.Abs(filepath.Dir(os.Args[0]))
 	Save = make(chan *JdCookie)
 	go func() {
 		init := true
