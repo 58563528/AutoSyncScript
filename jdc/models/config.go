@@ -37,6 +37,7 @@ type Yaml struct {
 	Database   string
 	QywxKey    string `yaml:"qywx_key"`
 	Resident   string
+	UserAgent  string `yaml:"user_agent"`
 }
 
 var Balance = "balance"
