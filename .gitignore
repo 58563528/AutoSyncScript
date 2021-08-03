@@ -6,3 +6,4 @@ config.sh
 *.exe
 list.sh
 note.txt
+jdc_darwin_amd64

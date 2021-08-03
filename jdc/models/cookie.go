@@ -67,7 +67,11 @@ func initHandle() {
 				}
 				a := 0
 				for i, j := range conclude {
-					availables[i].write(append(resident, cks[a:a+j]...))
+					s := a + j
+					if s > l {
+						s = l
+					}
+					availables[i].write(append(resident, cks[a:s]...))
 					a += j
 					if a >= l-1 {
 						break
