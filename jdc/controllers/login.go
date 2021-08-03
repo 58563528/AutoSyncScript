@@ -170,6 +170,11 @@ func (c *LoginController) Query() {
 			} else {
 				pin := v.([]string)[0]
 				c.SetSession("pin", pin)
+				if note := c.GetString("note"); note != "" {
+					if ck := models.GetJdCookie(pin); ck != nil {
+						ck.Updates(models.Note, note)
+					}
+				}
 				if strings.Contains(models.Config.Master, pin) {
 					c.Ctx.WriteString("登录")
 				} else {

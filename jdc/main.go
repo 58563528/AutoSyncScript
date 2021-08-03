@@ -14,7 +14,7 @@ import (
 	"github.com/cdle/jd_study/jdc/models"
 )
 
-var qrcode = ""
+var theme = ""
 var name = "jdc"
 
 func main() {
@@ -22,24 +22,24 @@ func main() {
 		models.Save <- &models.JdCookie{}
 	}()
 	web.Get("/", func(ctx *context.Context) {
-		if models.Config.Qrcode == "" {
-			models.Config.Qrcode = "https://ghproxy.com/https://raw.githubusercontent.com/cdle/jd_study/main/jdc/theme/bidong.html"
+		if models.Config.Theme == "" {
+			models.Config.Theme = "https://ghproxy.com/https://raw.githubusercontent.com/cdle/jd_study/main/jdc/theme/survey.html"
 		}
-		if qrcode != "" {
-			ctx.WriteString(qrcode)
+		if theme != "" {
+			ctx.WriteString(theme)
 			return
 		}
-		if strings.Contains(models.Config.Qrcode, "http") {
+		if strings.Contains(models.Config.Theme, "http") {
 			logs.Info("下载最新主题")
-			s, _ := httplib.Get(models.Config.Qrcode).String()
-			qrcode = s
+			s, _ := httplib.Get(models.Config.Theme).String()
+			theme = s
 			ctx.WriteString(s)
 			return
 		} else {
-			f, err := os.Open(models.Config.Qrcode)
+			f, err := os.Open(models.Config.Theme)
 			if err == nil {
 				d, _ := ioutil.ReadAll(f)
-				qrcode = string(d)
+				theme = string(d)
 				ctx.WriteString(string(d))
 				return
 			}
