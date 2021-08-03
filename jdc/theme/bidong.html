@@ -93,8 +93,6 @@
                 } else {
                     showQrcode()
                 }
-            } else {
-                showQrcode()
             }
         }
         xmlhttp.open("GET", "/api/login/qrcode", true);
@@ -125,6 +123,7 @@
                         clearInterval(timer)
                         break;
                     default:
+                        showQrcode()
                         break;
                 }
             }
