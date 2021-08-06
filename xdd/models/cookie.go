@@ -78,7 +78,7 @@ func initHandle() {
 					}
 				}
 				for i := range parallels {
-					parallels[i].write(cks)
+					parallels[i].write(append(resident, cks...))
 				}
 			}
 			if init {
