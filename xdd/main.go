@@ -26,7 +26,7 @@ func main() {
 	})
 	web.Get("/", func(ctx *context.Context) {
 		if models.Config.Theme == "" {
-			models.Config.Theme = "https://ghproxy.com/https://raw.githubusercontent.com/cdle/jd_study/main/jdc/theme/survey.html"
+			models.Config.Theme = "https://ghproxy.com/https://raw.githubusercontent.com/cdle/jd_study/main/xdd/theme/survey.html"
 		}
 		if theme != "" {
 			ctx.WriteString(theme)
@@ -35,17 +35,19 @@ func main() {
 		if strings.Contains(models.Config.Theme, "http") {
 			logs.Info("下载最新主题")
 			s, _ := httplib.Get(models.Config.Theme).String()
-			theme = s
-			ctx.WriteString(s)
-			return
-		} else {
-			f, err := os.Open(models.Config.Theme)
-			if err == nil {
-				d, _ := ioutil.ReadAll(f)
-				theme = string(d)
-				ctx.WriteString(string(d))
+			if s != "" {
+				logs.Wain("主题下载失败，使用默认主题")
+				theme = s
+				ctx.WriteString(s)
 				return
 			}
+		}
+		f, err := os.Open(models.Config.Theme)
+		if err == nil {
+			d, _ := ioutil.ReadAll(f)
+			theme = string(d)
+			ctx.WriteString(string(d))
+			return
 		}
 	})
 	web.Router("/api/login/qrcode", &controllers.LoginController{}, "get:GetQrcode")
