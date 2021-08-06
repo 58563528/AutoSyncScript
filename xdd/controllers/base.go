@@ -108,7 +108,7 @@ func (c *BaseController) ResponseError(ps ...interface{}) *BaseController {
 
 //Logined 登录
 func (c *BaseController) Logined() *BaseController {
-	if models.ExecPath == "/Users/cdle/Desktop/jd_study/jdc" { //作者调试
+	if models.ExecPath == "/Users/cdle/Desktop/jd_study/xdd" { //作者调试
 		return c
 	}
 	if v := c.GetSession("pin"); v == nil || !strings.Contains(models.Config.Master, v.(string)) {
