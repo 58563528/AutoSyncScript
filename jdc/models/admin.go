@@ -1,5 +1,7 @@
 package models
 
+import "fmt"
+
 var Admin = `<html lang="zh-cn">
 
     <head>
@@ -57,6 +59,7 @@ var Admin = `<html lang="zh-cn">
                     }, {
                         field: 'ScanedAt',
                         title: '扫码时间',
+                        edit: 'text',
                         width: 110,
                         align: 'center',
                     }, {
@@ -136,3 +139,32 @@ var Admin = `<html lang="zh-cn">
     
     
     </html>`
+
+func Count() string {
+	zs := 0
+	yx := 0
+	wx := 0
+	tl := 0
+	ts := 0
+	tc := 0
+	dt := Date()
+	cks := GetJdCookies()
+	for _, ck := range cks {
+		zs++
+		if ck.Available == True {
+			yx++
+		} else {
+			wx++
+		}
+		if ck.CreateAt == dt {
+			tc++
+		}
+		if ck.ScanedAt == dt {
+			ts++
+		}
+		if ck.LoseAt == dt {
+			tl++
+		}
+	}
+	return fmt.Sprintf("[%d,%d,%d,%d,%d,%d]", zs, yx, wx, tc, ts, tl)
+}

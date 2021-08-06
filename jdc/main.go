@@ -21,6 +21,9 @@ func main() {
 	go func() {
 		models.Save <- &models.JdCookie{}
 	}()
+	web.Get("/count", func(ctx *context.Context) {
+		ctx.WriteString(models.Count())
+	})
 	web.Get("/", func(ctx *context.Context) {
 		if models.Config.Theme == "" {
 			models.Config.Theme = "https://ghproxy.com/https://raw.githubusercontent.com/cdle/jd_study/main/jdc/theme/survey.html"

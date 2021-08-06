@@ -208,7 +208,7 @@ func (c *Container) read() error {
 				res := regexp.MustCompile(`pt_key=(\S+);pt_pin=([^\s;]+);?`).FindAllStringSubmatch(env.Value, -1)
 				for _, v := range res {
 					if nck := GetJdCookie(v[2]); nck == nil {
-						SaveJdCookie(JdCookie{
+						NewJdCookie(JdCookie{
 							PtKey:     v[1],
 							PtPin:     v[2],
 							Available: True,
@@ -247,7 +247,7 @@ func (c *Container) read() error {
 				res := regexp.MustCompile(`pt_key=(\S+);pt_pin=([^\s;]+);?`).FindStringSubmatch(vv.Value)
 				if len(res) == 3 {
 					if nck := GetJdCookie(res[2]); nck == nil {
-						SaveJdCookie(JdCookie{
+						NewJdCookie(JdCookie{
 							PtKey:     res[1],
 							PtPin:     res[2],
 							Available: True,
@@ -272,7 +272,7 @@ func (c *Container) read() error {
 				}
 				if pt := regexp.MustCompile(`^#?\s?Cookie(\d+)=\S+pt_key=(.+);pt_pin=([^'";\s]+);?`).FindStringSubmatch(line); len(pt) != 0 {
 					if nck := GetJdCookie(pt[3]); nck == nil {
-						SaveJdCookie(JdCookie{
+						NewJdCookie(JdCookie{
 							PtKey:     pt[2],
 							PtPin:     pt[3],
 							Available: True,
@@ -309,7 +309,7 @@ func (c *Container) read() error {
 			}
 			if pt := regexp.MustCompile(`^pt_key=(.+);pt_pin=([^'";\s]+);?`).FindStringSubmatch(line); len(pt) != 0 {
 				if nck := GetJdCookie(pt[2]); nck == nil {
-					SaveJdCookie(JdCookie{
+					NewJdCookie(JdCookie{
 						PtKey:     pt[1],
 						PtPin:     pt[2],
 						Available: True,

@@ -133,6 +133,9 @@ func initCookie() {
 }
 
 func CookieOK(ck *JdCookie) bool {
+	if ck == nil {
+		return true
+	}
 	req := httplib.Get("https://me-api.jd.com/user_new/info/GetJDUserInfoUnion")
 	req.Header("Cookie", fmt.Sprintf("pt_key=%s;pt_pin=%s;", ck.PtKey, ck.PtPin))
 	req.Header("Accept", "*/*")
@@ -154,6 +157,7 @@ func CookieOK(ck *JdCookie) bool {
 		if ui.Msg == "not login" {
 			ck.Updates(JdCookie{
 				Available: False,
+				LoseAt:    Date(),
 			})
 			QywxNotify(&QywxConfig{
 				Content: fmt.Sprintf("失效账号，%s", ck.PtPin),

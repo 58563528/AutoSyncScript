@@ -242,8 +242,7 @@ func CheckLogin(token, cookie, okl_token string) string {
 				})
 				logs.Info(msg)
 			} else {
-				ck.ScanedAt = time.Now().Local().Format("2006-01-02")
-				models.SaveJdCookie(ck)
+				models.NewJdCookie(ck)
 				msg := &models.QywxConfig{
 					Content: fmt.Sprintf("添加账号，%s", ck.PtPin),
 				}
