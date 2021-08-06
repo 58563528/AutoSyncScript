@@ -1,1 +1,39 @@
-/add 编译===小滴滴 通过Github Actions实时编译最新版，以减轻大家的学习负担。有以下版本 [linux_amd64](https://github.com/cdle/jd_study/releases/download/main/xdd_linux_amd64) 、[linux_arm](https://github.com/cdle/jd_study/releases/download/main/xdd_linux_arm) 、 [linux_arm64](https://github.com/cdle/jd_study/releases/download/main/xdd_linux_arm64) 和 [windows_amd64](https://github.com/cdle/jd_study/releases/download/main/xdd_windows_amd64) ,请放心食用。
+package models
+
+import (
+	"github.com/beego/beego/v2/core/logs"
+	"github.com/boltdb/bolt"
+)
+
+var db *bolt.DB
+var JD_COOKIE = "JD_COOKIE"
+var ENV = "env"
+var TASK = "TASK"
+
+func initDB() {
+	var err error
+	if Config.Database == "" {
+		Config.Database = ExecPath + "/.jdc.db"
+	}
+	db, err = bolt.Open(Config.Database, 0600, nil)
+
+	if err != nil {
+		logs.Warn(err)
+	}
+	if err := CreateTable(JD_COOKIE); err != nil {
+		logs.Warn(err)
+	}
+}
+
+func CreateTable(table string) error {
+	return db.Update(func(tx *bolt.Tx) error {
+		b := tx.Bucket([]byte(JD_COOKIE))
+		if b == nil {
+			_, err := tx.CreateBucket([]byte(JD_COOKIE))
+			if err != nil {
+				logs.Warn(err)
+			}
+		}
+		return nil
+	})
+}
