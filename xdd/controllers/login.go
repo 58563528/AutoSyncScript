@@ -237,16 +237,12 @@ func CheckLogin(token, cookie, okl_token string) string {
 			if nck := models.GetJdCookie(ck.PtPin); nck != nil {
 				ck.ToPool(ck.PtKey)
 				msg := fmt.Sprintf("更新账号，%s", ck.PtPin)
-				models.QywxNotify(&models.QywxConfig{
-					Content: msg,
-				})
+				(&models.JdCookie{}).Push(msg)
 				logs.Info(msg)
 			} else {
 				models.NewJdCookie(ck)
-				msg := &models.QywxConfig{
-					Content: fmt.Sprintf("添加账号，%s", ck.PtPin),
-				}
-				models.QywxNotify(msg)
+				msg := fmt.Sprintf("添加账号，%s", ck.PtPin)
+				(&models.JdCookie{}).Push(msg)
 				logs.Info(msg)
 			}
 			go func() {

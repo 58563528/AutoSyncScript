@@ -19,3 +19,5 @@ daily_push: #定时任务
 resident: #均衡模式下所有容器共同的账号pin，有多个用'&'拼接。不建议填写，后续实现指定账号助力功能。
 #自定义ua
 user_agent:  
+telegram_bot_token:  #telegram bot token
+telegram_user_id:  #telegrame user id

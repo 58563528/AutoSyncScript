@@ -4,6 +4,7 @@ import (
 	"io/ioutil"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/beego/beego/v2/client/httplib"
 	"github.com/beego/beego/v2/core/logs"
@@ -65,9 +66,9 @@ func main() {
 	web.BConfig.WebConfig.Session.SessionOn = true
 	web.BConfig.WebConfig.Session.SessionGCMaxLifetime = 3600
 	web.BConfig.WebConfig.Session.SessionName = name
-	// go func() {
-	// 	time.Sleep(time.Second)
-	// 	killp()
-	// }()
+	go func() {
+		time.Sleep(time.Second * 4)
+		(&models.JdCookie{}).Push("小滴滴已启动")
+	}()
 	web.Run()
 }

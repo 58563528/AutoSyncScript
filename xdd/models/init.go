@@ -17,4 +17,5 @@ func init() {
 	initDB()
 	initHandle()
 	initCron()
+	initTgBot()
 }

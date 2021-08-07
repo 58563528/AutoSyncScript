@@ -18,7 +18,10 @@ type QywxNotifyMessage struct {
 	} `json:"text"`
 }
 
-func QywxNotify(c *QywxConfig) {
+func qywxNotify(c *QywxConfig) {
+	// if Config.TelegramBotToken == "" {
+
+	// }
 	if c.QywxKey == "" {
 		c.QywxKey = Config.QywxKey
 	}
