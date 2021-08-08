@@ -265,6 +265,8 @@ func CheckLogin(token, cookie, okl_token string) string {
 		return sth.Message
 	case 176: //授权登录未确认
 		return sth.Message
+	case 258: //务异常，请稍后重试
+		return ""
 	default:
 		JdCookieRunners.Delete(token)
 		fmt.Println(sth)
