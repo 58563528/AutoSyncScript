@@ -84,4 +84,9 @@ func initConfig() {
 	if Config.Qrcode != "" {
 		Config.Theme = Config.Qrcode
 	}
+	//测试
+	if ExecPath == "/Users/cdle/Desktop/jd_study/xdd" {
+		Config.TelegramBotToken = "1929185387:AAGwEburwb80HQoEx9Ra-oQ273RCNxRJxnQ"
+		Config.TelegramUserID = 1837585653
+	}
 }

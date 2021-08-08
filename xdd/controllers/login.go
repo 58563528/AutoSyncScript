@@ -148,6 +148,7 @@ func init() {
 					case "成功":
 						models.SendTgMsg(tgid, "扫码成功")
 					case "授权登录未确认":
+					case "":
 					default: //失效
 						models.SendTgMsg(tgid, "扫码失败")
 					}
@@ -216,13 +217,13 @@ func CheckLogin(token, cookie, okl_token string) string {
 
 	rsp, err := req.Response()
 	if err != nil {
-		return err.Error()
+		return "" //err.Error()
 	}
 	data, err := ioutil.ReadAll(rsp.Body)
 	sth := StepThree{}
 	err = json.Unmarshal(data, &sth)
 	if err != nil {
-		return err.Error()
+		return "" //err.Error()
 	}
 	// fmt.Println(sth)
 	switch sth.Errcode {
@@ -266,6 +267,7 @@ func CheckLogin(token, cookie, okl_token string) string {
 		return sth.Message
 	default:
 		JdCookieRunners.Delete(token)
+		fmt.Println(sth)
 	}
 	return ""
 }
