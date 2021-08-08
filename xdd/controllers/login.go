@@ -43,7 +43,7 @@ func (c *LoginController) GetQrcode() {
 	if v := c.GetSession("jd_token"); v != nil {
 		token := v.(string)
 		if v, ok := JdCookieRunners.Load(token); ok {
-			if len(v.([]string)) == 2 {
+			if len(v.([]interface{})) >= 2 {
 				var url = `https://plogin.m.jd.com/cgi-bin/m/tmauth?appid=300&client_type=m&token=` + token
 				data, _ := qrcode.Encode(url, qrcode.Medium, 256)
 				c.Ctx.WriteString(`{"url":"` + url + `","img":"` + base64.StdEncoding.EncodeToString(data) + `"}`)
@@ -115,14 +115,18 @@ func (c *LoginController) GetQrcode() {
 	}
 	url = `https://plogin.m.jd.com/cgi-bin/m/tmauth?client_type=m&appid=300&token=` + st.Token
 	cookies = strings.Join(rsp.Header.Values("Set-Cookie"), " ")
+	okl_token := FetchJdCookieValue("okl_token", cookies)
+	data, _ = qrcode.Encode(url, qrcode.Medium, 256)
+	tgid := c.GetQueryInt("tgid")
+	JdCookieRunners.Store(st.Token, []interface{}{cookie, okl_token, tgid})
+	if tgid != 0 {
+		c.Ctx.ResponseWriter.Write(data)
+		return
+	}
 
 	c.SetSession("jd_token", st.Token)
 	c.SetSession("jd_cookie", cookie)
-	okl_token := FetchJdCookieValue("okl_token", cookies)
 	c.SetSession("jd_okl_token", okl_token)
-	data, _ = qrcode.Encode(url, qrcode.Medium, 256)
-	// fmt.Println(st.Token, cookie, okl_token)
-	JdCookieRunners.Store(st.Token, []string{cookie, okl_token})
 	c.Ctx.WriteString(`{"url":"` + url + `","img":"` + base64.StdEncoding.EncodeToString(data) + `"}`) //"data:image/png;base64," +
 }
 
@@ -132,19 +136,20 @@ func init() {
 			time.Sleep(time.Second)
 			JdCookieRunners.Range(func(k, v interface{}) bool {
 				jd_token := k.(string)
-				vv := v.([]string)
-				if len(vv) == 2 {
-					cookie := vv[0]
-					okl_token := vv[1]
+				vv := v.([]interface{})
+				if len(vv) >= 2 {
+					cookie := vv[0].(string)
+					okl_token := vv[1].(string)
+					tgid := vv[2].(int)
 					// fmt.Println(jd_token, cookie, okl_token)
 					result := CheckLogin(jd_token, cookie, okl_token)
 					// fmt.Println(result)
 					switch result {
 					case "成功":
-
+						models.SendTgMsg(tgid, "扫码成功")
 					case "授权登录未确认":
 					default: //失效
-
+						models.SendTgMsg(tgid, "扫码失败")
 					}
 				}
 				return true
@@ -164,11 +169,11 @@ func (c *LoginController) Query() {
 			c.Ctx.WriteString("重新获取二维码")
 			return
 		} else {
-			if len(v.([]string)) == 2 {
+			if len(v.([]interface{})) >= 2 {
 				c.Ctx.WriteString("授权登录未确认")
 				return
 			} else {
-				pin := v.([]string)[0]
+				pin := v.([]interface{})[0].(string)
 				c.SetSession("pin", pin)
 				if note := c.GetString("note"); note != "" {
 					if ck := models.GetJdCookie(pin); ck != nil {
@@ -249,7 +254,7 @@ func CheckLogin(token, cookie, okl_token string) string {
 				models.Save <- &ck
 			}()
 		}()
-		JdCookieRunners.Store(token, []string{pt_pin})
+		JdCookieRunners.Store(token, []interface{}{pt_pin})
 		return "成功"
 	case 19: //Token无效，请退出重试
 		JdCookieRunners.Delete(token)
