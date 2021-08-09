@@ -58,5 +58,8 @@ func tgBotNotify(msg string) {
 }
 
 func SendTgMsg(id int, msg string) {
+	if b == nil || id == 0 {
+		return
+	}
 	b.Send(&tb.User{ID: id}, msg)
 }
