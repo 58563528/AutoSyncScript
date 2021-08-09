@@ -51,11 +51,15 @@ func initHandle() {
 						}
 					}
 				}
-				weigth := []float64{}
-				conclude := []int{}
-				total := 0.0
+				type balance struct {
+					Container Container
+					Weigth    float64
+					Ready     []JdCookie
+					Should    int
+				}
 				availables := []Container{}
 				parallels := []Container{}
+				bs := []balance{}
 				for i := range Config.Containers {
 					(&Config.Containers[i]).read()
 					if Config.Containers[i].Available {
@@ -63,26 +67,62 @@ func initHandle() {
 							parallels = append(parallels, Config.Containers[i])
 						} else {
 							availables = append(availables, Config.Containers[i])
-							weigth = append(weigth, float64(Config.Containers[i].Weigth))
-							total += float64(Config.Containers[i].Weigth)
+							bs = append(bs, balance{
+								Container: Config.Containers[i],
+								Weigth:    float64(Config.Containers[i].Weigth),
+							})
 						}
 					}
 				}
-				l := len(cks)
-				for _, v := range weigth {
-					conclude = append(conclude, int(math.Ceil(v/total*float64(l))))
+
+				for {
+					left := []JdCookie{}
+
+					l := len(cks)
+					total := 0.0
+					for i := range bs {
+						total += float64(bs[i].Weigth)
+					}
+					for i := range bs {
+						if bs[i].Weigth == 0 {
+							bs[i].Should = 0
+						} else {
+							bs[i].Should = int(math.Ceil(bs[i].Weigth / total * float64(l)))
+						}
+
+					}
+					a := 0
+					for i := range bs {
+						j := bs[i].Should
+						if j == 0 {
+							continue
+						}
+						s := 0
+						if bs[i].Container.Limit > 0 && j > bs[i].Container.Limit {
+							s = a + bs[i].Container.Limit
+							left = append(left, cks[s:a+j]...)
+							bs[i].Weigth = 0
+						} else {
+							s = a + j
+						}
+						if s > l {
+							s = l
+						}
+						bs[i].Ready = append(bs[i].Ready, cks[a:s]...)
+						a += j
+						if a >= l-1 {
+							break
+						}
+					}
+					if len(left) != 0 {
+						cks = left
+						continue
+					}
+					break
 				}
-				a := 0
-				for i, j := range conclude {
-					s := a + j
-					if s > l {
-						s = l
-					}
-					availables[i].write(append(resident, cks[a:s]...))
-					a += j
-					if a >= l-1 {
-						break
-					}
+
+				for i := range bs {
+					bs[i].Container.write(append(resident, bs[i].Ready...))
 				}
 				for i := range parallels {
 					parallels[i].write(append(resident, cks...))

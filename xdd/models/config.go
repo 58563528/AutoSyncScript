@@ -27,6 +27,7 @@ type Container struct {
 	Mode      string
 	Reader    *bufio.Reader
 	Config    string
+	Limit     int
 }
 type Yaml struct {
 	Containers       []Container
