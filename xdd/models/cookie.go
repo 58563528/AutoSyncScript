@@ -74,10 +74,9 @@ func initHandle() {
 						}
 					}
 				}
-
+				bat := cks
 				for {
 					left := []JdCookie{}
-
 					l := len(cks)
 					total := 0.0
 					for i := range bs {
@@ -125,7 +124,7 @@ func initHandle() {
 					bs[i].Container.write(append(resident, bs[i].Ready...))
 				}
 				for i := range parallels {
-					parallels[i].write(append(resident, cks...))
+					parallels[i].write(append(resident, bat...))
 				}
 			}
 			if init {
