@@ -43,6 +43,7 @@ type Yaml struct {
 	TelegramUserID   int    `yaml:"telegram_user_id"`
 	QQID             int64  `yaml:"qquid"`
 	QQGroupID        int64  `yaml:"qqgid"`
+	DefaultPriority  int    `yaml:"default_priority"`
 }
 
 var Balance = "balance"

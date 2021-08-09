@@ -1,4 +1,4 @@
-mode: balance #模式 balance(均衡模式)、parallel(平行模式)
+mode: parallel #模式 balance(均衡模式)、parallel(平行模式)
 containers: #容器，可配置多个
   - address: http://192.168.31.233:5700 #青龙2.2、青龙2.8、v1v2v3v4v5访问地址
     username: admin #用户名
@@ -21,5 +21,6 @@ resident: #均衡模式下所有容器共同的账号pin，有多个用'&'拼接
 user_agent:
 telegram_bot_token: #telegram bot token
 telegram_user_id: #telegrame user id
-qquid: 17745270 #接收通知的qq号
+qquid: #接收通知的qq号
 qqgid: #监听的群
+default_priority: #新用户默认优先级

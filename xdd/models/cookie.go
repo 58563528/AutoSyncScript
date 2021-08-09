@@ -24,6 +24,13 @@ func initHandle() {
 				continue
 			}
 			cks := GetJdCookies()
+			tmp := []JdCookie{}
+			for _, ck := range cks {
+				if ck.Priority >= 0 {
+					tmp = append(tmp, ck)
+				}
+			}
+			cks = tmp
 			if Config.Mode == Parallel {
 				for i := range Config.Containers {
 					(&Config.Containers[i]).read()
@@ -245,6 +252,7 @@ func NewJdCookie(cks ...JdCookie) {
 	for i := range cks {
 		cks[i].CreateAt = Date()
 		cks[i].ScanedAt = cks[i].CreateAt
+		cks[i].Priority = Config.DefaultPriority
 	}
 	saveJdCookie(cks...)
 }
