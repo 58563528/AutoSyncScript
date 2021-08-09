@@ -10,7 +10,7 @@ import (
 	"github.com/beego/beego/v2/core/logs"
 )
 
-var version = "2021080901"
+var version = "2021080902"
 
 func initVersion() {
 	logs.Info("检查更新" + version)
