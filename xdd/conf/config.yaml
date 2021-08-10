@@ -25,3 +25,4 @@ telegram_user_id: #telegrame user id
 qquid: #接收通知的qq号
 qqgid: #监听的群
 default_priority: #新用户默认优先级
+no_ghproxy: false #下载资源是否不使用代理 默认false

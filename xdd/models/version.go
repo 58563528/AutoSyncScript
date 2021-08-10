@@ -14,7 +14,7 @@ var version = "2021081002"
 
 func initVersion() {
 	logs.Info("检查更新" + version)
-	value, err := httplib.Get("https://ghproxy.com/https://raw.githubusercontent.com/cdle/jd_study/main/xdd/models/version.go").String()
+	value, err := httplib.Get(GhProxy + "https://raw.githubusercontent.com/cdle/jd_study/main/xdd/models/version.go").String()
 	if err != nil {
 		logs.Info("更新User-Agent失败")
 	} else {
@@ -22,7 +22,7 @@ func initVersion() {
 		if match := regexp.MustCompile(`var version = "(\d{10})"`).FindStringSubmatch(value); len(match) != 0 {
 			if match[1] > version {
 				logs.Warn("版本过低，下载更新")
-				rsp, err := httplib.Get("https://ghproxy.com/https://github.com/cdle/jd_study/releases/download/main/" + name).Response()
+				rsp, err := httplib.Get(GhProxy + "https://github.com/cdle/jd_study/releases/download/main/" + name).Response()
 				if err != nil {
 					logs.Warn("无法下载更新")
 					return
