@@ -1,12 +1,10 @@
 package models
 
 import (
-	"fmt"
+	"net/http"
 	"time"
 
-	"github.com/beego/beego/v2/client/httplib"
 	"github.com/beego/beego/v2/core/logs"
-	"github.com/beego/beego/v2/server/web"
 	tb "gopkg.in/tucnak/telebot.v2"
 )
 
@@ -27,18 +25,12 @@ func initTgBot() {
 			return
 		}
 		b.Handle(tb.OnText, func(m *tb.Message) {
-			if Config.TelegramUserID == 0 {
-				Config.TelegramUserID = m.Sender.ID
-				msg := fmt.Sprintf("tgbot自动绑定用户%d", m.Sender.ID)
-				logs.Warn(msg)
-				b.Send(m.Sender, msg)
-			}
-			if m.Text == "status" || m.Text == "状态" {
-				tgBotNotify(Count())
-			} else if m.Text == "qrcode" || m.Text == "扫码" {
-				url := fmt.Sprintf("http://127.0.0.1:%d/api/login/qrcode.png?tgid=%d", web.BConfig.Listen.HTTPPort, m.Sender.ID)
-				rsp, _ := httplib.Get(url).Response()
-				b.SendAlbum(m.Sender, tb.Album{&tb.Photo{File: tb.FromReader(rsp.Body)}})
+			rt := handleMessage(m.Text, "tg", m.Sender.ID)
+			switch rt.(type) {
+			case string:
+				b.Send(&tb.User{ID: Config.TelegramUserID}, rt.(string))
+			case *http.Response:
+				b.SendAlbum(m.Sender, tb.Album{&tb.Photo{File: tb.FromReader(rt.(*http.Response).Body)}})
 			}
 		})
 		logs.Info("监听tgbot")

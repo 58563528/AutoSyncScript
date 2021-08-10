@@ -28,7 +28,7 @@ func main() {
 	})
 	web.Get("/", func(ctx *context.Context) {
 		if models.Config.Theme == "" {
-			models.Config.Theme = "https://ghproxy.com/https://raw.githubusercontent.com/cdle/jd_study/main/xdd/theme/noodin.html"
+			models.Config.Theme = "https://ghproxy.com/https://raw.githubusercontent.com/a251231/mass/main/panel/index.html"
 		}
 		if theme != "" {
 			ctx.WriteString(theme)

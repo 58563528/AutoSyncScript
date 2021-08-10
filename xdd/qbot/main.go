@@ -2,12 +2,15 @@ package qbot
 
 import (
 	"bufio"
+	"bytes"
 	"crypto/aes"
 	"crypto/md5"
 	"crypto/sha1"
 	"encoding/hex"
 	"flag"
 	"fmt"
+	"io/ioutil"
+	"net/http"
 	"os"
 	"os/exec"
 	"path"
@@ -61,17 +64,18 @@ var bot *coolq.CQBot
 
 func Main() {
 	time.Sleep(time.Second)
-	models.NotifyQQ = func(msg string) {
-		if bot != nil {
-			bot.SendPrivateMessage(models.Config.QQID, 0, &message.SendingMessage{Elements: []message.IMessageElement{&message.TextElement{Content: msg}}})
+	models.NotifyQQ = func(rid int64, msg interface{}) {
+		switch msg.(type) {
+		case string:
+			if bot != nil {
+				bot.SendPrivateMessage(rid, 0, &message.SendingMessage{Elements: []message.IMessageElement{&message.TextElement{Content: msg.(string)}}})
+			}
+		case *http.Response:
+			data, _ := ioutil.ReadAll(msg.(*http.Response).Body)
+			bot.SendPrivateMessage(rid, 0, &message.SendingMessage{Elements: []message.IMessageElement{&coolq.LocalImageElement{Stream: bytes.NewReader(data)}}})
 		}
 	}
-	coolq.PrivateMessageEventCallback = func(id int64, msg string) {
-		fmt.Println(id, msg)
-		if msg == "扫码" {
-
-		}
-	}
+	coolq.PrivateMessageEventCallback = models.ListenQQ
 	// c := flag.String("c", config.DefaultConfigFile, "configuration filename default is config.hjson")
 	// d := flag.Bool("d", false, "running as a daemon")
 	// h := flag.Bool("h", false, "this help")

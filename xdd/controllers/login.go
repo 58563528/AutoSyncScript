@@ -118,8 +118,19 @@ func (c *LoginController) GetQrcode() {
 	okl_token := FetchJdCookieValue("okl_token", cookies)
 	data, _ = qrcode.Encode(url, qrcode.Medium, 256)
 	tgid := c.GetQueryInt("tgid")
-	JdCookieRunners.Store(st.Token, []interface{}{cookie, okl_token, tgid})
+	qqid := c.GetQueryInt("qqid")
+	id := 0
+	bot := ""
 	if tgid != 0 {
+		bot = "tg"
+		id = tgid
+	}
+	if qqid != 0 {
+		bot = "qq"
+		id = qqid
+	}
+	JdCookieRunners.Store(st.Token, []interface{}{cookie, okl_token, bot, id})
+	if bot != "" {
 		c.Ctx.ResponseWriter.Write(data)
 		return
 	}
@@ -140,17 +151,26 @@ func init() {
 				if len(vv) >= 2 {
 					cookie := vv[0].(string)
 					okl_token := vv[1].(string)
-					tgid := vv[2].(int)
+					bot := vv[2].(string)
+					id := vv[3].(int)
 					// fmt.Println(jd_token, cookie, okl_token)
 					result := CheckLogin(jd_token, cookie, okl_token)
 					// fmt.Println(result)
 					switch result {
 					case "成功":
-						models.SendTgMsg(tgid, "扫码成功")
+						if bot == "qq" {
+							models.NotifyQQ(int64(id), "扫码成功")
+						} else if bot == "tg" {
+							models.SendTgMsg(int(id), "扫码成功")
+						}
 					case "授权登录未确认":
 					case "":
 					default: //失效
-						models.SendTgMsg(tgid, "扫码失败")
+						if bot == "qq" {
+							models.NotifyQQ(int64(id), "扫码失败")
+						} else if bot == "tg" {
+							models.SendTgMsg(int(id), "扫码失败")
+						}
 					}
 				}
 				return true
