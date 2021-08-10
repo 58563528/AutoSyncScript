@@ -161,7 +161,7 @@ func CookieOK(ck *JdCookie) bool {
 					LoseAt:    Date(),
 				})
 			}
-			(&JdCookie{}).Push(fmt.Sprintf("失效账号，%s", ck.PtPin))
+			ck.Push(fmt.Sprintf("失效账号，%s", ck.PtPin))
 			return false
 		}
 	case "0":

@@ -65,6 +65,9 @@ var bot *coolq.CQBot
 func Main() {
 	time.Sleep(time.Second)
 	models.SendQQ = func(uid int64, msg interface{}) {
+		if uid == 0 {
+			return
+		}
 		switch msg.(type) {
 		case string:
 			if bot != nil {
