@@ -22,6 +22,6 @@ resident: #均衡模式下所有容器共同的账号pin，有多个用'&'拼接
 user_agent:
 telegram_bot_token: #telegram bot token
 telegram_user_id: #telegrame user id
-qquid: 17745270 #接收通知的qq号
+qquid: #接收通知的qq号
 qqgid: #监听的群
 default_priority: #新用户默认优先级
