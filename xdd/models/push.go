@@ -8,6 +8,6 @@ func (ck *JdCookie) Push(msg string) {
 		go tgBotNotify(msg)
 	}
 	if Config.QQID != 0 {
-		go NotifyQQ(Config.QQID, msg)
+		go SendQQ(Config.QQID, msg)
 	}
 }

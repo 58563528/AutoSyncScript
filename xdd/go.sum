@@ -29,8 +29,8 @@ github.com/bradfitz/gomemcache v0.0.0-20180710155616-bc664df96737/go.mod h1:PmM6
 github.com/buger/jsonparser v1.1.1 h1:2PnMjfWD7wBILjqQbt530v576A/cAbQvEW9gGIpYMUs=
 github.com/buger/jsonparser v1.1.1/go.mod h1:6RYKKt7H4d4+iWqouImQ9R2FZql3VbhNgx27UK13J/0=
 github.com/casbin/casbin v1.7.0/go.mod h1:c67qKN6Oum3UF5Q1+BByfFxkwKvhwW57ITjqwtzR1KE=
-github.com/cdle/go-cqhttp v1.1.1 h1:VY+0ygZY/Yr4Qeqko7LHxk5P0eRqnCj6S4FiGH3ZSRQ=
-github.com/cdle/go-cqhttp v1.1.1/go.mod h1:QeXWVo4SrtC+MgfduZOZH+zYNd/DYZOh5u9CqYFSUUc=
+github.com/cdle/go-cqhttp v1.1.2 h1:intdqFjBydFQVZB3c64oLMHWxQeB4Z65AeE3gMuE6Ng=
+github.com/cdle/go-cqhttp v1.1.2/go.mod h1:QeXWVo4SrtC+MgfduZOZH+zYNd/DYZOh5u9CqYFSUUc=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=
 github.com/cespare/xxhash/v2 v2.1.1 h1:6MnRN8NT7+YBpUIWxHtefFZOKTAPgGjpQSxqLNn0+qY=
 github.com/cespare/xxhash/v2 v2.1.1/go.mod h1:VGX0DQ3Q6kWi7AoAeZDth3/j3BFtOZR5XLFGgcrjCOs=

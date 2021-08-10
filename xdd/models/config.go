@@ -46,6 +46,7 @@ type Yaml struct {
 	QQGroupID        int64  `yaml:"qqgid"`
 	DefaultPriority  int    `yaml:"default_priority"`
 	NoGhproxy        bool   `yaml:"no_ghproxy"`
+	QbotPublicMode   bool   `yaml:"qbot_public_mode"`
 }
 
 var Balance = "balance"
@@ -94,6 +95,8 @@ func initConfig() {
 	if ExecPath == "/Users/cdle/Desktop/jd_study/xdd" {
 		Config.TelegramBotToken = "1929185387:AAGwEburwb80HQoEx9Ra-oQ273RCNxRJxnQ"
 		Config.TelegramUserID = 1837585653
+		Config.QQID = 17745270
+		Config.QQGroupID = 610790654
 	}
 	if Config.NoGhproxy {
 		GhProxy = ""

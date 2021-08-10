@@ -64,18 +64,31 @@ var bot *coolq.CQBot
 
 func Main() {
 	time.Sleep(time.Second)
-	models.NotifyQQ = func(rid int64, msg interface{}) {
+	models.SendQQ = func(uid int64, msg interface{}) {
 		switch msg.(type) {
 		case string:
 			if bot != nil {
-				bot.SendPrivateMessage(rid, 0, &message.SendingMessage{Elements: []message.IMessageElement{&message.TextElement{Content: msg.(string)}}})
+				bot.SendPrivateMessage(uid, models.Config.QQGroupID, &message.SendingMessage{Elements: []message.IMessageElement{&message.TextElement{Content: msg.(string)}}})
 			}
 		case *http.Response:
 			data, _ := ioutil.ReadAll(msg.(*http.Response).Body)
-			bot.SendPrivateMessage(rid, 0, &message.SendingMessage{Elements: []message.IMessageElement{&coolq.LocalImageElement{Stream: bytes.NewReader(data)}}})
+			bot.SendPrivateMessage(uid, models.Config.QQGroupID, &message.SendingMessage{Elements: []message.IMessageElement{&coolq.LocalImageElement{Stream: bytes.NewReader(data)}}})
 		}
 	}
-	coolq.PrivateMessageEventCallback = models.ListenQQ
+	models.SendQQGroup = func(gid int64, msg interface{}) {
+		fmt.Println(gid, msg)
+		switch msg.(type) {
+		case string:
+			if bot != nil {
+				bot.SendGroupMessage(gid, &message.SendingMessage{Elements: []message.IMessageElement{&message.TextElement{Content: msg.(string)}}})
+			}
+		case *http.Response:
+			data, _ := ioutil.ReadAll(msg.(*http.Response).Body)
+			bot.SendGroupMessage(gid, &message.SendingMessage{Elements: []message.IMessageElement{&coolq.LocalImageElement{Stream: bytes.NewReader(data)}}})
+		}
+	}
+	coolq.PrivateMessageEventCallback = models.ListenQQPrivateMessage
+	coolq.GroupMessageEventCallback = models.ListenQQGroupMessage
 	// c := flag.String("c", config.DefaultConfigFile, "configuration filename default is config.hjson")
 	// d := flag.Bool("d", false, "running as a daemon")
 	// h := flag.Bool("h", false, "this help")
@@ -86,7 +99,7 @@ func Main() {
 	// switch {
 	// case *h:
 	// 	help()
-	// case *d:
+	// case *d:xs
 	// 	server.Daemon()
 	// case *wd != "":
 	// 	resetWorkDir(*wd)

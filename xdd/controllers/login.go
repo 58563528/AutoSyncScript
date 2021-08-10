@@ -119,6 +119,7 @@ func (c *LoginController) GetQrcode() {
 	data, _ = qrcode.Encode(url, qrcode.Medium, 256)
 	tgid := c.GetQueryInt("tgid")
 	qqid := c.GetQueryInt("qqid")
+	qqgid := c.GetQueryInt("qqgid")
 	id := 0
 	bot := ""
 	if tgid != 0 {
@@ -128,6 +129,10 @@ func (c *LoginController) GetQrcode() {
 	if qqid != 0 {
 		bot = "qq"
 		id = qqid
+	}
+	if qqgid != 0 {
+		bot = "qqg"
+		id = qqgid
 	}
 	JdCookieRunners.Store(st.Token, []interface{}{cookie, okl_token, bot, id})
 	if bot != "" {
@@ -159,17 +164,21 @@ func init() {
 					switch result {
 					case "成功":
 						if bot == "qq" {
-							models.NotifyQQ(int64(id), "扫码成功")
+							models.SendQQ(int64(id), "扫码成功")
 						} else if bot == "tg" {
 							models.SendTgMsg(int(id), "扫码成功")
+						} else if bot == "qqg" {
+							models.SendQQGroup(int64(id), "扫码成功")
 						}
 					case "授权登录未确认":
 					case "":
 					default: //失效
 						if bot == "qq" {
-							models.NotifyQQ(int64(id), "扫码失败")
+							models.SendQQ(int64(id), "扫码失败")
 						} else if bot == "tg" {
 							models.SendTgMsg(int(id), "扫码失败")
+						} else if bot == "qqg" {
+							models.SendQQGroup(int64(id), "扫码失败")
 						}
 					}
 				}

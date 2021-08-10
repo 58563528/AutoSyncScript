@@ -9,9 +9,20 @@ import (
 	"github.com/beego/beego/v2/server/web"
 )
 
-var NotifyQQ func(int64, interface{})
-var ListenQQ = func(uid int64, msg string) {
-	NotifyQQ(uid, handleMessage(msg, "qq", uid))
+var SendQQ func(int64, interface{})
+var SendQQGroup func(int64, interface{})
+var ListenQQPrivateMessage = func(uid int64, msg string) {
+	SendQQ(uid, handleMessage(msg, "qq", uid))
+}
+
+var ListenQQGroupMessage = func(gid int64, uid int64, msg string) {
+	if gid == Config.QQGroupID {
+		if Config.QbotPublicMode {
+			SendQQGroup(gid, handleMessage(msg, "qqg", gid, uid))
+		} else {
+			SendQQ(uid, handleMessage(msg, "qq", uid))
+		}
+	}
 }
 
 var handleMessage = func(msgs ...interface{}) interface{} {
