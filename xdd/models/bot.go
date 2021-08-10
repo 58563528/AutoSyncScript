@@ -33,16 +33,18 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 					PtKey: s[1],
 					PtPin: s[2],
 				}
-				if nck := GetJdCookie(ck.PtPin); nck != nil {
-					ck.ToPool(ck.PtKey)
-					msg := fmt.Sprintf("更新账号，%s", ck.PtPin)
-					(&JdCookie{}).Push(msg)
-					logs.Info(msg)
-				} else {
-					NewJdCookie(ck)
-					msg := fmt.Sprintf("添加账号，%s", ck.PtPin)
-					(&JdCookie{}).Push(msg)
-					logs.Info(msg)
+				if CookieOK(&ck) {
+					if nck := GetJdCookie(ck.PtPin); nck != nil {
+						ck.ToPool(ck.PtKey)
+						msg := fmt.Sprintf("更新账号，%s", ck.PtPin)
+						(&JdCookie{}).Push(msg)
+						logs.Info(msg)
+					} else {
+						NewJdCookie(ck)
+						msg := fmt.Sprintf("添加账号，%s", ck.PtPin)
+						(&JdCookie{}).Push(msg)
+						logs.Info(msg)
+					}
 				}
 			}
 			go func() {
