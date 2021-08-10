@@ -18,4 +18,5 @@ func init() {
 	initHandle()
 	initCron()
 	initTgBot()
+	InitReplies()
 }

@@ -2,6 +2,8 @@ package models
 
 import (
 	"fmt"
+	"io/ioutil"
+	"os"
 	"regexp"
 
 	"github.com/beego/beego/v2/client/httplib"
@@ -21,6 +23,20 @@ var ListenQQGroupMessage = func(gid int64, uid int64, msg string) {
 			SendQQGroup(gid, handleMessage(msg, "qqg", gid, uid))
 		} else {
 			SendQQ(uid, handleMessage(msg, "qq", uid))
+		}
+	}
+}
+
+var replies = map[string]string{}
+
+func InitReplies() {
+	f, err := os.Open(ExecPath + "/conf/reply.php")
+	if err == nil {
+		defer f.Close()
+		data, _ := ioutil.ReadAll(f)
+		ss := regexp.MustCompile("`([^`]+)`\\s*=>\\s*`([^`]+)`").FindAllStringSubmatch(string(data), -1)
+		for _, s := range ss {
+			replies[s[1]] = s[2]
 		}
 	}
 }
@@ -61,8 +77,13 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 			go func() {
 				Save <- &JdCookie{}
 			}()
+			return nil
 		}
-
+		for k, v := range replies {
+			if regexp.MustCompile(k).FindString(msgs[0].(string)) != "" {
+				return v
+			}
+		}
 	}
 	return nil
 }
