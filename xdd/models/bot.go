@@ -59,12 +59,9 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 	default:
 		{
 			s := regexp.MustCompile(`(查询|query)\s+(.*)`).FindStringSubmatch(msg)
-			fmt.Println(s)
 			if len(s) > 0 {
 				cks := GetJdCookies()
-				a := s[2]
-				fmt.Println(a)
-				if s := strings.Split(a, "-"); len(s) != 2 {
+				if s := strings.Split(a, "-"); len(s) == 2 {
 					for i, ck := range cks {
 						if i+1 >= Int(s[0]) && i+1 <= Int(s[1]) {
 							switch tp {
