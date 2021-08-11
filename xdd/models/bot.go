@@ -118,26 +118,52 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 
 				}
 				{
-					if x := regexp.MustCompile(`^\d+$`).FindString(a); x != "" {
-						id := Int(x)
+					// if x := regexp.MustCompile(`^\d+$`).FindString(a); x != "" {
+					// 	id := Int(x)
+					// 	for i, ck := range cks {
+					// 		if i+1 == id {
+					// 			switch tp {
+					// 			case "tg":
+					// 				tgBotNotify(ck.Query())
+					// 			case "qq":
+					// 				if id == ck.QQ {
+					// 					SendQQ(int64(id), ck.Query())
+					// 				} else {
+					// 					SendQQ(Config.QQID, ck.Query())
+					// 				}
+					// 			case "qqg":
+					// 				uid := msgs[3].(int)
+					// 				if uid == ck.QQ || uid == int(Config.QQID) {
+					// 					SendQQGroup(int64(id), ck.Query())
+					// 				}
+					// 			}
+					// 		}
+					// 	}
+					// 	return ""
+					// }
+					if x := regexp.MustCompile(`^[\s\d,]+$`).FindString(a); x != "" {
+						xx := regexp.MustCompile(`(\d+)`).FindAllStringSubmatch(a, -1)
 						for i, ck := range cks {
-							if i+1 == id {
-								switch tp {
-								case "tg":
-									tgBotNotify(ck.Query())
-								case "qq":
-									if id == ck.QQ {
-										SendQQ(int64(id), ck.Query())
-									} else {
-										SendQQ(Config.QQID, ck.Query())
-									}
-								case "qqg":
-									uid := msgs[3].(int)
-									if uid == ck.QQ || uid == int(Config.QQID) {
-										SendQQGroup(int64(id), ck.Query())
+							for _, x := range xx {
+								if fmt.Sprint(i+1) == x[1] {
+									switch tp {
+									case "tg":
+										tgBotNotify(ck.Query())
+									case "qq":
+										if id == ck.QQ {
+											SendQQ(int64(id), ck.Query())
+										} else {
+											SendQQ(Config.QQID, ck.Query())
+										}
+									case "qqg":
+										uid := msgs[3].(int)
+										if uid == ck.QQ || uid == int(Config.QQID) {
+											SendQQGroup(int64(id), ck.Query())
+										}
 									}
 								}
 							}
+
 						}
 						return ""
 					}
