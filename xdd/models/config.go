@@ -30,23 +30,24 @@ type Container struct {
 	Limit     int
 }
 type Yaml struct {
-	Containers       []Container
-	Qrcode           string
-	Master           string
-	Mode             string
-	Static           string
-	Database         string
-	QywxKey          string `yaml:"qywx_key"`
-	Resident         string
-	UserAgent        string `yaml:"user_agent"`
-	Theme            string
-	TelegramBotToken string `yaml:"telegram_bot_token"`
-	TelegramUserID   int    `yaml:"telegram_user_id"`
-	QQID             int64  `yaml:"qquid"`
-	QQGroupID        int64  `yaml:"qqgid"`
-	DefaultPriority  int    `yaml:"default_priority"`
-	NoGhproxy        bool   `yaml:"no_ghproxy"`
-	QbotPublicMode   bool   `yaml:"qbot_public_mode"`
+	Containers         []Container
+	Qrcode             string
+	Master             string
+	Mode               string
+	Static             string
+	Database           string
+	QywxKey            string `yaml:"qywx_key"`
+	Resident           string
+	UserAgent          string `yaml:"user_agent"`
+	Theme              string
+	TelegramBotToken   string `yaml:"telegram_bot_token"`
+	TelegramUserID     int    `yaml:"telegram_user_id"`
+	QQID               int64  `yaml:"qquid"`
+	QQGroupID          int64  `yaml:"qqgid"`
+	DefaultPriority    int    `yaml:"default_priority"`
+	NoGhproxy          bool   `yaml:"no_ghproxy"`
+	QbotPublicMode     bool   `yaml:"qbot_public_mode"`
+	DailyAssetPushCron string `yaml:"daily_asset_push_cron"`
 }
 
 var Balance = "balance"

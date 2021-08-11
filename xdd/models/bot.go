@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"os"
 	"regexp"
+	"strings"
 
 	"github.com/beego/beego/v2/client/httplib"
 	"github.com/beego/beego/v2/core/logs"
@@ -14,15 +15,15 @@ import (
 var SendQQ func(int64, interface{})
 var SendQQGroup func(int64, interface{})
 var ListenQQPrivateMessage = func(uid int64, msg string) {
-	SendQQ(uid, handleMessage(msg, "qq", uid))
+	SendQQ(uid, handleMessage(msg, "qq", int(uid)))
 }
 
 var ListenQQGroupMessage = func(gid int64, uid int64, msg string) {
 	if gid == Config.QQGroupID {
 		if Config.QbotPublicMode {
-			SendQQGroup(gid, handleMessage(msg, "qqg", gid, uid))
+			SendQQGroup(gid, handleMessage(msg, "qqg", int(gid), int(uid)))
 		} else {
-			SendQQ(uid, handleMessage(msg, "qq", uid))
+			SendQQ(uid, handleMessage(msg, "qq", int(uid)))
 		}
 	}
 }
@@ -42,48 +43,106 @@ func InitReplies() {
 }
 
 var handleMessage = func(msgs ...interface{}) interface{} {
-	switch msgs[0].(string) {
+	msg := msgs[0].(string)
+	tp := msgs[1].(string)
+	id := msgs[2].(int)
+	switch msg {
 	case "status", "状态":
 		return Count()
 	case "qrcode", "扫码", "二维码":
-		url := fmt.Sprintf("http://127.0.0.1:%d/api/login/qrcode.png?%vid=%v", web.BConfig.Listen.HTTPPort, msgs[1], msgs[2])
+		url := fmt.Sprintf("http://127.0.0.1:%d/api/login/qrcode.png?%vid=%v", web.BConfig.Listen.HTTPPort, tp, id)
 		rsp, err := httplib.Get(url).Response()
 		if err != nil {
 			return nil
 		}
 		return rsp
 	default:
-		ss := regexp.MustCompile(`pt_key=([^;=\s]+);pt_pin=([^;=\s]+)`).FindAllStringSubmatch(msgs[0].(string), -1)
-		if len(ss) > 0 {
-			for _, s := range ss {
-				ck := JdCookie{
-					PtKey: s[1],
-					PtPin: s[2],
+		{
+			s := regexp.MustCompile(`(查询|query)\s+(.*)`).FindStringSubmatch(msg)
+			fmt.Println(s)
+			if len(s) > 0 {
+				cks := GetJdCookies()
+				a := s[2]
+				fmt.Println(a)
+				if s := strings.Split(a, "-"); len(s) != 2 {
+					for i, ck := range cks {
+						if i+1 >= Int(s[0]) && i+1 <= Int(s[1]) {
+							switch tp {
+							case "tg":
+								tgBotNotify(ck.Query())
+							case "qq":
+								if id == ck.QQ {
+									SendQQ(int64(id), ck.Query())
+								} else {
+									SendQQ(Config.QQID, ck.Query())
+								}
+							case "qqg":
+								uid := msgs[3].(int)
+								if uid == ck.QQ || uid == int(Config.QQID) {
+									SendQQGroup(int64(id), ck.Query())
+								}
+							}
+						}
+					}
+				} else {
+					// for _, ck := range cks {
+					// 	if strings.Contains(ck.Note, a) || strings.Contains(ck.Nickname, a) || strings.Contains(ck.PtPin, a) {
+					// 		switch tp {
+					// 		case "tg":
+					// 			tgBotNotify(ck.Query())
+					// 		case "qq":
+					// 			if id == ck.QQ {
+					// 				SendQQ(int64(id), ck.Query())
+					// 			} else {
+					// 				SendQQ(Config.QQID, ck.Query())
+					// 			}
+					// 		case "qqg":
+					// 			uid := msgs[3].(int)
+					// 			if uid == ck.QQ || uid == int(Config.QQID) {
+					// 				SendQQGroup(int64(id), ck.Query())
+					// 			}
+					// 		}
+					// 	}
+					// }
 				}
-				if CookieOK(&ck) {
-					if nck := GetJdCookie(ck.PtPin); nck != nil {
-						ck.ToPool(ck.PtKey)
-						msg := fmt.Sprintf("更新账号，%s", ck.PtPin)
-						(&JdCookie{}).Push(msg)
-						logs.Info(msg)
-					} else {
-						NewJdCookie(ck)
-						msg := fmt.Sprintf("添加账号，%s", ck.PtPin)
-						(&JdCookie{}).Push(msg)
-						logs.Info(msg)
+				return ""
+			}
+		}
+		{ //
+			ss := regexp.MustCompile(`pt_key=([^;=\s]+);pt_pin=([^;=\s]+)`).FindAllStringSubmatch(msg, -1)
+			if len(ss) > 0 {
+				for _, s := range ss {
+					ck := JdCookie{
+						PtKey: s[1],
+						PtPin: s[2],
+					}
+					if CookieOK(&ck) {
+						if nck := GetJdCookie(ck.PtPin); nck != nil {
+							ck.ToPool(ck.PtKey)
+							msg := fmt.Sprintf("更新账号，%s", ck.PtPin)
+							(&JdCookie{}).Push(msg)
+							logs.Info(msg)
+						} else {
+							NewJdCookie(ck)
+							msg := fmt.Sprintf("添加账号，%s", ck.PtPin)
+							(&JdCookie{}).Push(msg)
+							logs.Info(msg)
+						}
 					}
 				}
+				go func() {
+					Save <- &JdCookie{}
+				}()
+				return nil
 			}
-			go func() {
-				Save <- &JdCookie{}
-			}()
-			return nil
 		}
+
 		for k, v := range replies {
-			if regexp.MustCompile(k).FindString(msgs[0].(string)) != "" {
+			if regexp.MustCompile(k).FindString(msg) != "" {
 				return v
 			}
 		}
+
 	}
 	return nil
 }

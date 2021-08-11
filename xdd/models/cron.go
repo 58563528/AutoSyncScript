@@ -6,5 +6,8 @@ var c *cron.Cron
 
 func initCron() {
 	c = cron.New()
+	if Config.DailyAssetPushCron != "" {
+		c.AddFunc(Config.DailyAssetPushCron, DailyAssetsPush)
+	}
 	c.Start()
 }
