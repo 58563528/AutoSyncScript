@@ -144,19 +144,20 @@ func initHandle() {
 }
 
 type JdCookie struct {
-	ID        int
-	Priority  int
-	ScanedAt  string
-	LoseAt    string
-	CreateAt  string
-	PtKey     string
-	PtPin     string
-	Note      string
-	Available string `validate:"oneof=true false"`
-	Nickname  string
-	BeanNum   string
-	Pool      string
-	QQ        int
+	ID          int
+	Priority    int
+	ScanedAt    string
+	LoseAt      string
+	CreateAt    string
+	PtKey       string
+	PtPin       string
+	Note        string
+	Available   string `validate:"oneof=true false"`
+	UnAvailable string
+	Nickname    string
+	BeanNum     string
+	Pool        string
+	QQ          int
 	// Delete    string `validate:"oneof=true false"`
 }
 
@@ -169,6 +170,7 @@ var LoseAt = "LoseAt"
 var CreateAt = "CreateAt"
 var Note = "Note"
 var Available = "Available"
+var UnAvailable = "UnAvailable"
 var PtKey = "PtKey"
 var PtPin = "PtPin"
 var Priority = "Priority"
@@ -187,6 +189,9 @@ func (ck *JdCookie) ToPool(key string) {
 		return
 	}
 	if strings.Contains(ck.Pool, key) {
+		return
+	}
+	if strings.Contains(ck.UnAvailable, key) {
 		return
 	}
 	if ck.Pool == "" {

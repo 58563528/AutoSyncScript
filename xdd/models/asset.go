@@ -46,6 +46,7 @@ func DailyAssetsPush() {
 }
 
 func (ck *JdCookie) Query() string {
+	msgs := []string{}
 	asset := Asset{}
 	if CookieOK(ck) {
 		ck = GetJdCookie(ck.PtPin)
@@ -91,20 +92,25 @@ func (ck *JdCookie) Query() string {
 			}
 			page++
 		}
+		msgs = append(msgs, []string{
+			fmt.Sprintf("当月收入：%d京豆", asset.Bean.MonthIn),
+			fmt.Sprintf("当月支出：%d京豆", asset.Bean.MonthOut),
+			fmt.Sprintf("昨日收入：%d京豆", asset.Bean.YestodayIn),
+			fmt.Sprintf("昨日支出：%d京豆", asset.Bean.YestodayOut),
+			fmt.Sprintf("今日收入：%d京豆", asset.Bean.TodayIn),
+			fmt.Sprintf("今日支出：%d京豆", asset.Bean.TodayOut),
+		}...)
+	} else {
+		msgs = append(msgs, []string{
+			"提醒：该账号已过期，请重新登录",
+		}...)
 	}
 	ck.PtPin, _ = url.QueryUnescape(ck.PtPin)
-	return strings.Join([]string{
+	return strings.Join(append([]string{
 		fmt.Sprintf("账号：%s", ck.PtPin),
 		fmt.Sprintf("昵称：%s", ck.Nickname),
 		fmt.Sprintf("备注：%s", ck.Note),
-		fmt.Sprintf("当月收入(截至昨日)：%d京豆", asset.Bean.MonthIn),
-		fmt.Sprintf("当月支出(截至昨日)：%d京豆", asset.Bean.MonthOut),
-		fmt.Sprintf("昨日收入：%d京豆", asset.Bean.YestodayIn),
-		fmt.Sprintf("昨日支出：%d京豆", asset.Bean.YestodayOut),
-		fmt.Sprintf("今日收入：%d京豆", asset.Bean.TodayIn),
-		fmt.Sprintf("今日支出：%d京豆", asset.Bean.TodayOut),
-		fmt.Sprintf("当前京豆：%v京豆", ck.BeanNum),
-	}, "\n")
+	}, append(msgs, fmt.Sprintf("当前京豆：%v京豆", ck.BeanNum))...), "\n")
 }
 
 type BeanDetail struct {

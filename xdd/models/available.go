@@ -136,6 +136,7 @@ func CookieOK(ck *JdCookie) bool {
 	if ck == nil {
 		return true
 	}
+	pt_key := ck.PtKey
 	req := httplib.Get("https://me-api.jd.com/user_new/info/GetJDUserInfoUnion")
 	req.Header("Cookie", fmt.Sprintf("pt_key=%s;pt_pin=%s;", ck.PtKey, ck.PtPin))
 	req.Header("Accept", "*/*")
@@ -155,13 +156,16 @@ func CookieOK(ck *JdCookie) bool {
 	switch ui.Retcode {
 	case "1001": //ck.BeanNum
 		if ui.Msg == "not login" {
-			if GetJdCookie(ck.PtPin) != nil {
-				ck.Updates(JdCookie{
-					Available: False,
-					LoseAt:    Date(),
-				})
+			if ck.Available == True {
+				if ck := GetJdCookie(ck.PtPin); ck != nil {
+					ck.Updates(JdCookie{
+						Available:   False,
+						LoseAt:      Date(),
+						UnAvailable: ck.UnAvailable + pt_key,
+					})
+				}
+				ck.Push(fmt.Sprintf("失效账号，%s", ck.PtPin))
 			}
-			ck.Push(fmt.Sprintf("失效账号，%s", ck.PtPin))
 			return false
 		}
 	case "0":
