@@ -113,25 +113,25 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 						}
 					}
 				} else {
-					// for _, ck := range cks {
-					// 	if strings.Contains(ck.Note, a) || strings.Contains(ck.Nickname, a) || strings.Contains(ck.PtPin, a) {
-					// 		switch tp {
-					// 		case "tg":
-					// 			tgBotNotify(ck.Query())
-					// 		case "qq":
-					// 			if id == ck.QQ {
-					// 				SendQQ(int64(id), ck.Query())
-					// 			} else {
-					// 				SendQQ(Config.QQID, ck.Query())
-					// 			}
-					// 		case "qqg":
-					// 			uid := msgs[3].(int)
-					// 			if uid == ck.QQ || uid == int(Config.QQID) {
-					// 				SendQQGroup(int64(id), ck.Query())
-					// 			}
-					// 		}
-					// 	}
-					// }
+					for i, ck := range cks {
+						if a == fmt.Sprint(i+1) || strings.Contains(ck.Note, a) || strings.Contains(ck.Nickname, a) || strings.Contains(ck.PtPin, a) {
+							switch tp {
+							case "tg":
+								tgBotNotify(ck.Query())
+							case "qq":
+								if id == ck.QQ {
+									SendQQ(int64(id), ck.Query())
+								} else {
+									SendQQ(Config.QQID, ck.Query())
+								}
+							case "qqg":
+								uid := msgs[3].(int)
+								if uid == ck.QQ || uid == int(Config.QQID) {
+									SendQQGroup(int64(id), ck.Query())
+								}
+							}
+						}
+					}
 				}
 				return ""
 			}
