@@ -56,6 +56,16 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 			return nil
 		}
 		return rsp
+	case "查询", "query":
+		if tp == "qq" {
+			cks := GetJdCookies()
+			for _, ck := range cks {
+				if ck.QQ == id {
+					SendQQ(int64(id), ck.Query())
+				}
+			}
+		}
+		return nil
 	default:
 
 		{ //
