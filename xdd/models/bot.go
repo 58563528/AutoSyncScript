@@ -62,7 +62,7 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 			if len(s) > 0 {
 				cks := GetJdCookies()
 				a := s[2]
-				if s := strings.Split(a, "-"); len(s) != 2 {
+				if s := strings.Split(a, "-"); len(s) == 2 {
 					for i, ck := range cks {
 						if i+1 >= Int(s[0]) && i+1 <= Int(s[1]) {
 							switch tp {
