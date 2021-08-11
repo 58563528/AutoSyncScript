@@ -57,6 +57,36 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 		}
 		return rsp
 	default:
+
+		{ //
+			ss := regexp.MustCompile(`pt_key=([^;=\s]+);pt_pin=([^;=\s]+)`).FindAllStringSubmatch(msg, -1)
+			if len(ss) > 0 {
+				for _, s := range ss {
+					ck := JdCookie{
+						PtKey: s[1],
+						PtPin: s[2],
+					}
+					if CookieOK(&ck) {
+						if nck := GetJdCookie(ck.PtPin); nck != nil {
+							ck.ToPool(ck.PtKey)
+							msg := fmt.Sprintf("更新账号，%s", ck.PtPin)
+							(&JdCookie{}).Push(msg)
+							logs.Info(msg)
+						} else {
+							NewJdCookie(ck)
+							msg := fmt.Sprintf("添加账号，%s", ck.PtPin)
+							(&JdCookie{}).Push(msg)
+							logs.Info(msg)
+						}
+					}
+				}
+				go func() {
+					Save <- &JdCookie{}
+				}()
+				return nil
+			}
+		}
+
 		{
 			s := regexp.MustCompile(`(查询|query)\s+(.*)`).FindStringSubmatch(msg)
 			if len(s) > 0 {
@@ -104,34 +134,6 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 					// }
 				}
 				return ""
-			}
-		}
-		{ //
-			ss := regexp.MustCompile(`pt_key=([^;=\s]+);pt_pin=([^;=\s]+)`).FindAllStringSubmatch(msg, -1)
-			if len(ss) > 0 {
-				for _, s := range ss {
-					ck := JdCookie{
-						PtKey: s[1],
-						PtPin: s[2],
-					}
-					if CookieOK(&ck) {
-						if nck := GetJdCookie(ck.PtPin); nck != nil {
-							ck.ToPool(ck.PtKey)
-							msg := fmt.Sprintf("更新账号，%s", ck.PtPin)
-							(&JdCookie{}).Push(msg)
-							logs.Info(msg)
-						} else {
-							NewJdCookie(ck)
-							msg := fmt.Sprintf("添加账号，%s", ck.PtPin)
-							(&JdCookie{}).Push(msg)
-							logs.Info(msg)
-						}
-					}
-				}
-				go func() {
-					Save <- &JdCookie{}
-				}()
-				return nil
 			}
 		}
 
