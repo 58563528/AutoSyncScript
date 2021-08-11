@@ -113,7 +113,7 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 								}
 							}
 						}
-						return ""
+						return nil
 					}
 
 				}
@@ -139,7 +139,7 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 					// 			}
 					// 		}
 					// 	}
-					// 	return ""
+					// 	return nil
 					// }
 					if x := regexp.MustCompile(`^[\s\d,]+$`).FindString(a); x != "" {
 						xx := regexp.MustCompile(`(\d+)`).FindAllStringSubmatch(a, -1)
@@ -165,10 +165,11 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 							}
 
 						}
-						return ""
+						return nil
 					}
 				}
 				{
+					a = strings.Replace(a, " ", "", -1)
 					for _, ck := range cks {
 						if strings.Contains(ck.Note, a) || strings.Contains(ck.Nickname, a) || strings.Contains(ck.PtPin, a) {
 							switch tp {
@@ -188,7 +189,7 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 							}
 						}
 					}
-					return ""
+					return nil
 				}
 
 			}
