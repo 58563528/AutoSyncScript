@@ -95,8 +95,6 @@ func initConfig() {
 	}
 	//测试
 	if ExecPath == "/Users/cdle/Desktop/jd_study/xdd" {
-		Config.TelegramBotToken = "1911098713:" + "AAFNfvlZlMB3_nenKL0IbD5mrEqxnHAobEI"
-		Config.TelegramUserID = 1837585653
 		Config.QQID = 17745270
 		Config.QQGroupID = 610790654
 	}
