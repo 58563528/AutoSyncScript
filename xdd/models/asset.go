@@ -39,7 +39,7 @@ var Int = func(s string) int {
 
 func DailyAssetsPush() {
 	for _, ck := range GetJdCookies() {
-		if ck.QQ != 0 {
+		if ck.QQ != 0 && Config.QQID != 0 {
 			SendQQ(int64(ck.QQ), ck.Query())
 		}
 	}
