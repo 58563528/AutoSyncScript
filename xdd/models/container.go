@@ -8,7 +8,6 @@ import (
 	"io"
 	"io/ioutil"
 	"os"
-	"os/exec"
 	"regexp"
 	"strings"
 
@@ -89,7 +88,7 @@ func initContainer() {
 			}
 		}
 	}
-	killp()
+
 }
 
 func (c *Container) write(cks []JdCookie) error {
@@ -480,33 +479,4 @@ func (c *Container) getSession() error {
 		}
 	}
 	return nil
-}
-
-func killp() {
-	pids, err := ppid()
-	if err == nil {
-		if len(pids) == 0 {
-			return
-		} else {
-			exec.Command("sh", "-c", "kill -9 "+strings.Join(pids, " ")).Output()
-		}
-	} else {
-		return
-	}
-}
-
-func ppid() ([]string, error) {
-	pid := fmt.Sprint(os.Getpid())
-	pids := []string{}
-	rtn, err := exec.Command("sh", "-c", "pidof jdc").Output()
-	if err != nil {
-		return pids, err
-	}
-	re := regexp.MustCompile(`[\d]+`)
-	for _, v := range re.FindAll(rtn, -1) {
-		if string(v) != pid {
-			pids = append(pids, string(v))
-		}
-	}
-	return pids, nil
 }

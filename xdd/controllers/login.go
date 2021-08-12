@@ -164,22 +164,22 @@ func init() {
 					switch result {
 					case "成功":
 						if bot == "qq" {
-							models.SendQQ(int64(id), "扫码成功")
+							go models.SendQQ(int64(id), "扫码成功")
 							ck.Updates(models.QQ, id)
 						} else if bot == "tg" {
-							models.SendTgMsg(int(id), "扫码成功")
+							go models.SendTgMsg(int(id), "扫码成功")
 						} else if bot == "qqg" {
-							models.SendQQGroup(int64(id), "扫码成功")
+							go models.SendQQGroup(int64(id), "扫码成功")
 						}
 					case "授权登录未确认":
 					case "":
 					default: //失效
 						if bot == "qq" {
-							models.SendQQ(int64(id), "扫码失败")
+							go models.SendQQ(int64(id), "扫码失败")
 						} else if bot == "tg" {
-							models.SendTgMsg(int(id), "扫码失败")
+							go models.SendTgMsg(int(id), "扫码失败")
 						} else if bot == "qqg" {
-							models.SendQQGroup(int64(id), "扫码失败")
+							go models.SendQQGroup(int64(id), "扫码失败")
 						}
 					}
 				}

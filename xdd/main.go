@@ -17,7 +17,6 @@ import (
 )
 
 var theme = ""
-var name = "xdd"
 
 func main() {
 	go func() {
@@ -62,12 +61,12 @@ func main() {
 		models.Config.Static = "./static"
 	}
 	web.BConfig.WebConfig.StaticDir["/static"] = models.Config.Static
-	web.BConfig.AppName = name
+	web.BConfig.AppName = models.AppName
 	web.BConfig.WebConfig.AutoRender = false
 	web.BConfig.CopyRequestBody = true
 	web.BConfig.WebConfig.Session.SessionOn = true
 	web.BConfig.WebConfig.Session.SessionGCMaxLifetime = 3600
-	web.BConfig.WebConfig.Session.SessionName = name
+	web.BConfig.WebConfig.Session.SessionName = models.AppName
 	go func() {
 		time.Sleep(time.Second * 4)
 		(&models.JdCookie{}).Push("小滴滴已启动")
