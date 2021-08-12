@@ -32,7 +32,7 @@ func initVersion() {
 				filename := ExecPath + "/." + pname
 				f, err := os.OpenFile(filename, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0777)
 				if err != nil {
-					logs.Warn("无法创建更新临时文件" + filename)
+					logs.Warn("无法创建更新临时文件：%v"+filename, err)
 					return
 				}
 				_, err = io.Copy(f, rsp.Body)
