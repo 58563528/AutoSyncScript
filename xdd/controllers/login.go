@@ -211,11 +211,11 @@ func (c *LoginController) Query() {
 						ck.Updates(models.Note, note)
 					}
 				}
-				if strings.Contains(models.Config.Master, pin) {
-					c.Ctx.WriteString("登录")
-				} else {
-					c.Ctx.WriteString("成功")
-				}
+				// if strings.Contains(models.Config.Master, pin) {
+				c.Ctx.WriteString("登录")
+				// } else {
+				// 	c.Ctx.WriteString("成功")
+				// }
 				return
 			}
 		}

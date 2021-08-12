@@ -29,8 +29,8 @@ func init() {
 //BaseController 基础控制器
 type BaseController struct {
 	beego.Controller
-	UID     int
-	AppName string
+	PtPin  string
+	Master bool
 }
 
 //NextPrepare 下一个准备
@@ -108,12 +108,17 @@ func (c *BaseController) ResponseError(ps ...interface{}) *BaseController {
 
 //Logined 登录
 func (c *BaseController) Logined() *BaseController {
-	if models.ExecPath == "/Users/cdle/Desktop/jd_study/xdd" { //作者调试
-		return c
-	}
-	if v := c.GetSession("pin"); v == nil || !strings.Contains(models.Config.Master, v.(string)) {
+	// if models.ExecPath == "/Users/cdle/Desktop/jd_study/xdd" { //作者调试
+	// 	return c
+	// }
+	if v := c.GetSession("pin"); v == nil {
 		c.Ctx.Redirect(302, "/")
 		c.StopRun()
+	} else {
+		c.PtPin = v.(string)
+		if strings.Contains(models.Config.Master, v.(string)) {
+			c.Master = true
+		}
 	}
 	return c
 }

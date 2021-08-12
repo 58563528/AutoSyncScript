@@ -16,6 +16,16 @@ func (c *AccountController) List() {
 	var page = c.GetQueryInt("page")
 	var limit = c.GetQueryInt("limit")
 	var cks = models.GetJdCookies()
+	if !c.Master {
+		tmp := cks
+		cks = []models.JdCookie{}
+		for _, ck := range tmp {
+			if ck.PtPin == c.PtPin {
+				cks = append(cks, ck)
+				break
+			}
+		}
+	}
 	var len = len(cks)
 	var total = []int{len}
 	if page == 0 {
@@ -49,6 +59,11 @@ func (c *AccountController) CreateOrUpdate() {
 	c.Validate(ps)
 	if ps.PtPin != "" {
 		ps.Pool = ""
+		if !c.Master {
+			ps.Priority = 0
+			ps.PtKey = ""
+			ps.PtPin = c.PtPin
+		}
 		ps.Updates(*ps)
 	}
 	go func() {
