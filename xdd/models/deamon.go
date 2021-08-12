@@ -46,7 +46,7 @@ func killp() {
 func ppid() ([]string, error) {
 	pid := fmt.Sprint(os.Getpid())
 	pids := []string{}
-	rtn, err := exec.Command("sh", "-c", "pidof "+AppName).Output()
+	rtn, err := exec.Command("sh", "-c", "pidof "+pname).Output()
 	if err != nil {
 		return pids, err
 	}
