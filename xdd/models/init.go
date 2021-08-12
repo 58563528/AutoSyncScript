@@ -19,4 +19,5 @@ func init() {
 	initCron()
 	initTgBot()
 	InitReplies()
+	DailyAssetsPush()
 }

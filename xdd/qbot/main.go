@@ -65,6 +65,9 @@ var bot *coolq.CQBot
 func Main() {
 	time.Sleep(time.Second)
 	models.SendQQ = func(uid int64, msg interface{}) {
+		if bot == nil {
+			return
+		}
 		if uid == 0 {
 			return
 		}
@@ -79,6 +82,9 @@ func Main() {
 		}
 	}
 	models.SendQQGroup = func(gid int64, msg interface{}) {
+		if bot == nil {
+			return
+		}
 		fmt.Println(gid, msg)
 		switch msg.(type) {
 		case string:
