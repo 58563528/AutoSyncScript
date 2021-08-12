@@ -158,6 +158,7 @@ type JdCookie struct {
 	BeanNum     string
 	Pool        string
 	QQ          int
+	PushPlus    string
 	// Delete    string `validate:"oneof=true false"`
 }
 
@@ -180,6 +181,7 @@ var Pool = "Pool"
 var True = "true"
 var False = "false"
 var QQ = "QQ"
+var PushPlus = "PushPlus"
 var Save chan *JdCookie
 var ExecPath string
 

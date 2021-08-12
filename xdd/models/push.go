@@ -11,4 +11,7 @@ func (ck *JdCookie) Push(msg string) {
 		go SendQQ(Config.QQID, msg)
 		go SendQQ(int64(ck.QQ), msg)
 	}
+	if ck.PushPlus != "" {
+		go pushPlus(ck.PushPlus, msg)
+	}
 }

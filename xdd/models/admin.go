@@ -91,6 +91,18 @@ var Admin = `<html lang="zh-cn">
                         width: 150,
                         align: 'center',
                     }, {
+                        field: 'QQ',
+                        title: 'QQ',
+                        width: 120,
+                        edit: 'text',
+                        align: 'center',
+                    }, {
+                        field: 'PushPlus',
+                        title: 'Push+',
+                        width: 120,
+                        edit: 'text',
+                        align: 'center',
+                    }, {
                         field: 'PtKey',
                         title: 'PtKey',
                         edit: 'text',
