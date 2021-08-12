@@ -48,6 +48,7 @@ type Yaml struct {
 	NoGhproxy          bool   `yaml:"no_ghproxy"`
 	QbotPublicMode     bool   `yaml:"qbot_public_mode"`
 	DailyAssetPushCron string `yaml:"daily_asset_push_cron"`
+	Version            string `yaml:"version"`
 }
 
 var Balance = "balance"
