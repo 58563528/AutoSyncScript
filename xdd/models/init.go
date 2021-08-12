@@ -8,12 +8,12 @@ import (
 )
 
 func init() {
+	killp()
 	for _, arg := range os.Args {
 		if arg == "-d" {
 			Daemon()
 		}
 	}
-	killp()
 	ExecPath, _ = filepath.Abs(filepath.Dir(os.Args[0]))
 	logs.Info("当前%s", ExecPath)
 	initConfig()
