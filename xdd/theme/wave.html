@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="shortcut icon" type="ico" href="https://github.com/xyh977732241/xdd_front_theme/blob/master/static/jd.ico" />
+    <link rel="shortcut icon" type="ico" href="https://ghproxy.com/https://raw.githubusercontent.com/xyh977732241/xdd_front_theme/master/static/jd.ico" />
     <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
     <title>东东邀约</title>
 </head>
@@ -260,6 +260,18 @@
         color: #f10000;
         font-weight: 9999;
     }
+    
+    .notify .sure {
+        display: block;
+        width: 120px;
+        margin: 20px auto;
+        padding: 5px 20px;
+        border-radius: 15px;
+        background-color: #fff;
+        color: #f10000;
+        text-align: center;
+        cursor: pointer;
+    }
 </style>
 
 <body>
@@ -299,6 +311,7 @@
 							<p>每天可领取100+京豆和若干现金红包、优惠券等。<br /></p>
 							<p>京东极速版APP-每天固定1.5汇率左右金币，可兑换红包。</p>
 							<h3>一定要微信扫码订阅通知，不然东西好了你也不知道！过期不候</h3>
+							<div class="sure" onclick="ok()">我知道了</div>
 						</div>
 						<div class="container" id="ck_qr">
 							<h4 id="tips">
@@ -360,7 +373,8 @@
 			var timer;
 			var qrcode = document.getElementById("qrcode");
 			var loginUrl = "";
-			var success = "./static/ok.svg";
+			var success =
+				"https://ghproxy.com/https://raw.githubusercontent.com/xyh977732241/xdd_front_theme/master/static/ok.svg";
 			var jumpapp = document.getElementById("jumpapp");
 			if (
 				navigator.userAgent.match(
@@ -425,15 +439,13 @@
 								qrcode.src = success;
 								clearInterval(timer);
 								setTimeout(() => {
-									window.location.href = "/admin";
+									toNotify();
 								}, 1000);
 								break;
 							case "成功":
 								qrcode.src = success;
 								clearInterval(timer);
-								setTimeout(() => {
-									toNotify();
-								}, 1000);
+								setTimeout(() => {}, 1000);
 								break;
 							default:
 								showQrcode();
@@ -444,7 +456,9 @@
 				xmlhttp.open("GET", "/api/login/query", true);
 				xmlhttp.send();
 			}
-
+			function ok() {
+				window.location.href = "/admin";
+			}
 			function polling() {
 				timer = setInterval(() => {
 					login();
