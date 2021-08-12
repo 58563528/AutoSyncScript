@@ -116,6 +116,7 @@ var Admin = `<html lang="zh-cn">
         table.on('edit(accounts)', function(obj) {
             obj.data.Priority = +obj.data.Priority
             obj.data.JinLi = +obj.data.JinLi
+            obj.data.QQ = +obj.data.QQ
             layui.$.ajax({
                 url: '/api/account',
                 type: 'POST',
