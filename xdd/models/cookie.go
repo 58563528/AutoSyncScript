@@ -159,6 +159,7 @@ type JdCookie struct {
 	Pool        string
 	QQ          int
 	PushPlus    string
+	Telegram    int
 	// Delete    string `validate:"oneof=true false"`
 }
 
@@ -184,6 +185,7 @@ var QQ = "QQ"
 var PushPlus = "PushPlus"
 var Save chan *JdCookie
 var ExecPath string
+var Telegram = "Telegram"
 
 func (ck *JdCookie) ToPool(key string) {
 	ck = GetJdCookie(ck.PtPin)
