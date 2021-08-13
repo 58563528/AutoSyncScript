@@ -120,6 +120,7 @@ func (c *LoginController) GetQrcode() {
 	tgid := c.GetQueryInt("tgid")
 	qqid := c.GetQueryInt("qqid")
 	qqgid := c.GetQueryInt("qqgid")
+	qqguid := c.GetQueryInt("qqguid")
 	id := 0
 	bot := ""
 	if tgid != 0 {
@@ -134,7 +135,7 @@ func (c *LoginController) GetQrcode() {
 		bot = "qqg"
 		id = qqgid
 	}
-	JdCookieRunners.Store(st.Token, []interface{}{cookie, okl_token, bot, id})
+	JdCookieRunners.Store(st.Token, []interface{}{cookie, okl_token, bot, id, qqguid})
 	if bot != "" {
 		c.Ctx.ResponseWriter.Write(data)
 		return
@@ -158,6 +159,7 @@ func init() {
 					okl_token := vv[1].(string)
 					bot := vv[2].(string)
 					id := vv[3].(int)
+					guid := vv[4].(int)
 					// fmt.Println(jd_token, cookie, okl_token)
 					result, ck := CheckLogin(jd_token, cookie, okl_token)
 					// fmt.Println(result)
@@ -169,7 +171,7 @@ func init() {
 						} else if bot == "tg" {
 							go models.SendTgMsg(int(id), "扫码成功")
 						} else if bot == "qqg" {
-							go models.SendQQGroup(int64(id), "扫码成功")
+							go models.SendQQGroup(int64(id), int64(guid), "扫码成功")
 						}
 					case "授权登录未确认":
 					case "":
@@ -179,7 +181,7 @@ func init() {
 						} else if bot == "tg" {
 							go models.SendTgMsg(int(id), "扫码失败")
 						} else if bot == "qqg" {
-							go models.SendQQGroup(int64(id), "扫码失败")
+							go models.SendQQGroup(int64(id), int64(guid), "扫码失败")
 						}
 					}
 				}

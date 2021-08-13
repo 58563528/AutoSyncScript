@@ -81,7 +81,7 @@ func Main() {
 			bot.SendPrivateMessage(uid, models.Config.QQGroupID, &message.SendingMessage{Elements: []message.IMessageElement{&coolq.LocalImageElement{Stream: bytes.NewReader(data)}}})
 		}
 	}
-	models.SendQQGroup = func(gid int64, msg interface{}) {
+	models.SendQQGroup = func(gid int64, uid int64, msg interface{}) {
 		if bot == nil {
 			return
 		}
@@ -89,11 +89,11 @@ func Main() {
 		switch msg.(type) {
 		case string:
 			if bot != nil {
-				bot.SendGroupMessage(gid, &message.SendingMessage{Elements: []message.IMessageElement{&message.TextElement{Content: msg.(string)}}})
+				bot.SendGroupMessage(gid, &message.SendingMessage{Elements: []message.IMessageElement{&message.AtElement{Target: uid}, &message.TextElement{Content: msg.(string)}}})
 			}
 		case *http.Response:
 			data, _ := ioutil.ReadAll(msg.(*http.Response).Body)
-			bot.SendGroupMessage(gid, &message.SendingMessage{Elements: []message.IMessageElement{&coolq.LocalImageElement{Stream: bytes.NewReader(data)}}})
+			bot.SendGroupMessage(gid, &message.SendingMessage{Elements: []message.IMessageElement{&message.AtElement{Target: uid}, &message.TextElement{Content: "\n"}, &coolq.LocalImageElement{Stream: bytes.NewReader(data)}}})
 		}
 	}
 	coolq.PrivateMessageEventCallback = models.ListenQQPrivateMessage

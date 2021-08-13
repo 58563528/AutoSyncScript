@@ -14,7 +14,7 @@ import (
 )
 
 var SendQQ func(int64, interface{})
-var SendQQGroup func(int64, interface{})
+var SendQQGroup func(int64, int64, interface{})
 var ListenQQPrivateMessage = func(uid int64, msg string) {
 	SendQQ(uid, handleMessage(msg, "qq", int(uid)))
 }
@@ -22,7 +22,7 @@ var ListenQQPrivateMessage = func(uid int64, msg string) {
 var ListenQQGroupMessage = func(gid int64, uid int64, msg string) {
 	if gid == Config.QQGroupID {
 		if Config.QbotPublicMode {
-			SendQQGroup(gid, handleMessage(msg, "qqg", int(gid), int(uid)))
+			SendQQGroup(gid, uid, handleMessage(msg, "qqg", int(gid), int(uid)))
 		} else {
 			SendQQ(uid, handleMessage(msg, "qq", int(uid)))
 		}
@@ -54,20 +54,25 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 	case "status", "状态":
 		return Count()
 	case "qrcode", "扫码", "二维码":
-		url := fmt.Sprintf("http://127.0.0.1:%d/api/login/qrcode.png?%vid=%v", web.BConfig.Listen.HTTPPort, tp, id)
+		url := fmt.Sprintf("http://127.0.0.1:%d/api/login/qrcode.png?%vid=%v&qqguid=%v", web.BConfig.Listen.HTTPPort, tp, id, msgs[3].(int))
 		rsp, err := httplib.Get(url).Response()
 		if err != nil {
 			return nil
 		}
 		return rsp
 	case "查询", "query":
-		if tp == "qq" {
-			cks := GetJdCookies()
-			for _, ck := range cks {
+		cks := GetJdCookies()
+		for _, ck := range cks {
+			if tp == "qq" {
 				if ck.QQ == id {
 					SendQQ(int64(id), ck.Query())
 				}
+			} else if tp == "qqg" {
+				if ck.QQ == msgs[3].(int) {
+					SendQQGroup(int64(id), int64(msgs[3].(int)), ck.Query())
+				}
 			}
+
 		}
 		return nil
 	default:
@@ -133,7 +138,7 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 									case "qqg":
 										uid := msgs[3].(int)
 										if uid == ck.QQ || uid == int(Config.QQID) {
-											SendQQGroup(int64(id), ck.Query())
+											SendQQGroup(int64(id), int64(msgs[3].(int)), ck.Query())
 										}
 									}
 								}
@@ -159,7 +164,7 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 										case "qqg":
 											uid := msgs[3].(int)
 											if uid == ck.QQ || uid == int(Config.QQID) {
-												SendQQGroup(int64(id), ck.Query())
+												SendQQGroup(int64(id), int64(msgs[3].(int)), ck.Query())
 											}
 										}
 									}
@@ -185,7 +190,7 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 								case "qqg":
 									uid := msgs[3].(int)
 									if uid == ck.QQ || uid == int(Config.QQID) {
-										SendQQGroup(int64(id), ck.Query())
+										SendQQGroup(int64(id), int64(msgs[3].(int)), ck.Query())
 									}
 								}
 							}
