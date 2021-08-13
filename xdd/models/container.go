@@ -134,7 +134,7 @@ func (c *Container) write(cks []JdCookie) error {
 				}
 				cookies += fmt.Sprintf("Cookie%d=\"pt_key=%s;pt_pin=%s;\"\n", i+1, ck.PtKey, ck.PtPin)
 			}
-			config = fmt.Sprintf(`TempBlockCookie="%s"`, TempBlockCookie) + "\n" + cookies + config
+			config = fmt.Sprintf(`TempBlockCookie="%s"`, TempBlockCookie) + "\n" + cookies + getVhelpRule(len(cks)) + config
 			return config
 		})
 	case "li":
@@ -281,6 +281,12 @@ func (c *Container) read() error {
 							nck.ToPool(pt[2])
 						}
 					}
+					continue
+				}
+				if pt := regexp.MustCompile(`^ForOther`).FindString(line); pt != "" {
+					continue
+				}
+				if pt := regexp.MustCompile(`^My.*\d+=`).FindString(line); pt != "" {
 					continue
 				}
 				if pt := regexp.MustCompile(`^Cookie\d+`).FindString(line); pt != "" {

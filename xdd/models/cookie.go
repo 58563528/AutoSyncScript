@@ -127,7 +127,7 @@ func initHandle() {
 					parallels[i].write(append(resident, bat...))
 				}
 			}
-			if init {
+			if init && !Cdle {
 				go func() {
 					for {
 						Save <- &JdCookie{
@@ -161,7 +161,34 @@ type JdCookie struct {
 	PushPlus    string
 	Telegram    int
 	// Delete    string `validate:"oneof=true false"`
+	Fruit        string
+	Pet          string
+	Bean         string
+	JdFactory    string
+	DreamFactory string
+	Jxnc         string
+	Jdzz         string
+	Joy          string
+	Sgmh         string
+	Cfd          string
+	Cash         string
+	Help         string `validate:"oneof=true false"`
 }
+
+const (
+	Fruit        = "Fruit"
+	Pet          = "Pet"
+	Bean         = "Bean"
+	JdFactory    = "JdFactory"
+	DreamFactory = "DreamFactory"
+	Jxnc         = "Jxnc"
+	Jdzz         = "Jdzz"
+	Joy          = "Joy"
+	Sgmh         = "Sgmh"
+	Cfd          = "Cfd"
+	Cash         = "Cash"
+	Help         = "Help"
+)
 
 func Date() string {
 	return time.Now().Local().Format("2006-01-02")
@@ -286,6 +313,9 @@ func GetJdCookies() []JdCookie {
 				}
 				if cks[i].Note == "" {
 					cks[i].Note = "--"
+				}
+				if cks[i].Help == "" {
+					cks[i].Help = False
 				}
 				if cks[i].Priority == 0 {
 					cks[i].Priority = 1

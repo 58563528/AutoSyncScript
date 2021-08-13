@@ -54,6 +54,7 @@ type Yaml struct {
 var Balance = "balance"
 var Parallel = "parallel"
 var GhProxy = "https://ghproxy.com/"
+var Cdle = false
 
 var Config Yaml
 
@@ -95,6 +96,7 @@ func initConfig() {
 	}
 	//测试
 	if ExecPath == "/Users/cdle/Desktop/jd_study/xdd" {
+		Cdle = true
 		Config.QQID = 17745270
 		Config.QQGroupID = 610790654
 	}

@@ -80,6 +80,12 @@ var Admin = `<html lang="zh-cn">
                         width: 80,
                         align: 'center',
                     }, {
+                        field: 'Help',
+                        title: '助力',
+                        edit: 'text',
+                        width: 80,
+                        align: 'center',
+                    }, {
                         field: 'Note',
                         title: '备注',
                         width: 120,
@@ -103,10 +109,40 @@ var Admin = `<html lang="zh-cn">
                         edit: 'text',
                         align: 'center',
                     }, {
-                        field: 'PtKey',
-                        title: 'PtKey',
+                        field: 'Fruit',
+                        title: '东东农场',
                         edit: 'text',
-                        width: 500,
+                        width: 120,
+                        align: 'center',
+                    }, {
+                        field: 'Pet',
+                        title: '东东萌宠',
+                        edit: 'text',
+                        width: 120,
+                        align: 'center',
+                    }, {
+                        field: 'Bean',
+                        title: '种豆得豆',
+                        edit: 'text',
+                        width: 120,
+                        align: 'center',
+                    }, {
+                        field: 'JdFactory',
+                        title: '东东工厂',
+                        edit: 'text',
+                        width: 120,
+                        align: 'center',
+                    }, {
+                        field: 'DreamFactory',
+                        title: '惊喜工厂',
+                        edit: 'text',
+                        width: 120,
+                        align: 'center',
+                    }, {
+                        field: 'Cash',
+                        title: '签到领现金',
+                        edit: 'text',
+                        width: 120,
                         align: 'center',
                     }
                 ]

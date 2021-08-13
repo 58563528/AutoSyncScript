@@ -9,7 +9,7 @@ containers: #容器，可配置多个
   # - address: http://192.168.31.233:5525
   #   username: admin
   #   password: admin
-  # - path: /Users/cdle/Desktop/jd_study/jdc/config.sh #本地配置文件路径 v1v2v3v4v5和不知名容器的配置
+  - path: /Users/cdle/Desktop/jd_study/xdd/config.sh #本地配置文件路径 v1v2v3v4v5和不知名容器的配置
   # - path: /Users/cdle/Desktop/jd_study/jdc/list.sh
 theme:  #自定义主题，支持本地、网络路径
 static: ./static #静态文件 便于自定义二维码页面时，引入css、js等文件
