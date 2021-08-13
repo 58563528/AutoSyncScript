@@ -271,7 +271,7 @@ func GetJdCookies() []JdCookie {
 			ck := JdCookie{}
 			var _v = reflect.ValueOf(&ck).Elem()
 			for _, vv := range strings.Split(string(v), ";") {
-				v := strings.Split(vv, "=")
+				v := strings.Split(vv, "^")
 				if len(v) == 2 {
 					t := _v.FieldByName(v[0])
 					if t.CanSet() {
@@ -352,7 +352,7 @@ func saveJdCookie(cks ...JdCookie) error {
 				var v = reflect.ValueOf(ck)
 				var t = reflect.TypeOf(ck)
 				for i := 0; i < v.NumField(); i++ {
-					data += fmt.Sprintf("%s=%v;", t.Field(i).Name, v.Field(i).Interface())
+					data += fmt.Sprintf("%s^%v;", t.Field(i).Name, v.Field(i).Interface())
 				}
 				err := b.Put([]byte(ck.PtPin), []byte(data))
 				if err != nil {
@@ -382,7 +382,7 @@ func GetJdCookie(pin string) *JdCookie {
 			ck = &JdCookie{}
 			var _v = reflect.ValueOf(ck).Elem()
 			for _, vv := range strings.Split(string(v), ";") {
-				v := strings.Split(vv, "=")
+				v := strings.Split(vv, "^")
 				if len(v) == 2 {
 					t := _v.FieldByName(v[0])
 					if t.CanSet() {
