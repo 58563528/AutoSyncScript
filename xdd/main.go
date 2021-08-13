@@ -27,7 +27,7 @@ func main() {
 	})
 	web.Get("/", func(ctx *context.Context) {
 		if models.Config.Theme == "" {
-			models.Config.Theme = models.GhProxy + "https://raw.githubusercontent.com/xyh977732241/xdd_front_theme/master/index.html"
+			models.Config.Theme = models.GhProxy + "https://raw.githubusercontent.com/U188/web/main/random.html"
 		}
 		if theme != "" {
 			ctx.WriteString(theme)
