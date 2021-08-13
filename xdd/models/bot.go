@@ -56,6 +56,12 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 			return nil
 		}
 		return rsp
+	case "壁纸":
+		rsp, err := httplib.Get("https://acg.toubiec.cn/random.php").Response()
+		if err != nil {
+			return nil
+		}
+		return rsp
 	case "查询", "query":
 		if tp == "qq" {
 			cks := GetJdCookies()
