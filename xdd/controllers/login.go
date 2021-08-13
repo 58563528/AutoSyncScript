@@ -171,6 +171,7 @@ func init() {
 						} else if bot == "tg" {
 							go models.SendTgMsg(int(id), "扫码成功")
 						} else if bot == "qqg" {
+							ck.Updates(models.QQ, id)
 							go models.SendQQGroup(int64(id), int64(guid), "扫码成功")
 						}
 					case "授权登录未确认":
