@@ -54,7 +54,12 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 	case "status", "状态":
 		return Count()
 	case "qrcode", "扫码", "二维码":
-		url := fmt.Sprintf("http://127.0.0.1:%d/api/login/qrcode.png?%vid=%v&qqguid=%v", web.BConfig.Listen.HTTPPort, tp, id, msgs[3].(int))
+		url := ""
+		if tp == "qqg" {
+			url = fmt.Sprintf("http://127.0.0.1:%d/api/login/qrcode.png?%vid=%v&qqguid=%v", web.BConfig.Listen.HTTPPort, tp, id, msgs[3].(int))
+		} else {
+			url = fmt.Sprintf("http://127.0.0.1:%d/api/login/qrcode.png?%vid=%v", web.BConfig.Listen.HTTPPort, tp, id)
+		}
 		rsp, err := httplib.Get(url).Response()
 		if err != nil {
 			return nil
