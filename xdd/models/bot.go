@@ -106,6 +106,7 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 			return err
 		}
 		t := string(rtn)
+		fmt.Println(t, "---")
 		if !strings.Contains(t, "changed") {
 			if t == "" {
 				sendAdminMessagee("小滴滴已是最新", msgs...)
