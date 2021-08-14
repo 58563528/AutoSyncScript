@@ -135,7 +135,7 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 		}
 		t := string(rtn)
 		if !strings.Contains(t, "changed") {
-			if strings.Contains(t, "Already") {
+			if strings.Contains(t, "Already") || strings.Contains(t, "已经是最新") {
 				sendMessagee("小滴滴已是最新版啦", msgs...)
 			} else {
 				sendMessagee("小滴滴拉取代失败：", msgs...)
