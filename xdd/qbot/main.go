@@ -85,7 +85,6 @@ func Main() {
 		if bot == nil {
 			return
 		}
-		fmt.Println(gid, msg)
 		switch msg.(type) {
 		case string:
 			if bot != nil {

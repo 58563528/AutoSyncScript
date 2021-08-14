@@ -103,4 +103,7 @@ func initConfig() {
 	if Config.NoGhproxy {
 		GhProxy = ""
 	}
+	if Config.Database == "" {
+		Config.Database = ExecPath + "/.xdd.db"
+	}
 }

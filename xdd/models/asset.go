@@ -53,7 +53,7 @@ func (ck *JdCookie) Query() string {
 	msgs := []string{}
 	asset := Asset{}
 	if CookieOK(ck) {
-		ck = GetJdCookie(ck.PtPin)
+		ck, _ = GetJdCookie(ck.PtPin)
 		today := time.Now().Local().Format("2006-01-02")
 		yestoday := time.Now().Local().Add(-time.Hour * 24).Format("2006-01-02")
 		month := time.Now().Local().Format("2006-01")

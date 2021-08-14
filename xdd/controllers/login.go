@@ -167,11 +167,11 @@ func init() {
 					case "成功":
 						if bot == "qq" {
 							go models.SendQQ(int64(id), "扫码成功")
-							ck.Updates(models.QQ, id)
+							ck.Update(models.QQ, id)
 						} else if bot == "tg" {
 							go models.SendTgMsg(int(id), "扫码成功")
 						} else if bot == "qqg" {
-							ck.Updates(models.QQ, guid)
+							ck.Update(models.QQ, guid)
 							go models.SendQQGroup(int64(id), int64(guid), "扫码成功")
 						}
 					case "授权登录未确认":
@@ -210,8 +210,8 @@ func (c *LoginController) Query() {
 				pin := v.([]interface{})[0].(string)
 				c.SetSession("pin", pin)
 				if note := c.GetString("note"); note != "" {
-					if ck := models.GetJdCookie(pin); ck != nil {
-						ck.Updates(models.Note, note)
+					if ck, err := models.GetJdCookie(pin); err == nil {
+						ck.Update(models.Note, note)
 					}
 				}
 				// if strings.Contains(models.Config.Master, pin) {
@@ -272,13 +272,13 @@ func CheckLogin(token, cookie, okl_token string) (string, *models.JdCookie) {
 			PtKey: pt_key,
 			PtPin: pt_pin,
 		}
-		if nck := models.GetJdCookie(ck.PtPin); nck != nil {
-			ck.ToPool(ck.PtKey)
+		if nck, err := models.GetJdCookie(ck.PtPin); err == nil {
+			nck.InPool(ck.PtKey)
 			msg := fmt.Sprintf("更新账号，%s", ck.PtPin)
 			(&models.JdCookie{}).Push(msg)
 			logs.Info(msg)
 		} else {
-			models.NewJdCookie(ck)
+			models.NewJdCookie(&ck)
 			msg := fmt.Sprintf("添加账号，%s", ck.PtPin)
 			(&models.JdCookie{}).Push(msg)
 			logs.Info(msg)

@@ -47,6 +47,19 @@ func InitReplies() {
 	}
 }
 
+var sendMessagee = func(msg string, msgs ...interface{}) {
+	tp := msgs[1].(string)
+	id := msgs[2].(int)
+	switch tp {
+	case "tg":
+		SendTgMsg(id, msg)
+	case "qq":
+		SendQQ(int64(id), msg)
+	case "qqg":
+		SendQQGroup(int64(id), int64(msgs[3].(int)), msg)
+	}
+}
+
 var handleMessage = func(msgs ...interface{}) interface{} {
 	msg := msgs[0].(string)
 	tp := msgs[1].(string)
@@ -101,15 +114,17 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 						} else if tp == "qqg" {
 							ck.QQ = msgs[3].(int)
 						}
-						if nck := GetJdCookie(ck.PtPin); nck != nil {
-							ck.ToPool(ck.PtKey)
+						if nck, err := GetJdCookie(ck.PtPin); err == nil {
+							nck.InPool(ck.PtKey)
 							msg := fmt.Sprintf("更新账号，%s", ck.PtPin)
 							(&JdCookie{}).Push(msg)
+							sendMessagee("许愿币+1", msgs...)
 							logs.Info(msg)
 						} else {
-							NewJdCookie(ck)
+							NewJdCookie(&ck)
 							msg := fmt.Sprintf("添加账号，%s", ck.PtPin)
 							(&JdCookie{}).Push(msg)
+							sendMessagee("许愿币+1", msgs...)
 							logs.Info(msg)
 						}
 					}
@@ -117,7 +132,7 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 				go func() {
 					Save <- &JdCookie{}
 				}()
-				return fmt.Sprintf("许愿币+%d", xyb)
+				return nil
 			}
 		}
 		{
@@ -261,8 +276,8 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 					} {
 						for _, s := range ss {
 							if strings.Contains(v[2], s) && v[3] != "" {
-								if ck := GetJdCookie(pt_pin); ck != nil {
-									ck.Updates(key, v[3])
+								if ck, err := GetJdCookie(pt_pin); err == nil {
+									ck.Update(key, v[3])
 								}
 								if !o {
 									o = true

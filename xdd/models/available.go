@@ -120,8 +120,10 @@ func initCookie() {
 	cks := GetJdCookies()
 	l := len(cks)
 	for i := 0; i < l-1; i++ {
-		if cks[i].Available == False || !CookieOK(GetJdCookie(cks[i].PtPin)) {
-			if cks[i].shiftPool() != "" {
+		if cks[i].Available == False || !CookieOK(&cks[i]) {
+			if pt_key, err := cks[i].OutPool(); err == nil && pt_key != "" {
+				cks[i].PtKey = pt_key
+				cks[i].Available = True
 				i--
 			}
 		}
@@ -136,7 +138,6 @@ func CookieOK(ck *JdCookie) bool {
 	if ck == nil {
 		return true
 	}
-	pt_key := ck.PtKey
 	req := httplib.Get("https://me-api.jd.com/user_new/info/GetJDUserInfoUnion")
 	req.Header("Cookie", fmt.Sprintf("pt_key=%s;pt_pin=%s;", ck.PtKey, ck.PtPin))
 	req.Header("Accept", "*/*")
@@ -157,26 +158,17 @@ func CookieOK(ck *JdCookie) bool {
 	case "1001": //ck.BeanNum
 		if ui.Msg == "not login" {
 			if ck.Available == True {
-				if ck := GetJdCookie(ck.PtPin); ck != nil {
-					ck.Updates(JdCookie{
-						Available:   False,
-						LoseAt:      Date(),
-						UnAvailable: ck.UnAvailable + pt_key,
-					})
-				}
 				ck.Push(fmt.Sprintf("失效账号，%s", ck.PtPin))
 			}
 			return false
 		}
 	case "0":
 		if ui.Data.UserInfo.BaseInfo.Nickname != ck.Nickname || ui.Data.AssetInfo.BeanNum != ck.BeanNum {
-			if GetJdCookie(ck.PtPin) != nil {
-				ck.Updates(JdCookie{
-					Nickname:  ui.Data.UserInfo.BaseInfo.Nickname,
-					BeanNum:   ui.Data.AssetInfo.BeanNum,
-					Available: True,
-				})
-			}
+			ck.Updates(JdCookie{
+				Nickname:  ui.Data.UserInfo.BaseInfo.Nickname,
+				BeanNum:   ui.Data.AssetInfo.BeanNum,
+				Available: True,
+			})
 		}
 	default:
 
