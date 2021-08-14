@@ -127,6 +127,7 @@ func initHandle() {
 						Save <- &JdCookie{
 							Pool: "s",
 						}
+
 						time.Sleep(time.Minute * 30)
 						// time.Sleep(time.Second * 1)
 					}

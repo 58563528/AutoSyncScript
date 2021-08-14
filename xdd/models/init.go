@@ -20,7 +20,7 @@ func init() {
 	initDB()
 	go initVersion()
 	go initUserAgent()
-	go initContainer()
+	initContainer()
 	initHandle()
 	initCron()
 	go initTgBot()

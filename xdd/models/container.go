@@ -243,18 +243,12 @@ func (c *Container) read() error {
 				return err
 			}
 			c.Delete = []string{}
+
 			for _, env := range a.Data {
 				c.Delete = append(c.Delete, fmt.Sprintf("\"%s\"", env.ID))
 				res := regexp.MustCompile(`pt_key=(\S+);pt_pin=([^\s;]+);?`).FindAllStringSubmatch(env.Value, -1)
 				for _, v := range res {
-					if nck, err := GetJdCookie(v[2]); err != nil {
-						NewJdCookie(&JdCookie{
-							PtKey: v[1],
-							PtPin: v[2],
-						})
-					} else if nck.PtKey != v[1] {
-						nck.InPool(v[1])
-					}
+					CheckIn(v[2], v[1])
 				}
 			}
 			return nil
@@ -283,14 +277,7 @@ func (c *Container) read() error {
 				c.Delete = append(c.Delete, fmt.Sprintf("\"%s\"", vv.ID))
 				res := regexp.MustCompile(`pt_key=(\S+);pt_pin=([^\s;]+);?`).FindStringSubmatch(vv.Value)
 				if len(res) == 3 {
-					if nck, err := GetJdCookie(res[2]); err != nil {
-						NewJdCookie(&JdCookie{
-							PtKey: res[1],
-							PtPin: res[2],
-						})
-					} else if res[1] != nck.PtKey {
-						nck.InPool(res[1])
-					}
+					CheckIn(res[2], res[1])
 				}
 			}
 		}
@@ -299,20 +286,12 @@ func (c *Container) read() error {
 			config := ""
 			for {
 				line, err := rd.ReadString('\n') //以'\n'为结束符读入一行
-
 				if err != nil || io.EOF == err {
 					config += line
 					break
 				}
 				if pt := regexp.MustCompile(`^#?\s?Cookie(\d+)=\S+pt_key=(.+);pt_pin=([^'";\s]+);?`).FindStringSubmatch(line); len(pt) != 0 {
-					if nck, err := GetJdCookie(pt[3]); err != nil {
-						NewJdCookie(&JdCookie{
-							PtKey: pt[2],
-							PtPin: pt[3],
-						})
-					} else if nck.PtKey != pt[2] {
-						nck.InPool(pt[2])
-					}
+					CheckIn(pt[3], pt[2])
 					continue
 				}
 				if pt := regexp.MustCompile(`^ForOther`).FindString(line); pt != "" {
@@ -345,14 +324,7 @@ func (c *Container) read() error {
 				break
 			}
 			if pt := regexp.MustCompile(`^pt_key=(.+);pt_pin=([^'";\s]+);?`).FindStringSubmatch(line); len(pt) != 0 {
-				if nck, err := GetJdCookie(pt[2]); err != nil {
-					NewJdCookie(&JdCookie{
-						PtKey: pt[1],
-						PtPin: pt[2],
-					})
-				} else if nck.PtKey != pt[1] {
-					nck.InPool(pt[1])
-				}
+				CheckIn(pt[2], pt[1])
 				continue
 			}
 		}

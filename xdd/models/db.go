@@ -17,6 +17,8 @@ var JD_COOKIE = "JD_COOKIE"
 var RECORD = "RECORD"
 var ENV = "env"
 var TASK = "TASK"
+var keys map[string]bool
+var pins map[string]bool
 
 func initDB() {
 	var err error
@@ -37,6 +39,30 @@ func initDB() {
 		&JdCookie{},
 		&JdCookiePool{},
 	)
+	keys = make(map[string]bool)
+	pins = make(map[string]bool)
+	jps := []JdCookiePool{}
+	db.Find(&jps)
+	for _, jp := range jps {
+		keys[jp.PtKey] = true
+		pins[jp.PtPin] = true
+	}
+}
+
+func HasPin(pin string) bool {
+	if _, ok := pins[pin]; ok {
+		return ok
+	}
+	pins[pin] = true
+	return false
+}
+
+func HasKey(key string) bool {
+	if _, ok := keys[key]; ok {
+		return ok
+	}
+	keys[key] = true
+	return false
 }
 
 type JdCookie struct {
@@ -206,4 +232,19 @@ func NewJdCookie(ck *JdCookie) error {
 		return err
 	}
 	return tx.Commit().Error
+}
+
+func CheckIn(pin, key string) int {
+	if !HasPin(pin) {
+		NewJdCookie(&JdCookie{
+			PtKey: key,
+			PtPin: pin,
+		})
+		return 0
+	} else if !HasKey(key) {
+		ck, _ := GetJdCookie(pin)
+		ck.InPool(key)
+		return 1
+	}
+	return 2
 }
