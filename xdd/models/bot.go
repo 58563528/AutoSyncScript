@@ -105,8 +105,14 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 		if err != nil {
 			return err
 		}
-		if !strings.Contains(string(rtn), "changed") {
-			sendAdminMessagee("小滴滴拉取代失败：", msgs...)
+		t := string(rtn)
+		if !strings.Contains(t, "changed") {
+			if t == "" {
+				sendAdminMessagee("小滴滴已是最新", msgs...)
+			} else {
+				sendAdminMessagee("小滴滴拉取代失败：", msgs...)
+			}
+			return nil
 		} else {
 			sendAdminMessagee("小滴滴拉取代码成功", msgs...)
 		}
@@ -115,6 +121,7 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 			sendAdminMessagee("小滴滴编译失败：", msgs...)
 		} else {
 			sendAdminMessagee("小滴滴编译成功", msgs...)
+			return nil
 		}
 		sendAdminMessagee("小滴滴重启程序", msgs...)
 		Daemon()
