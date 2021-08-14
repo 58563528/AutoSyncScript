@@ -81,6 +81,27 @@ var sendAdminMessagee = func(msg string, msgs ...interface{}) {
 	}
 }
 
+var isAdmin = func(msgs ...interface{}) bool {
+	tp := msgs[1].(string)
+	id := msgs[2].(int)
+	switch tp {
+	case "tg":
+		if Config.TelegramUserID == id {
+			return true
+		}
+	case "qq":
+		if int(Config.QQID) == id {
+			return true
+		}
+	case "qqg":
+		uid := msgs[3].(int)
+		if int(Config.QQID) == uid {
+			return true
+		}
+	}
+	return false
+}
+
 var handleMessage = func(msgs ...interface{}) interface{} {
 	msg := msgs[0].(string)
 	tp := msgs[1].(string)
@@ -101,25 +122,29 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 		}
 		return rsp
 	case "升级":
+		if !isAdmin() {
+			return "你没有权限操作"
+		}
+		sendMessagee("小滴滴正在拉取代码", msgs...)
 		rtn, err := exec.Command("sh", "-c", "cd "+ExecPath+" && git pull").Output()
 		if err != nil {
-			return err
+			return err.Error()
 		}
 		t := string(rtn)
-		fmt.Println(t, "---")
 		if !strings.Contains(t, "changed") {
-			if t == "" {
-				sendAdminMessagee("小滴滴已是最新", msgs...)
+			if strings.Contains(t, "Already") {
+				sendMessagee("小滴滴已是最新版啦", msgs...)
 			} else {
-				sendAdminMessagee("小滴滴拉取代失败：", msgs...)
+				sendMessagee("小滴滴拉取代失败：", msgs...)
 			}
 			return nil
 		} else {
-			sendAdminMessagee("小滴滴拉取代码成功", msgs...)
+			sendMessagee("小滴滴拉取代码成功", msgs...)
 		}
+		sendMessagee("小滴滴正在编译程序", msgs...)
 		rtn, err = exec.Command("sh", "-c", "cd "+ExecPath+" && go build -o "+pname).Output()
 		if err != nil {
-			sendAdminMessagee("小滴滴编译失败：", msgs...)
+			sendMessagee("小滴滴编译失败：", msgs...)
 		} else {
 			sendAdminMessagee("小滴滴编译成功", msgs...)
 			return nil
