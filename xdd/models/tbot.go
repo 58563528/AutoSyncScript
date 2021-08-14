@@ -28,7 +28,7 @@ func initTgBot() {
 			rt := handleMessage(m.Text, "tg", m.Sender.ID)
 			switch rt.(type) {
 			case string:
-				b.Send(&tb.User{ID: Config.TelegramUserID}, rt.(string))
+				b.Send(m.Sender, rt.(string))
 			case *http.Response:
 				b.SendAlbum(m.Sender, tb.Album{&tb.Photo{File: tb.FromReader(rt.(*http.Response).Body)}})
 			}
