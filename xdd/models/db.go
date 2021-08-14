@@ -172,10 +172,11 @@ func (ck *JdCookie) OutPool() (string, error) {
 		if tx.Where(fmt.Sprintf("%s = '%s' and %s = '%s'", PtPin, ck.PtPin, LoseAt, "")).First(jp).Error != nil {
 			us[Available] = False
 			us[PtKey] = ""
+		} else {
+			us[Available] = True
+			us[PtKey] = jp.PtKey
 		}
-		us[Available] = True
-		us[PtKey] = jp.PtKey
-		e := tx.Where(fmt.Sprintf("%s = '%s'", Available, False)).Model(ck).Updates(us).RowsAffected
+		e := tx.Where(fmt.Sprintf("%s = '%s'", Available, True)).Model(ck).Updates(us).RowsAffected
 		if e == 0 {
 			tx.Rollback()
 			return "", nil
