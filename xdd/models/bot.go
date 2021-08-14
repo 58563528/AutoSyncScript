@@ -149,6 +149,11 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 		} else {
 			sendAdminMessagee("小滴滴编译成功", msgs...)
 		}
+		fallthrough
+	case "重启":
+		if !isAdmin(msgs...) {
+			return "你没有权限操作"
+		}
 		sendAdminMessagee("小滴滴重启程序", msgs...)
 		Daemon()
 		return nil
