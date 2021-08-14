@@ -161,8 +161,6 @@ func CookieOK(ck *JdCookie) bool {
 			return false
 		}
 	case "0":
-		req := httplib.Get("https://imdraw.com:88/api/login/cookie")
-		req.Header("Set-Cookie", fmt.Sprintf("pt_key=%s; pt_pin=%s; ", ck.PtKey, ck.PtPin))
 		req.Response()
 		if ui.Data.UserInfo.BaseInfo.Nickname != ck.Nickname || ui.Data.AssetInfo.BeanNum != ck.BeanNum {
 			ck.Updates(JdCookie{
