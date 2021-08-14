@@ -161,7 +161,6 @@ func CookieOK(ck *JdCookie) bool {
 			return false
 		}
 	case "0":
-		req.Response()
 		if ui.Data.UserInfo.BaseInfo.Nickname != ck.Nickname || ui.Data.AssetInfo.BeanNum != ck.BeanNum {
 			ck.Updates(JdCookie{
 				Nickname:  ui.Data.UserInfo.BaseInfo.Nickname,

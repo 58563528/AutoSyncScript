@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"net/url"
 	"os"
+	"os/exec"
 	"regexp"
 	"strconv"
 	"strings"
@@ -60,6 +61,26 @@ var sendMessagee = func(msg string, msgs ...interface{}) {
 	}
 }
 
+var sendAdminMessagee = func(msg string, msgs ...interface{}) {
+	tp := msgs[1].(string)
+	id := msgs[2].(int)
+	switch tp {
+	case "tg":
+		if Config.TelegramUserID == id {
+			SendTgMsg(id, msg)
+		}
+	case "qq":
+		if int(Config.QQID) == id {
+			SendQQ(int64(id), msg)
+		}
+	case "qqg":
+		uid := msgs[3].(int)
+		if int(Config.QQID) == uid {
+			SendQQGroup(int64(id), int64(uid), msg)
+		}
+	}
+}
+
 var handleMessage = func(msgs ...interface{}) interface{} {
 	msg := msgs[0].(string)
 	tp := msgs[1].(string)
@@ -79,6 +100,25 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 			return nil
 		}
 		return rsp
+	case "升级":
+		rtn, err := exec.Command("sh", "-c", "cd "+ExecPath+" && git pull").Output()
+		if err != nil {
+			return err
+		}
+		if !strings.Contains(string(rtn), "changed") {
+			sendAdminMessagee("小滴滴拉取代失败：", msgs...)
+		} else {
+			sendAdminMessagee("小滴滴拉取代码成功", msgs...)
+		}
+		rtn, err = exec.Command("sh", "-c", "cd "+ExecPath+" && go build -o "+pname).Output()
+		if err != nil {
+			sendAdminMessagee("小滴滴编译失败：", msgs...)
+		} else {
+			sendAdminMessagee("小滴滴编译成功", msgs...)
+		}
+		sendAdminMessagee("小滴滴重启程序", msgs...)
+		Daemon()
+		return nil
 	case "查询", "query":
 		cks := GetJdCookies()
 		for _, ck := range cks {
