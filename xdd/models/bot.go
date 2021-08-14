@@ -122,7 +122,7 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 		}
 		return rsp
 	case "升级":
-		if !isAdmin(msgs...) {
+		if !isAdmin(msgs...) { //
 			return "你没有权限操作"
 		}
 		sendMessagee("小滴滴开始拉取代码", msgs...)
