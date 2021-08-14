@@ -122,10 +122,10 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 		}
 		return rsp
 	case "升级":
-		if !isAdmin() {
+		if !isAdmin(msgs) {
 			return "你没有权限操作"
 		}
-		sendMessagee("小滴滴正在拉取代码", msgs...)
+		sendMessagee("小滴滴开始拉取代码", msgs...)
 		rtn, err := exec.Command("sh", "-c", "cd "+ExecPath+" && git pull").Output()
 		if err != nil {
 			return err.Error()
@@ -145,9 +145,9 @@ var handleMessage = func(msgs ...interface{}) interface{} {
 		rtn, err = exec.Command("sh", "-c", "cd "+ExecPath+" && go build -o "+pname).Output()
 		if err != nil {
 			sendMessagee("小滴滴编译失败：", msgs...)
+			return nil
 		} else {
 			sendAdminMessagee("小滴滴编译成功", msgs...)
-			return nil
 		}
 		sendAdminMessagee("小滴滴重启程序", msgs...)
 		Daemon()
