@@ -155,11 +155,16 @@ func (ck *JdCookie) Updates(values interface{}) {
 	if ck.ID != 0 {
 		db.Model(ck).Updates(values)
 	}
+	if ck.PtPin != "" {
+		db.Model(ck).Where(PtPin+" = ?", ck.PtPin).Updates(values)
+	}
 }
-
 func (ck *JdCookie) Update(column string, value interface{}) {
 	if ck.ID != 0 {
 		db.Model(ck).Update(column, value)
+	}
+	if ck.PtPin != "" {
+		db.Model(ck).Where(PtPin+" = ?", ck.PtPin).Update(column, value)
 	}
 }
 
