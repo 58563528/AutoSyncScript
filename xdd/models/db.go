@@ -177,6 +177,7 @@ func (ck *JdCookie) OutPool() (string, error) {
 		us[PtKey] = jp.PtKey
 		e := tx.Where(fmt.Sprintf("%s = '%s'", Available, False)).Model(ck).Updates(us).RowsAffected
 		if e == 0 {
+			tx.Rollback()
 			return "", nil
 		}
 		ck.Available = True
