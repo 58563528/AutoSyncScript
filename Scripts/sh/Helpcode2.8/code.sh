@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-## Build 20210821-001
+## Build 20210827-001
 
 ## 导入通用变量与函数
 dir_shell=/ql/shell
@@ -707,5 +707,6 @@ update_help
 
 ## 修改curtinlv入会领豆配置文件的参数
 [[ -f /ql/repo/curtinlv_JD-Script/OpenCard/OpenCardConfig.ini ]] && sed -i "4c JD_COOKIE = '$(echo $JD_COOKIE | sed "s/&/ /g; s/\S*\(pt_key=\S\+;\)\S*\(pt_pin=\S\+;\)\S*/\1\2/g;" | perl -pe "s| |&|g")'" /ql/repo/curtinlv_JD-Script/OpenCard/OpenCardConfig.ini
+
 echo "All Done"
 exit
