@@ -1,6 +1,6 @@
 ## Version: v2.8.0
 ## Date: 2021-06-20
-## Mod: Build20210815-002
+## Mod: Build20210829-001
 ## Update Content: 可持续发展纲要\n1. session管理破坏性修改\n2. 配置管理可编辑config下文件\n3. 自定义脚本改为查看脚本\n4. 移除互助相关
 
 ## 上面版本号中，如果第2位数字有变化，那么代表增加了新的参数，如果只有第3位数字有变化，仅代表更新了注释，没有增加新的参数，可更新可不更新
@@ -111,6 +111,7 @@ export GOBOT_TOKEN=""
 export GOBOT_QQ=""
 
 ## 10. 临时屏蔽某个Cookie
+## 10.1 按 Cookie 序号屏蔽
 ## 如果某些 Cookie 已经失效了，但暂时还没法更新，可以使用此功能在不删除该Cookie和重新修改Cookie编号的前提下，临时屏蔽掉某些编号的Cookie
 ## 多个Cookie编号以半角的空格分隔，两侧一对半角双引号，使用此功能后，在运行js脚本时账户编号将发生变化
 ## 举例1：TempBlockCookie="2"    临时屏蔽掉 Cookie2
@@ -143,6 +144,41 @@ case $1 in
         ;;
     *)
         TempBlockCookie=""
+        ;;
+esac
+
+## 10.2 按用户名(pt_pin)屏蔽
+## 如果某些 Cookie 已经失效了，但暂时还没法更新，可以使用此功能在不删除该Cookie和重新修改Cookie编号的前提下，临时屏蔽掉某些编号的Cookie
+## 举例1：TempBlockPin="张三"                    临时屏蔽掉用户名(pt_pin)为 "张三" 的 Cookie
+## 举例2：TempBlockCookie="张三 jd_13134567890"  临时屏蔽掉用户名(pt_pin)为 "张三" 和 "jd_13134567890" 的 Cookie
+
+## 如果只是想要屏蔽某个 Cookie 不参加某些活动，可以参考下面 case 这个命令的例子来控制
+## case $1 in
+##     *jd_fruit*)                               # 东东农场活动脚本关键词
+##         TempBlockPin="张三"                   # 用户名(pt_pin)为 "张三" 的 Cookie 不玩东东农场
+##         ;;
+##     *jd_dreamFactory* | *jd_jdfactory*)       # 京喜工厂和东东工厂的活动脚本关键词
+##         TempBlockPin="张三 jd_13134567890"    # 用户名(pt_pin)为 "张三" 和 "jd_13134567890" 的 Cookie 不玩京喜工厂和东东工厂
+##         ;;
+##     *jd_jdzz* | *jd_joy*)                     # 京喜赚赚和宠汪汪的活动脚本关键词
+##         TempBlockPin="张三 67890 jd"          # 用户名(pt_pin)包含 "张三" 、"67890"、"jd" 的 Cookie 不玩京东赚赚和宠汪汪
+##         ;;
+##     *)                                        # 必选项。其他活动
+##         TempBlockPin=""                       # 必选项。默认为空值，表示其他帐号参加全部活动。填写帐号序号表示指定的用户名(pt_pin)只能参加之前 case 选项的活动
+##         ;;
+## esac
+case $1 in
+    *jd_fruit*)
+        TempBlockPin=""
+        ;;
+    *jd_dreamFactory* | *jd_jdfactory*)
+        TempBlockPin=""
+        ;;
+    *jd_jdzz* | *jd_joy*)
+        TempBlockPin=""
+        ;;
+    *)
+        TempBlockPin=""
         ;;
 esac
 
