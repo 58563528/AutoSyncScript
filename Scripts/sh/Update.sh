@@ -27,6 +27,7 @@ CollectedRepo="4"
 OtherRepo=""
 Ninja="down"
 
+repoNum="4"
 HelpType="HelpType=\"0\""
 BreakHelpType="BreakHelpType=\"1\""
 BreakHelpNum="BreakHelpNum=\"31-1000\""

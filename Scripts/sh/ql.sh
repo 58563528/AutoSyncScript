@@ -14,12 +14,12 @@ echo -e "\e[36m
 \e[0m\n"
 
 DOCKER_IMG_NAME="whyour/qinglong"
-JD_PATH=""
+QL_PATH=""
 SHELL_FOLDER=$(pwd)
 CONTAINER_NAME=""
 TAG="latest"
 NETWORK="bridge"
-JD_PORT=5700
+QL_PORT=5700
 NINJA_PORT=5701
 
 HAS_IMAGE=false
@@ -83,23 +83,23 @@ docker_install
 warn "降低学习成本，小白回车到底，一路默认选择"
 # 配置文件保存目录
 echo -n -e "\e[33m一、请输入配置文件保存的绝对路径（示例：/root)，回车默认为当前目录:\e[0m"
-read jd_path
-if [ -z "$jd_path" ]; then
-    JD_PATH=$SHELL_FOLDER
-elif [ -d "$jd_path" ]; then
-    JD_PATH=$jd_path
+read ql_path
+if [ -z "$ql_path" ]; then
+    QL_PATH=$SHELL_FOLDER
+elif [ -d "$ql_path" ]; then
+    QL_PATH=$ql_path
 else
-    mkdir -p $jd_path
-    JD_PATH=$jd_path
+    mkdir -p $ql_path
+    QL_PATH=$ql_path
 fi
-CONFIG_PATH=$JD_PATH/ql/config
-DB_PATH=$JD_PATH/ql/db
-REPO_PATH=$JD_PATH/ql/repo
-RAW_PATH=$JD_PATH/ql/raw
-SCRIPT_PATH=$JD_PATH/ql/scripts
-LOG_PATH=$JD_PATH/ql/log
-JBOT_PATH=$JD_PATH/ql/jbot
-NINJA_PATH=$JD_PATH/ql/ninja
+CONFIG_PATH=$QL_PATH/ql/config
+DB_PATH=$QL_PATH/ql/db
+REPO_PATH=$QL_PATH/ql/repo
+RAW_PATH=$QL_PATH/ql/raw
+SCRIPT_PATH=$QL_PATH/ql/scripts
+LOG_PATH=$QL_PATH/ql/log
+JBOT_PATH=$QL_PATH/ql/jbot
+NINJA_PATH=$QL_PATH/ql/ninja
 
 # 检测镜像是否存在
 if [ ! -z "$(docker images -q $DOCKER_IMG_NAME:$TAG 2> /dev/null)" ]; then
@@ -154,7 +154,7 @@ opt
 read net
 if [ "$net" = "1" ]; then
     NETWORK="host"
-    MAPPING_JD_PORT=""
+    MAPPING_QL_PORT=""
     MAPPING_NINJA_PORT=""
 fi
 
@@ -187,7 +187,7 @@ modify_ql_port() {
     read change_ql_port
     if [ "$change_ql_port" = "1" ]; then
         echo -n -e "\e[36m输入您想修改的端口->\e[0m"
-        read JD_PORT
+        read QL_PORT
     fi
 }
 modify_Ninja_port() {
@@ -204,7 +204,7 @@ if [ "$NETWORK" = "bridge" ]; then
     opt
     read port
     if [ "$port" = "2" ]; then
-        MAPPING_JD_PORT=""
+        MAPPING_QL_PORT=""
         MAPPING_NINJA_PORT=""
     else
         modify_ql_port
@@ -246,12 +246,12 @@ check_port() {
     netstat -tlpn | grep "\b$1\b"
 }
 if [ "$port" != "2" ]; then
-    while check_port $JD_PORT; do    
-        echo -n -e "\e[31m端口:$JD_PORT 被占用，请重新输入青龙面板端口：\e[0m"
-        read JD_PORT
+    while check_port $QL_PORT; do    
+        echo -n -e "\e[31m端口:$QL_PORT 被占用，请重新输入青龙面板端口：\e[0m"
+        read QL_PORT
     done
-    echo -e "\e[34m恭喜，端口:$JD_PORT 可用\e[0m"
-    MAPPING_JD_PORT="-p $JD_PORT:5700"
+    echo -e "\e[34m恭喜，端口:$QL_PORT 可用\e[0m"
+    MAPPING_QL_PORT="-p $QL_PORT:5700"
 fi
 if [ "$Ninja" != "2" ]; then
     while check_port $NINJA_PORT; do    
@@ -274,7 +274,7 @@ docker run -dit \
     -v $SCRIPT_PATH:/ql/scripts \
     -v $JBOT_PATH:/ql/jbot \
     -v $NINJA_PATH:/ql/ninja \
-    $MAPPING_JD_PORT \
+    $MAPPING_QL_PORT \
     $MAPPING_NINJA_PORT \
     --name $CONTAINER_NAME \
     --hostname qinglong \
@@ -326,7 +326,7 @@ if [ "$port" = "2" ]; then
     log "6.安装已完成，请自行调整端口映射并进入面板一次以便进行内部配置"
 else
     log "6.安装已完成，请进入面板一次以便进行内部配置"
-    log "6.1.用户名和密码已显示，请登录 ip:$JD_PORT"
+    log "6.1.用户名和密码已显示，请登录 ip:$QL_PORT"
     cat $CONFIG_PATH/auth.json
     echo -e "\n"
 fi

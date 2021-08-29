@@ -78,22 +78,23 @@ docker_install() {
 
 # 配置文件保存目录
 set_savedir() {
-echo -n -e "\e[33m\n一、请输入配置文件保存的绝对路径（示例：/root)，回车默认为当前目录:\e[0m"
+echo -n -e "\e[33m\n一、请输入配置文件保存的绝对路径（示例：/root/v2p1)，回车默认为 当前目录/elecv2p:\e[0m"
 read v2p_path
 if [ -z "$v2p_path" ]; then
-    V2P_PATH=$SHELL_FOLDER
+    mkdir -p $SHELL_FOLDER/elecv2p
+    V2P_PATH=$SHELL_FOLDER/elecv2p
 elif [ -d "$v2p_path" ]; then
     V2P_PATH=$v2p_path
 else
     mkdir -p $v2p_path
     V2P_PATH=$v2p_path
 fi
-JSFILE_PATH=$V2P_PATH/elecv2p/JSFile
-LISTS_PATH=$V2P_PATH/elecv2p/Lists
-STORE_PATH=$V2P_PATH/elecv2p/Store
-SHELL_PATH=$V2P_PATH/elecv2p/Shell
-ROOTCA_PATH=$V2P_PATH/elecv2p/rootCA
-EFSS_PATH=$V2P_PATH/elecv2p/efss
+JSFILE_PATH=$V2P_PATH/JSFile
+LISTS_PATH=$V2P_PATH/Lists
+STORE_PATH=$V2P_PATH/Store
+SHELL_PATH=$V2P_PATH/Shell
+ROOTCA_PATH=$V2P_PATH/rootCA
+EFSS_PATH=$V2P_PATH/efss
 }
 
 docker_install
